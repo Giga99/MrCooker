@@ -1,8 +1,8 @@
 # MrCooker
 
-Android app for creating your recipes.
+This is an android app for creating your recipes.
 
-For now saving only localy.
+v1.0.0 Saving recipes locally.
 
 Using:
    - Coroutines
