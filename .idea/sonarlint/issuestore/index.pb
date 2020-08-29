@@ -1,7 +1,31 @@
 
-d
-4app/src/main/java/mr/cooker/mrcooker/MainActivity.kt,7\c\7cff8e524981cd189f01c87c95438463a1a847eb
 @
 app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
 <
 build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
+n
+>app/src/main/java/mr/cooker/mrcooker/data/db/RecipeDatabase.kt,3\d\3dff529b2e18e113faa10d8f7c330c5246ca5a12
+i
+9app/src/main/java/mr/cooker/mrcooker/data/db/RecipeDAO.kt,3\4\34c93bf522ae9de3f642177b40239dacfa5526c8
+o
+?app/src/main/java/mr/cooker/mrcooker/data/db/entities/Recipe.kt,6\9\69780cc5f835e998c1687769b91190edf8167c3b
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+g
+7app/src/main/java/mr/cooker/mrcooker/other/Constants.kt,0\e\0e7891593c4f09f057af15a3ff331f41c9cf23d3
+x
+Happ/src/main/java/mr/cooker/mrcooker/data/repositories/MainRepository.kt,9\1\915be86b5cb9a3e1c10b323d4e87b8fa5a8c842e
+d
+4app/src/main/java/mr/cooker/mrcooker/di/AppModule.kt,b\8\b8e6149a4d5ab4d52a926819ed819ce25e4e8b9e
+g
+7app/src/main/java/mr/cooker/mrcooker/BaseApplication.kt,8\7\8744f0482a7f644b9ea0b3c67a15b4a046aa9b9c
+v
+Fapp/src/main/java/mr/cooker/mrcooker/ui/fragments/AddRecipeFragment.kt,e\e\ee4f29dc7c4760aa39b6478b4c4253697abcba9b
+s
+Capp/src/main/java/mr/cooker/mrcooker/ui/viewmodels/MainViewModel.kt,5\c\5c88d88af042828dcb9d138d244392ebd2a3dbf0
+q
+Aapp/src/main/java/mr/cooker/mrcooker/ui/fragments/HomeFragment.kt,e\2\e2eae216fd87fba0a83268d1d86693db02d6c95b
+g
+7app/src/main/java/mr/cooker/mrcooker/ui/MainActivity.kt,9\e\9eb2baddcc64f8b820179dedc8966f12f46d4d08
+k
+;app/src/main/java/mr/cooker/mrcooker/other/RecipeAdapter.kt,c\8\c81ec67c3bd2c9296a0283f36f836e61f7947914
