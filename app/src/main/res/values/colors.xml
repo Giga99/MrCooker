@@ -4,8 +4,10 @@
     <color name="colorLightPrimary">#edeeed</color>
     <color name="colorDarkPrimary">#855f2a</color>
     <color name="appBackgroundColor">#388581</color>
-    <color name="colorAccent">#2a2946</color>
+    <color name="appBackgroundColor2">#FBFBFB</color>
+    <color name="colorAccent">#52A39F</color>
     <color name="errorColor">#D50000</color>
-    <color name="colorPrimaryText">#FFFFFF</color>
-    <color name="colorSecondaryText">#edeeed</color>
+    <color name="colorPrimaryText">@android:color/black</color>
+    <color name="colorSecondaryText">#606060</color>
+    <color name="colorBackgroundRow">#FFFFFF</color>
 </resources>

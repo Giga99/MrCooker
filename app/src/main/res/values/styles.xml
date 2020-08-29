@@ -4,7 +4,7 @@
         <!-- Original AppCompat attributes. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorSecondary">@color/colorPrimary</item>
-        <item name="android:colorBackground">@color/appBackgroundColor</item>
+        <item name="android:colorBackground">@color/appBackgroundColor2</item>
         <item name="colorError">@color/errorColor</item>
 
         <!-- New MaterialComponents attributes. -->
