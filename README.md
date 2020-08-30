@@ -6,6 +6,7 @@ Features:
    - Saving recipes locally.
 
 Using:
+   - Kotlin
    - Coroutines
    - Room
    - Dagger-Hilt Injection
