@@ -2,7 +2,8 @@
 
 This is an android app for creating your recipes.
 
-Saving recipes locally.
+Features:
+   - Saving recipes locally.
 
 Using:
    - Coroutines
