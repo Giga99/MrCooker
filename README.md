@@ -2,9 +2,11 @@
 
 This is an android app for creating your recipes.
 
-v1.0.0 Saving recipes locally.
+Features:
+   - Saving recipes locally.
 
 Using:
+   - Kotlin
    - Coroutines
    - Room
    - Dagger-Hilt Injection
