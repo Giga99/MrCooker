@@ -17,7 +17,7 @@ class RecipeAdapter(
 
     inner class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    val diffCallback = object : DiffUtil.ItemCallback<Recipe>() {
+    private val diffCallback = object : DiffUtil.ItemCallback<Recipe>() {
         override fun areItemsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
             return oldItem.id == newItem.id
         }
