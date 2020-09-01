@@ -24,7 +24,7 @@ class RecipeFragment : Fragment(R.layout.fragment_recipe) {
         val recipe = args.recipe
 
         tvName.text = recipe.name
-        tvTime.text = "${recipe.timeToCook}mins"
+        tvTime.text = "${recipe.timeToCook}min"
         tvIngredients.text = recipe.ingredients
         tvInstructions.text = recipe.instructions
     }

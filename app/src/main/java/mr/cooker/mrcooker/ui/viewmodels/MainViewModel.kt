@@ -10,6 +10,7 @@ import mr.cooker.mrcooker.data.repositories.MainRepository
 class MainViewModel @ViewModelInject constructor(
     val mainRepository: MainRepository
 ) : ViewModel() {
+    val recipes = mainRepository.getAllRecipes()
 
     fun insertRecipe(recipe: Recipe) = viewModelScope.launch {
         mainRepository.insertRecipe(recipe)
@@ -18,6 +19,4 @@ class MainViewModel @ViewModelInject constructor(
     fun deleteRecipe(recipe: Recipe) = viewModelScope.launch {
         mainRepository.deleteRecipe(recipe)
     }
-
-    val recipes = mainRepository.getAllRecipes()
 }

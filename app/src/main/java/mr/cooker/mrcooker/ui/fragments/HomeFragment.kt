@@ -74,6 +74,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         ItemTouchHelper(itemTouchHelperCallback).apply {
             attachToRecyclerView(rvRecipes)
         }
+
+        swipeRefreshLayout.setOnRefreshListener {
+            viewModel.recipes.observe(viewLifecycleOwner, Observer {
+                recipeAdapter.submitList(it)
+                swipeRefreshLayout.isRefreshing = false
+            })
+        }
     }
 
     private fun setupRecyclerView() = rvRecipes.apply {
