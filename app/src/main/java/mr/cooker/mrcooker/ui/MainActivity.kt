@@ -17,12 +17,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         bottomNavigationView.setupWithNavController(navHostFragment.findNavController())
-        bottomNavigationView.setOnNavigationItemReselectedListener { /* NO-OP */ }
+        //bottomNavigationView.setOnNavigationItemReselectedListener { /* NO-OP */ }
 
         navHostFragment.findNavController()
             .addOnDestinationChangedListener { _, destination, _ ->
                 when(destination.id) {
-                    R.id.homeFragment -> bottomNavigationView.visibility = View.VISIBLE
+                    R.id.homeFragment, R.id.recipeFragment -> bottomNavigationView.visibility = View.VISIBLE
                     R.id.addRecipeFragment -> bottomNavigationView.visibility = View.GONE
                 }
             }

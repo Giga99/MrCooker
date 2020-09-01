@@ -11,9 +11,7 @@ import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.db.entities.Recipe
 import mr.cooker.mrcooker.ui.viewmodels.MainViewModel
 
-class RecipeAdapter(
-    private val viewModel: MainViewModel
-) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
+class RecipeAdapter() : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
 
     inner class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -48,14 +46,19 @@ class RecipeAdapter(
         holder.itemView.apply {
             tvName.text = recipe.name
             tvTime.text = "${recipe.timeToCook}min"
-        }
-
-        holder.itemView.ivDelete.setOnClickListener {
-            viewModel.deleteRecipe(recipe)
+            setOnClickListener {
+                onItemClickListener?.let { it(recipe) }
+            }
         }
     }
 
     override fun getItemCount(): Int {
         return differ.currentList.size
+    }
+
+    private var onItemClickListener: ((Recipe) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: (Recipe) -> Unit) {
+        onItemClickListener = listener
     }
 }

@@ -29,5 +29,5 @@ g
 7app/src/main/java/mr/cooker/mrcooker/ui/MainActivity.kt,9\e\9eb2baddcc64f8b820179dedc8966f12f46d4d08
 k
 ;app/src/main/java/mr/cooker/mrcooker/other/RecipeAdapter.kt,c\8\c81ec67c3bd2c9296a0283f36f836e61f7947914
-h
-8app/src/main/java/mr/cooker/mrcooker/other/Converters.kt,f\c\fce5ce28fc3dfd095954ccf2a2e017716715e44e
+s
+Capp/src/main/java/mr/cooker/mrcooker/ui/fragments/RecipeFragment.kt,1\e\1e31c631d004bb0446811e07d7b2680bc5720a71
