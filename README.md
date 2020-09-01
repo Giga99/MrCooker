@@ -10,4 +10,6 @@ Using:
    - Coroutines
    - Room
    - Dagger-Hilt Injection
+   - Glide
+   - Timber
    - MVVM architecture
