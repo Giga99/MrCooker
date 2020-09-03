@@ -36,7 +36,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
         recipeAdapter.setOnItemClickListener {
-            Timber.e("Recipe clicked!")
             val bundle = Bundle().apply {
                 putSerializable("recipe", it)
             }

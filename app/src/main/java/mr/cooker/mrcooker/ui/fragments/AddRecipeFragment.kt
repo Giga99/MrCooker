@@ -1,11 +1,16 @@
 package mr.cooker.mrcooker.ui.fragments
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_add_recipe.*
@@ -17,6 +22,7 @@ import mr.cooker.mrcooker.ui.viewmodels.MainViewModel
 class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
 
     private val viewModel: MainViewModel by viewModels()
+    private var imgBitmap: Bitmap? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -27,8 +33,8 @@ class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
             val ingredients = etIngredients.text.toString()
             val instructions = etInstructions.text.toString()
 
-            if(name.isNotEmpty() && time.isNotEmpty() && ingredients.isNotEmpty() && instructions.isNotEmpty()) {
-                val recipe = Recipe(name, time.toInt(), ingredients, instructions)
+            if(name.isNotEmpty() && time.isNotEmpty() && ingredients.isNotEmpty() && instructions.isNotEmpty() && imgBitmap != null) {
+                val recipe = Recipe(imgBitmap!!, name, time.toInt(), ingredients, instructions)
                 viewModel.insertRecipe(recipe)
 
                 Snackbar.make(
@@ -38,13 +44,36 @@ class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
                 ).show()
 
                 findNavController().navigate(R.id.action_addRecipeFragment_to_homeFragment)
-            } else {
+            } else if(imgBitmap == null){
+                Toast.makeText(context, "Please select the image!", Toast.LENGTH_SHORT).show()
+            }else {
                 Toast.makeText(context, "Please enter all the information!", Toast.LENGTH_SHORT).show()
             }
         }
 
+        ivAddImage.setOnClickListener {
+            ImagePicker.with(this)
+                .crop()
+                .compress(1024)
+                .maxResultSize(1080, 1080)
+                .start()
+        }
+
         tvCancel.setOnClickListener {
             findNavController().navigate(R.id.action_addRecipeFragment_to_homeFragment)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(resultCode == Activity.RESULT_OK) {
+            imgBitmap = BitmapFactory.decodeFile(ImagePicker.getFilePath(data)!!)
+            ivAddImage.setImageBitmap(imgBitmap)
+        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+            Toast.makeText(context, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, "Task Cancelled", Toast.LENGTH_SHORT).show()
         }
     }
 }
