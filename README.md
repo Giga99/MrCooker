@@ -3,7 +3,7 @@
 This is an android app for creating your recipes.
 
 Features:
-   - Saving recipes locally.
+   - Saving recipes locally with images.
 
 Using:
    - Kotlin
