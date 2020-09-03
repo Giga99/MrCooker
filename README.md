@@ -10,6 +10,8 @@ Using:
    - Coroutines
    - Room
    - Dagger-Hilt Injection
-   - Glide
-   - Timber
+   - ImagePicker (https://github.com/Dhaval2404/ImagePicker)
+   - Glide (https://github.com/bumptech/glide)
+   - Timber (https://github.com/JakeWharton/timber)
+   - Easy Permissions
    - MVVM architecture
