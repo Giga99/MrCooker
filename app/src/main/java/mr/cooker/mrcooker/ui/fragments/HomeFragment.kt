@@ -1,7 +1,10 @@
 package mr.cooker.mrcooker.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
+import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -13,9 +16,10 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
 import mr.cooker.mrcooker.R
+import mr.cooker.mrcooker.data.db.entities.Recipe
 import mr.cooker.mrcooker.other.RecipeAdapter
+import mr.cooker.mrcooker.ui.activities.RecipeActivity
 import mr.cooker.mrcooker.ui.viewmodels.MainViewModel
-import timber.log.Timber
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -35,14 +39,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             findNavController().navigate(R.id.action_homeFragment_to_addRecipeFragment)
         }
 
-        recipeAdapter.setOnItemClickListener {
-            val bundle = Bundle().apply {
-                putSerializable("recipe", it)
-            }
-            findNavController().navigate(
-                R.id.action_homeFragment_to_recipeFragment,
-                bundle
-            )
+        recipeAdapter.setOnItemClickListener { recipe, iv ->
+            showRecipe(recipe, iv)
         }
 
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
@@ -86,5 +84,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         recipeAdapter = RecipeAdapter()
         adapter = recipeAdapter
         layoutManager = LinearLayoutManager(requireContext())
+    }
+
+    private fun showRecipe(recipe: Recipe, imageView: ImageView) {
+        val intent = Intent(context, RecipeActivity::class.java)
+        intent.putExtra("postID", recipe.id)
+
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+            requireActivity(),
+            imageView,
+            imageView.transitionName
+        )
+
+        startActivity(intent, options.toBundle())
     }
 }

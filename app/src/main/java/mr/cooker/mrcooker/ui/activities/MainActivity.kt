@@ -1,4 +1,4 @@
-package mr.cooker.mrcooker.ui
+package mr.cooker.mrcooker.ui.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         navHostFragment.findNavController()
             .addOnDestinationChangedListener { _, destination, _ ->
                 when(destination.id) {
-                    R.id.homeFragment, R.id.recipeFragment -> bottomNavigationView.visibility = View.VISIBLE
+                    R.id.homeFragment -> bottomNavigationView.visibility = View.VISIBLE
                     R.id.addRecipeFragment -> bottomNavigationView.visibility = View.GONE
                 }
             }

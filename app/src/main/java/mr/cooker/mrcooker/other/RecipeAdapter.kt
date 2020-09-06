@@ -3,6 +3,7 @@ package mr.cooker.mrcooker.other
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -49,7 +50,7 @@ class RecipeAdapter() : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
             tvTime.text = "${recipe.timeToCook}min"
             Glide.with(context).load(recipe.img).into(ivBackground)
             setOnClickListener {
-                onItemClickListener?.let { it(recipe) }
+                onItemClickListener?.let { it(recipe, ivBackground) }
             }
         }
     }
@@ -58,9 +59,9 @@ class RecipeAdapter() : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
         return differ.currentList.size
     }
 
-    private var onItemClickListener: ((Recipe) -> Unit)? = null
+    private var onItemClickListener: ((Recipe, ImageView) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: (Recipe) -> Unit) {
+    fun setOnItemClickListener(listener: (Recipe, ImageView) -> Unit) {
         onItemClickListener = listener
     }
 }

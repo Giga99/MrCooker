@@ -10,9 +10,6 @@
         <action
             android:id="@+id/action_homeFragment_to_addRecipeFragment"
             app:destination="@id/addRecipeFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_recipeFragment"
-            app:destination="@id/recipeFragment" />
     </fragment>
 
     <fragment
@@ -22,13 +19,5 @@
         <action
             android:id="@+id/action_addRecipeFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/recipeFragment"
-        android:name="mr.cooker.mrcooker.ui.fragments.RecipeFragment"
-        android:label="RecipeFragment" >
-        <argument
-            android:name="recipe"
-            app:argType="mr.cooker.mrcooker.data.db.entities.Recipe" />
     </fragment>
 </navigation>

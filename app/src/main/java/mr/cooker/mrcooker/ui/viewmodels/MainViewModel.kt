@@ -3,10 +3,12 @@ package mr.cooker.mrcooker.ui.viewmodels
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import mr.cooker.mrcooker.data.db.entities.Recipe
 import mr.cooker.mrcooker.data.repositories.MainRepository
 
+@ExperimentalCoroutinesApi
 class MainViewModel @ViewModelInject constructor(
     val mainRepository: MainRepository
 ) : ViewModel() {
@@ -19,4 +21,6 @@ class MainViewModel @ViewModelInject constructor(
     fun deleteRecipe(recipe: Recipe) = viewModelScope.launch {
         mainRepository.deleteRecipe(recipe)
     }
+
+    fun getRecipe(id: Int) = mainRepository.getRecipe(id)
 }

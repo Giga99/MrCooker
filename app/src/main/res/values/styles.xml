@@ -46,4 +46,8 @@
         <item name="android:textColor">@color/colorPrimaryText</item>
     </style>
 
+    <style name="ToolbarTitleTextAppearance" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
+        <item name="android:textColor">@android:color/transparent</item>
+    </style>
+
 </resources>
