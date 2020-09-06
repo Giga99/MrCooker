@@ -1,14 +1,19 @@
 package mr.cooker.mrcooker.ui.activities
 
+
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.shreyaspatil.MaterialDialog.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import mr.cooker.mrcooker.R
+import mr.cooker.mrcooker.other.NetworkUtils
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -27,6 +32,33 @@ class MainActivity : AppCompatActivity() {
                     R.id.addRecipeFragment -> bottomNavigationView.visibility = View.GONE
                 }
             }
+
+        checkNetworkConnectivity()
+    }
+
+    private fun checkNetworkConnectivity() {
+        NetworkUtils.getNetworkLiveData(applicationContext).observe(this, { isConnected ->
+            if (!isConnected) {
+                tvNetworkStatus.text = "No Connection"
+                networkStatusLayout.apply {
+                    visibility = View.VISIBLE
+                    setBackgroundColor(getColor(R.color.errorColor))
+                }
+            } else {
+                tvNetworkStatus.text = "Back Online"
+                networkStatusLayout.apply {
+                    setBackgroundColor(getColor(R.color.onlineColor))
+
+                    animate().alpha(1f).setStartDelay(1000L).setDuration(1000L)
+                        .setListener(object : AnimatorListenerAdapter() {
+                            override fun onAnimationEnd(animation: Animator?) {
+                                super.onAnimationEnd(animation)
+                                visibility = View.GONE
+                            }
+                        })
+                }
+            }
+        })
     }
 
     override fun onBackPressed() {

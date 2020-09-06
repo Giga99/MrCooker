@@ -1,4 +1,4 @@
-package mr.cooker.mrcooker.other
+package mr.cooker.mrcooker.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +11,6 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.recipe_row.view.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.db.entities.Recipe
-import mr.cooker.mrcooker.ui.viewmodels.MainViewModel
 
 class RecipeAdapter() : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
 
