@@ -12,5 +12,6 @@ Using:
    - Dagger-Hilt Injection
    - ImagePicker (https://github.com/Dhaval2404/ImagePicker)
    - Glide (https://github.com/bumptech/glide)
+   - Material Dialog (https://github.com/PatilShreyas/MaterialDialog-Android)
    - Timber (https://github.com/JakeWharton/timber)
    - MVVM architecture
