@@ -4,4 +4,13 @@
     <string name="exit_dialog_title">Exit?</string>
     <string name="option_yes">Yes</string>
     <string name="option_no">No</string>
+    <string name="status_online">Back Online</string>
+    <string name="status_offline">No Connection</string>
+    <string name="add_new_recipe">Add new recipe</string>
+    <string name="name">Name</string>
+    <string name="time_to_cook_in_minutes">Time to cook in minutes</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="instructions">Instructions</string>
+    <string name="cancel">CANCEL</string>
+    <string name="add">ADD</string>
 </resources>

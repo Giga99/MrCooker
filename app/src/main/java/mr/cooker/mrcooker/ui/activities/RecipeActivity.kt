@@ -13,10 +13,12 @@ import kotlinx.android.synthetic.main.activity_recipe.*
 import kotlinx.android.synthetic.main.activity_recipe.tvName
 import kotlinx.android.synthetic.main.activity_recipe.tvTime
 import kotlinx.android.synthetic.main.recipe_row.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.db.entities.Recipe
 import mr.cooker.mrcooker.ui.viewmodels.MainViewModel
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class RecipeActivity : AppCompatActivity() {
 
@@ -39,7 +41,6 @@ class RecipeActivity : AppCompatActivity() {
             tvTime.text = "${recipe.timeToCook}min"
             tvIngredients.text = recipe.ingredients
             tvInstructions.text = recipe.instructions
-            Glide.with(this).load(recipe.img).into(ivRecipe)
             Glide.with(this).load(recipe.img).into(ivHeader)
         })
     }

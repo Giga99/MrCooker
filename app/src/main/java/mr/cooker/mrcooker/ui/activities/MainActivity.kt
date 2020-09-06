@@ -6,7 +6,7 @@ import android.animation.AnimatorListenerAdapter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.shreyaspatil.MaterialDialog.MaterialDialog
@@ -14,6 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.other.NetworkUtils
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -39,13 +40,13 @@ class MainActivity : AppCompatActivity() {
     private fun checkNetworkConnectivity() {
         NetworkUtils.getNetworkLiveData(applicationContext).observe(this, { isConnected ->
             if (!isConnected) {
-                tvNetworkStatus.text = "No Connection"
+                tvNetworkStatus.text = getString(R.string.status_offline)
                 networkStatusLayout.apply {
                     visibility = View.VISIBLE
                     setBackgroundColor(getColor(R.color.errorColor))
                 }
             } else {
-                tvNetworkStatus.text = "Back Online"
+                tvNetworkStatus.text = getString(R.string.status_online)
                 networkStatusLayout.apply {
                     setBackgroundColor(getColor(R.color.onlineColor))
 

@@ -15,10 +15,12 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_add_recipe.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.db.entities.Recipe
 import mr.cooker.mrcooker.ui.viewmodels.MainViewModel
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
 
@@ -68,13 +70,15 @@ class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(resultCode == Activity.RESULT_OK) {
-            imgBitmap = BitmapFactory.decodeFile(ImagePicker.getFilePath(data)!!)
-            Glide.with(this).load(imgBitmap).into(ivAddImage)
-        } else if (resultCode == ImagePicker.RESULT_ERROR) {
-            Toast.makeText(context, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(context, "Task Cancelled", Toast.LENGTH_SHORT).show()
+        when(resultCode) {
+            Activity.RESULT_OK -> {
+                imgBitmap = BitmapFactory.decodeFile(ImagePicker.getFilePath(data)!!)
+                Glide.with(this).load(imgBitmap).into(ivAddImage)
+            }
+
+            ImagePicker.RESULT_ERROR -> Toast.makeText(context, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+
+            else -> Toast.makeText(context, "Task Cancelled", Toast.LENGTH_SHORT).show()
         }
     }
 }
