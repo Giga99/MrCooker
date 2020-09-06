@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,7 +54,7 @@ class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
 
         ivAddImage.setOnClickListener {
             ImagePicker.with(this)
-                .crop()
+                .cropSquare()
                 .compress(1024)
                 .maxResultSize(1080, 1080)
                 .start()
@@ -69,7 +70,7 @@ class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
 
         if(resultCode == Activity.RESULT_OK) {
             imgBitmap = BitmapFactory.decodeFile(ImagePicker.getFilePath(data)!!)
-            ivAddImage.setImageBitmap(imgBitmap)
+            Glide.with(this).load(imgBitmap).into(ivAddImage)
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Toast.makeText(context, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
         } else {

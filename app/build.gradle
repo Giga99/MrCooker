@@ -61,6 +61,7 @@ dependencies {
 
     // New Material Design
     implementation "com.google.android.material:material:1.2.0"
+    implementation "com.shreyaspatil:MaterialDialog:2.1"
 
     // Navigation Components
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.0"
@@ -104,4 +105,7 @@ dependencies {
 
     // Image Picker
     implementation 'com.github.dhaval2404:imagepicker:1.7.5'
+
+    // Form Validator
+    implementation 'com.github.dhaval2404:android-form-validation:1.0'
 }

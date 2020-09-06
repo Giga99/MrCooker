@@ -31,3 +31,5 @@ k
 ;app/src/main/java/mr/cooker/mrcooker/other/RecipeAdapter.kt,c\8\c81ec67c3bd2c9296a0283f36f836e61f7947914
 s
 Capp/src/main/java/mr/cooker/mrcooker/ui/fragments/RecipeFragment.kt,1\e\1e31c631d004bb0446811e07d7b2680bc5720a71
+h
+8app/src/main/java/mr/cooker/mrcooker/other/Converters.kt,f\c\fce5ce28fc3dfd095954ccf2a2e017716715e44e
