@@ -1,28 +1,25 @@
 package mr.cooker.mrcooker.ui.activities
 
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_recipe.*
 import kotlinx.android.synthetic.main.activity_recipe.tvName
 import kotlinx.android.synthetic.main.activity_recipe.tvTime
-import kotlinx.android.synthetic.main.recipe_row.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.db.entities.Recipe
-import mr.cooker.mrcooker.ui.viewmodels.MainViewModel
+import mr.cooker.mrcooker.other.Constants.postID
+import mr.cooker.mrcooker.ui.viewmodels.MyRecipesViewModel
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class RecipeActivity : AppCompatActivity() {
 
-    private val viewModel: MainViewModel by viewModels()
+    private val myRecipesViewModel: MyRecipesViewModel by viewModels()
     private lateinit var recipe: Recipe
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,10 +29,10 @@ class RecipeActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val postId = intent.extras?.getInt("postID")
+        val postId = intent.extras?.getInt(postID)
             ?: throw IllegalArgumentException("`postID` must be non-null")
 
-        viewModel.getRecipe(postId).observe(this, { recipe ->
+        myRecipesViewModel.getRecipeByID(postId).observe(this, { recipe ->
             this@RecipeActivity.recipe = recipe
             tvName.text = recipe.name
             tvTime.text = "${recipe.timeToCook}min"
@@ -45,6 +42,7 @@ class RecipeActivity : AppCompatActivity() {
         })
     }
 
+    // Back button and for future menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             android.R.id.home -> {

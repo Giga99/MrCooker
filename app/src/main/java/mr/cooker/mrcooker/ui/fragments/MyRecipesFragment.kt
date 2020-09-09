@@ -1,13 +1,10 @@
 package mr.cooker.mrcooker.ui.fragments
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import androidx.core.app.ActivityOptionsCompat
-import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -17,26 +14,27 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_my_recipes.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.db.entities.Recipe
-import mr.cooker.mrcooker.other.NetworkUtils
+import mr.cooker.mrcooker.other.Constants.postID
 import mr.cooker.mrcooker.ui.adapters.RecipeAdapter
 import mr.cooker.mrcooker.ui.activities.RecipeActivity
-import mr.cooker.mrcooker.ui.viewmodels.MainViewModel
+import mr.cooker.mrcooker.ui.viewmodels.MyRecipesViewModel
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class HomeFragment : Fragment(R.layout.fragment_home) {
+class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
 
-    private val viewModel: MainViewModel by viewModels()
+    private val myRecipesViewModel: MyRecipesViewModel by viewModels()
     private lateinit var recipeAdapter: RecipeAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-        viewModel.recipes.observe(viewLifecycleOwner, Observer {
+        myRecipesViewModel.recipes.observe(viewLifecycleOwner, Observer {
             recipeAdapter.submitList(it)
         })
 
@@ -48,6 +46,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             showRecipe(recipe, iv)
         }
 
+        // Deleting on swipe left or right and undo if change mind
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
@@ -63,10 +62,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
                 val recipe = recipeAdapter.differ.currentList[position]
-                viewModel.deleteRecipe(recipe)
+                myRecipesViewModel.deleteRecipe(recipe)
                 Snackbar.make(view, "Successfully deleted recipe!", Snackbar.LENGTH_LONG).apply {
                     setAction("Undo") {
-                        viewModel.insertRecipe(recipe)
+                        myRecipesViewModel.insertRecipe(recipe)
                     }
                     show()
                 }
@@ -77,8 +76,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             attachToRecyclerView(rvRecipes)
         }
 
+        // Swipe to refresh
         swipeRefreshLayout.setOnRefreshListener {
-            viewModel.recipes.observe(viewLifecycleOwner, Observer {
+            myRecipesViewModel.recipes.observe(viewLifecycleOwner, Observer {
                 recipeAdapter.submitList(it)
                 swipeRefreshLayout.isRefreshing = false
             })
@@ -91,9 +91,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         layoutManager = LinearLayoutManager(requireContext())
     }
 
+    // Transition to RecipeActivity
     private fun showRecipe(recipe: Recipe, imageView: ImageView) {
         val intent = Intent(context, RecipeActivity::class.java)
-        intent.putExtra("postID", recipe.id)
+        intent.putExtra(postID, recipe.id)
 
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
             requireActivity(),

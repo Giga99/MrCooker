@@ -6,15 +6,14 @@ import android.animation.AnimatorListenerAdapter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.shreyaspatil.MaterialDialog.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import mr.cooker.mrcooker.R
+import mr.cooker.mrcooker.other.Constants.ANIMATION_DURATION
 import mr.cooker.mrcooker.other.NetworkUtils
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -50,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                 networkStatusLayout.apply {
                     setBackgroundColor(getColor(R.color.onlineColor))
 
-                    animate().alpha(1f).setStartDelay(1000L).setDuration(1000L)
+                    animate().alpha(1f).setStartDelay(ANIMATION_DURATION).setDuration(ANIMATION_DURATION)
                         .setListener(object : AnimatorListenerAdapter() {
                             override fun onAnimationEnd(animation: Animator?) {
                                 super.onAnimationEnd(animation)

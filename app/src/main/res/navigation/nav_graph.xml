@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="mr.cooker.mrcooker.ui.fragments.HomeFragment"
+        android:name="mr.cooker.mrcooker.ui.fragments.MyRecipesFragment"
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_addRecipeFragment"

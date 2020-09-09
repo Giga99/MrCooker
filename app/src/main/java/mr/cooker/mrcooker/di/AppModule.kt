@@ -23,7 +23,7 @@ object AppModule {
         app,
         RecipeDatabase::class.java,
         RECIPE_DATABASE_NAME
-    ).fallbackToDestructiveMigration().build()
+    ).build()
 
     @Singleton
     @Provides

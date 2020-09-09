@@ -9,6 +9,7 @@ import android.os.Build
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
+// Checking if it is connected to the Internet
 object NetworkUtils : ConnectivityManager.NetworkCallback() {
     private val networkLiveData: MutableLiveData<Boolean> = MutableLiveData()
 

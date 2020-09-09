@@ -9,10 +9,10 @@ import mr.cooker.mrcooker.data.db.entities.Recipe
 import mr.cooker.mrcooker.data.repositories.MainRepository
 
 @ExperimentalCoroutinesApi
-class MainViewModel @ViewModelInject constructor(
+class MyRecipesViewModel @ViewModelInject constructor(
     val mainRepository: MainRepository
 ) : ViewModel() {
-    val recipes = mainRepository.getAllRecipes()
+    val recipes = mainRepository.getAllMyRecipes()
 
     fun insertRecipe(recipe: Recipe) = viewModelScope.launch {
         mainRepository.insertRecipe(recipe)
@@ -22,5 +22,5 @@ class MainViewModel @ViewModelInject constructor(
         mainRepository.deleteRecipe(recipe)
     }
 
-    fun getRecipe(id: Int) = mainRepository.getRecipe(id)
+    fun getRecipeByID(id: Int) = mainRepository.getRecipeByID(id)
 }

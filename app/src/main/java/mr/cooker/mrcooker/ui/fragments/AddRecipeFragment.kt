@@ -18,13 +18,13 @@ import kotlinx.android.synthetic.main.fragment_add_recipe.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.db.entities.Recipe
-import mr.cooker.mrcooker.ui.viewmodels.MainViewModel
+import mr.cooker.mrcooker.ui.viewmodels.MyRecipesViewModel
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
 
-    private val viewModel: MainViewModel by viewModels()
+    private val myRecipesViewModel: MyRecipesViewModel by viewModels()
     private var imgBitmap: Bitmap? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,7 +38,7 @@ class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
 
             if(name.isNotEmpty() && time.isNotEmpty() && ingredients.isNotEmpty() && instructions.isNotEmpty() && imgBitmap != null) {
                 val recipe = Recipe(imgBitmap!!, name, time.toInt(), ingredients, instructions)
-                viewModel.insertRecipe(recipe)
+                myRecipesViewModel.insertRecipe(recipe)
 
                 Snackbar.make(
                     requireActivity().findViewById(R.id.rootView),
@@ -54,6 +54,7 @@ class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
             }
         }
 
+        // ImagePicker
         ivAddImage.setOnClickListener {
             ImagePicker.with(this)
                 .cropSquare()
@@ -67,6 +68,7 @@ class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
         }
     }
 
+    // Picked image and now saving it
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 

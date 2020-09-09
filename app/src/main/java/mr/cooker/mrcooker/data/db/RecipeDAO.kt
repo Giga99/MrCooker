@@ -17,5 +17,5 @@ interface RecipeDAO {
     fun getAllRecipes() : LiveData<List<Recipe>>
 
     @Query("SELECT * FROM recipes_table WHERE ID = :postID")
-    fun getRecipe(postID: Int) : LiveData<Recipe>
+    fun getRecipeByID(postID: Int) : LiveData<Recipe>
 }

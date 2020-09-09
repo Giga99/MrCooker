@@ -14,8 +14,7 @@ class MainRepository @Inject constructor(
 
     suspend fun deleteRecipe(recipe : Recipe) = recipeDao.deleteRecipe(recipe)
 
-    fun getAllRecipes() = recipeDao.getAllRecipes()
+    fun getAllMyRecipes() = recipeDao.getAllRecipes()
 
-    //@MainThread
-    fun getRecipe(id: Int) : LiveData<Recipe> = recipeDao.getRecipe(id)
+    fun getRecipeByID(id: Int) : LiveData<Recipe> = recipeDao.getRecipeByID(id)
 }
