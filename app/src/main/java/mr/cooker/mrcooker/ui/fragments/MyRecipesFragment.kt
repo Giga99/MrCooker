@@ -39,7 +39,7 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
         })
 
         fab.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_addRecipeFragment)
+            findNavController().navigate(R.id.action_myRecipesFragment_to_addRecipeFragment)
         }
 
         recipeAdapter.setOnItemClickListener { recipe, iv ->

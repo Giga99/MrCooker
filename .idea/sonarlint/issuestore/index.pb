@@ -21,8 +21,6 @@ g
 7app/src/main/java/mr/cooker/mrcooker/BaseApplication.kt,8\7\8744f0482a7f644b9ea0b3c67a15b4a046aa9b9c
 v
 Fapp/src/main/java/mr/cooker/mrcooker/ui/fragments/AddRecipeFragment.kt,e\e\ee4f29dc7c4760aa39b6478b4c4253697abcba9b
-s
-Capp/src/main/java/mr/cooker/mrcooker/ui/viewmodels/MainViewModel.kt,5\c\5c88d88af042828dcb9d138d244392ebd2a3dbf0
 h
 8app/src/main/java/mr/cooker/mrcooker/other/Converters.kt,f\c\fce5ce28fc3dfd095954ccf2a2e017716715e44e
 q
@@ -39,3 +37,11 @@ t
 Dapp/src/main/java/mr/cooker/mrcooker/ui/activities/RecipeActivity.kt,6\d\6d2cd0cf643f44a2e6322b602d6012ac3340dc6e
 v
 Fapp/src/main/java/mr/cooker/mrcooker/ui/fragments/MyRecipesFragment.kt,0\4\047f5cce146bdfa4f5b5726fa8a737751969f54a
+y
+Iapp/src/main/java/mr/cooker/mrcooker/ui/viewmodels/AllRecipesViewModel.kt,f\d\fd784e1f7b13e76f24ec4a2cf242fad3fe0a465e
+x
+Happ/src/main/java/mr/cooker/mrcooker/ui/viewmodels/MyRecipesViewModel.kt,e\e\ee5a5aa79b2ed89ab9e361518c93ef21fe36a866
+w
+Gapp/src/main/java/mr/cooker/mrcooker/ui/fragments/AllRecipesFragment.kt,2\3\237a6d5e8d4c891b2e705f4245b5e60d7bcdeb28
+t
+Dapp/src/main/java/mr/cooker/mrcooker/ui/fragments/ProfileFragment.kt,6\6\668b11dbacf1b6c72d00ccd51a6baa64a8235603

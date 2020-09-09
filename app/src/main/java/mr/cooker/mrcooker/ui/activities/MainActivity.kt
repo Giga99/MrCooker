@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         navHostFragment.findNavController()
             .addOnDestinationChangedListener { _, destination, _ ->
                 when(destination.id) {
-                    R.id.homeFragment -> bottomNavigationView.visibility = View.VISIBLE
+                    R.id.allRecipesFragment, R.id.myRecipesFragment, R.id.profileFragment -> bottomNavigationView.visibility = View.VISIBLE
                     R.id.addRecipeFragment -> bottomNavigationView.visibility = View.GONE
                 }
             }

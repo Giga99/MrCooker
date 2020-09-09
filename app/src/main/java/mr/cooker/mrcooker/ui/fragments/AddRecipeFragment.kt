@@ -46,7 +46,7 @@ class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
                     Snackbar.LENGTH_LONG
                 ).show()
 
-                findNavController().navigate(R.id.action_addRecipeFragment_to_homeFragment)
+                findNavController().navigate(R.id.action_addRecipeFragment_to_allRecipesFragment)
             } else if(imgBitmap == null){
                 Toast.makeText(context, "Please select the image!", Toast.LENGTH_SHORT).show()
             }else {
@@ -64,7 +64,7 @@ class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
         }
 
         tvCancel.setOnClickListener {
-            findNavController().navigate(R.id.action_addRecipeFragment_to_homeFragment)
+            findNavController().navigate(R.id.action_addRecipeFragment_to_allRecipesFragment)
         }
     }
 

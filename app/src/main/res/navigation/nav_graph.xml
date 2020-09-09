@@ -1,31 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
-
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="mr.cooker.mrcooker.ui.fragments.MyRecipesFragment"
-        android:label="HomeFragment" >
-        <action
-            android:id="@+id/action_homeFragment_to_addRecipeFragment"
-            app:destination="@id/addRecipeFragment"
-            app:enterAnim="@anim/slide_in_bottom_right"
-            app:exitAnim="@anim/slide_out_bottom_left"
-            app:popEnterAnim="@anim/slide_in_bottom_left"
-            app:popExitAnim="@anim/slide_in_bottom_right"/>
-    </fragment>
+    app:startDestination="@id/allRecipesFragment">
 
     <fragment
         android:id="@+id/addRecipeFragment"
         android:name="mr.cooker.mrcooker.ui.fragments.AddRecipeFragment"
         android:label="AddRecipeFragment" >
         <action
-            android:id="@+id/action_addRecipeFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
+            android:id="@+id/action_addRecipeFragment_to_allRecipesFragment"
+            app:destination="@id/allRecipesFragment"
             app:enterAnim="@anim/slide_in_bottom_left"
             app:exitAnim="@anim/slide_out_bottom_right"
+            app:popEnterAnim="@anim/slide_in_bottom_left"
+            app:popExitAnim="@anim/slide_out_bottom_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/allRecipesFragment"
+        android:name="mr.cooker.mrcooker.ui.fragments.AllRecipesFragment"
+        android:label="AllRecipesFragment" >
+        <action
+            android:id="@+id/action_allRecipesFragment_to_addRecipeFragment"
+            app:destination="@id/addRecipeFragment"
+            app:enterAnim="@anim/slide_in_bottom_right"
+            app:exitAnim="@anim/slide_out_bottom_left"
             app:popEnterAnim="@anim/slide_in_bottom_right"
             app:popExitAnim="@anim/slide_out_bottom_left"/>
     </fragment>
+    <fragment
+        android:id="@+id/myRecipesFragment"
+        android:name="mr.cooker.mrcooker.ui.fragments.MyRecipesFragment"
+        android:label="MyRecipesFragment" >
+        <action
+            android:id="@+id/action_myRecipesFragment_to_addRecipeFragment"
+            app:destination="@id/addRecipeFragment"
+            app:enterAnim="@anim/slide_in_bottom_right"
+            app:exitAnim="@anim/slide_out_bottom_left"
+            app:popEnterAnim="@anim/slide_in_bottom_right"
+            app:popExitAnim="@anim/slide_out_bottom_left"/>
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="mr.cooker.mrcooker.ui.fragments.ProfileFragment"
+        android:label="ProfileFragment" />
 </navigation>

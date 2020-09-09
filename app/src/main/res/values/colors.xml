@@ -6,6 +6,7 @@
     <color name="appBackgroundColor">#388581</color>
     <color name="appBackgroundColor2">#FBFBFB</color>
     <color name="colorAccent">#52A39F</color>
+    <color name="colorNotSelected">#9AB5B3</color>
     <color name="errorColor">#D50000</color>
     <color name="onlineColor">#43A047</color>
     <color name="colorPrimaryText">@android:color/black</color>
