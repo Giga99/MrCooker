@@ -1,4 +1,4 @@
-package mr.cooker.mrcooker.ui.fragments
+package mr.cooker.mrcooker.ui.fragments.main
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels

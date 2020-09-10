@@ -13,4 +13,12 @@
     <string name="instructions">Instructions</string>
     <string name="cancel">CANCEL</string>
     <string name="add">ADD</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="login">Login</string>
+    <string name="go_back_to_login">Go back to login</string>
+    <string name="register">Register</string>
+    <string name="enter_your_username">Enter your Username</string>
+    <string name="confirm_your_password">Confirm your password</string>
 </resources>

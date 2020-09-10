@@ -1,4 +1,4 @@
-package mr.cooker.mrcooker.ui.fragments
+package mr.cooker.mrcooker.ui.fragments.main
 
 import android.content.Intent
 import android.os.Bundle

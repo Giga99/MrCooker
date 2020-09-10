@@ -29,6 +29,7 @@
         android:inputType="text"
         android:textColorHint="@color/colorSecondaryText"
         android:textColor="@color/colorPrimaryText"
+        android:backgroundTint="@color/colorPrimaryText"
         app:layout_constraintEnd_toStartOf="@+id/etTime"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -42,6 +43,7 @@
         android:textColorHint="@color/colorSecondaryText"
         android:textColor="@color/colorPrimaryText"
         android:inputType="number"
+        android:backgroundTint="@color/colorPrimaryText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -55,6 +57,7 @@
         android:textColorHint="@color/colorSecondaryText"
         android:textColor="@color/colorPrimaryText"
         android:inputType="textMultiLine"
+        android:backgroundTint="@color/colorPrimaryText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etName" />
 
@@ -68,6 +71,7 @@
         android:inputType="textMultiLine"
         android:textColor="@color/colorPrimaryText"
         android:textColorHint="@color/colorSecondaryText"
+        android:backgroundTint="@color/colorPrimaryText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etIngredients" />
 
