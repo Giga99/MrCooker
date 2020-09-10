@@ -42,6 +42,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun loginUser() {
+        loginLayout.visibility = View.GONE
+        trailingLoaderLogin.visibility = View.VISIBLE
+        trailingLoaderLogin.animate()
+
         val email = etLoginEmail.text.toString()
         val password = etLoginPassword.text.toString()
 
@@ -49,9 +53,15 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             try {
                 auth.signInWithEmailAndPassword(email, password).await()
                 currentUser = auth.currentUser!!
+                withContext(Dispatchers.Main) {
+                    loginLayout.visibility = View.VISIBLE
+                    trailingLoaderLogin.visibility = View.GONE
+                }
                 startActivity(Intent(requireContext(), MainActivity::class.java))
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
+                    loginLayout.visibility = View.VISIBLE
+                    trailingLoaderLogin.visibility = View.GONE
                     Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
                 }
             }

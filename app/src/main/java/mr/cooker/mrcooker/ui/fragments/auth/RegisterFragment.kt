@@ -3,8 +3,10 @@ package mr.cooker.mrcooker.ui.fragments.auth
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.agrawalsuneet.dotsloader.loaders.TrailingCircularDotsLoader
 import com.github.dhaval2404.form_validation.constant.PasswordPattern
 import com.github.dhaval2404.form_validation.rule.*
 import com.github.dhaval2404.form_validation.validation.FormValidator
@@ -44,6 +46,10 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
     }
 
     private fun registerUser() {
+        registerLayout.visibility = View.GONE
+        trailingLoaderRegister.visibility = View.VISIBLE
+        trailingLoaderRegister.animate()
+
         val username = etUsername.text.toString()
         val email = etEmail.text.toString()
         val password = etPassword.text.toString()
@@ -53,10 +59,16 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 auth.createUserWithEmailAndPassword(email, password).await()
                 auth.currentUser!!.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(username).build())
                 currentUser = auth.currentUser!!
-                Toast.makeText(requireContext(), "Successfully registered!", Toast.LENGTH_SHORT).show()
+                withContext(Dispatchers.Main) {
+                    registerLayout.visibility = View.VISIBLE
+                    trailingLoaderRegister.visibility = View.GONE
+                    Toast.makeText(requireContext(), "Successfully registered!", Toast.LENGTH_SHORT).show()
+                }
                 findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
+                    registerLayout.visibility = View.VISIBLE
+                    trailingLoaderRegister.visibility = View.GONE
                     Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
                 }
             }
