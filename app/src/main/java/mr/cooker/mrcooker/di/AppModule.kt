@@ -8,7 +8,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import mr.cooker.mrcooker.data.db.RecipeDatabase
-import mr.cooker.mrcooker.data.firebase.FirebaseDatabase
 import mr.cooker.mrcooker.other.Constants.RECIPE_DATABASE_NAME
 import javax.inject.Singleton
 
@@ -24,13 +23,9 @@ object AppModule {
         app,
         RecipeDatabase::class.java,
         RECIPE_DATABASE_NAME
-    ).fallbackToDestructiveMigration().build()
+    ).build()
 
     @Singleton
     @Provides
     fun provideRecipeDao(db: RecipeDatabase) = db.getRecipeDao()
-
-    @Singleton
-    @Provides
-    fun provideFirebaseDB() = FirebaseDatabase()
 }

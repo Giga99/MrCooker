@@ -10,7 +10,7 @@ import mr.cooker.mrcooker.data.repositories.MainRepository
 
 @ExperimentalCoroutinesApi
 class MyRecipesViewModel @ViewModelInject constructor(
-    private val mainRepository: MainRepository
+    val mainRepository: MainRepository
 ) : ViewModel() {
     val recipes = mainRepository.getAllMyRecipes()
 
