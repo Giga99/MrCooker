@@ -5,6 +5,6 @@ import androidx.lifecycle.ViewModel
 import mr.cooker.mrcooker.data.repositories.MainRepository
 
 class AllRecipesViewModel @ViewModelInject constructor(
-    val mainRepository: MainRepository
+    private val mainRepository: MainRepository
 ) : ViewModel() {
 }
