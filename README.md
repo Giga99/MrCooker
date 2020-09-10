@@ -14,5 +14,6 @@ Using:
    - ImagePicker (https://github.com/Dhaval2404/ImagePicker)
    - Glide (https://github.com/bumptech/glide)
    - Material Dialog (https://github.com/PatilShreyas/MaterialDialog-Android)
+   - Custom ProgressBar (https://github.com/agrawalsuneet/DotLoadersPack-Android)
    - Timber (https://github.com/JakeWharton/timber)
    - MVVM architecture
