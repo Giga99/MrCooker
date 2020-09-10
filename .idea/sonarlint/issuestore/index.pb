@@ -39,8 +39,6 @@ x
 Happ/src/main/java/mr/cooker/mrcooker/ui/viewmodels/MyRecipesViewModel.kt,e\e\ee5a5aa79b2ed89ab9e361518c93ef21fe36a866
 |
 Lapp/src/main/java/mr/cooker/mrcooker/ui/fragments/main/AllRecipesFragment.kt,b\6\b6896ea5984d59981b7013c5ff10f135fd1a4101
-H
-app/google-services.json,f\d\fd8d34b142d02ec743a8efefefd2c097961666e9
 :
 
 .gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
@@ -56,3 +54,5 @@ w
 Gapp/src/main/java/mr/cooker/mrcooker/ui/fragments/auth/LoginFragment.kt,a\2\a21a60d63cab27ea56866b2ac6c6b9f3ec0d860d
 z
 Japp/src/main/java/mr/cooker/mrcooker/ui/fragments/auth/RegisterFragment.kt,a\6\a65f12a2e09422602c3c01a8f727487271387305
+>
+app/.gitignore,5\1\51e1c5d383dfaa35e0e7e5873a0a99355a86880f

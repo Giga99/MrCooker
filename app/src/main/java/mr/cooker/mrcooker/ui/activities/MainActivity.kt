@@ -5,14 +5,18 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.shreyaspatil.MaterialDialog.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.other.Constants.ANIMATION_DURATION
+import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.NetworkUtils
 
 @AndroidEntryPoint
@@ -21,6 +25,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        setSupportActionBar(toolbar)
 
         bottomNavigationView.setupWithNavController(navHostFragment.findNavController())
         //bottomNavigationView.setOnNavigationItemReselectedListener { /* NO-OP */ }
@@ -34,6 +40,35 @@ class MainActivity : AppCompatActivity() {
             }
 
         checkNetworkConnectivity()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.activity_main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.signOut -> {
+                MaterialDialog.Builder(this)
+                    .setTitle(getString(R.string.exit_dialog_title))
+                    .setMessage(getString(R.string.exit_dialog_message))
+                    .setPositiveButton(getString(R.string.option_yes)) { dialogInterface, _ ->
+                        dialogInterface.dismiss()
+                        FirebaseAuth.getInstance().signOut()
+                        super.onBackPressed()
+                    }
+                    .setNegativeButton(getString(R.string.option_no)) { dialogInterface, _ ->
+                        dialogInterface.dismiss()
+                    }
+                    .build()
+                    .show()
+
+                return true
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     private fun checkNetworkConnectivity() {
@@ -67,6 +102,7 @@ class MainActivity : AppCompatActivity() {
             .setMessage(getString(R.string.exit_dialog_message))
             .setPositiveButton(getString(R.string.option_yes)) { dialogInterface, _ ->
                 dialogInterface.dismiss()
+                FirebaseAuth.getInstance().signOut()
                 super.onBackPressed()
             }
             .setNegativeButton(getString(R.string.option_no)) { dialogInterface, _ ->

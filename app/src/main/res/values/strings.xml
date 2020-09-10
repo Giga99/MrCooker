@@ -21,4 +21,8 @@
     <string name="register">Register</string>
     <string name="enter_your_username">Enter your Username</string>
     <string name="confirm_your_password">Confirm your password</string>
+    <string name="all_recipes">All Recipes</string>
+    <string name="my_recipes">My Recipes</string>
+    <string name="profile">Profile</string>
+    <string name="sign_out">Sign Out</string>
 </resources>
