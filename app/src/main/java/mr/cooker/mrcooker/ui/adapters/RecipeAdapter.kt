@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.recipe_row.view.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.db.entities.Recipe
+import mr.cooker.mrcooker.other.Converters.Companion.toBitmap
 
 class RecipeAdapter() : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
 
@@ -47,7 +48,7 @@ class RecipeAdapter() : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
         holder.itemView.apply {
             tvName.text = recipe.name
             tvTime.text = "${recipe.timeToCook}min"
-            Glide.with(context).load(recipe.img).into(ivBackground)
+            Glide.with(context).load(toBitmap(recipe.img)).into(ivBackground)
             setOnClickListener {
                 onItemClickListener?.let { it(recipe, ivBackground) }
             }

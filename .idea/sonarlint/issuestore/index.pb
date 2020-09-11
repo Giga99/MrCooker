@@ -56,3 +56,5 @@ z
 Japp/src/main/java/mr/cooker/mrcooker/ui/fragments/auth/RegisterFragment.kt,a\6\a65f12a2e09422602c3c01a8f727487271387305
 >
 app/.gitignore,5\1\51e1c5d383dfaa35e0e7e5873a0a99355a86880f
+f
+6app/src/main/java/mr/cooker/mrcooker/other/Resource.kt,4\6\46cf7c56ccde2a788cb6942d92d33c02c06bbb74

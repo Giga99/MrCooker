@@ -7,7 +7,7 @@ import java.io.Serializable
 
 @Entity(tableName = "recipes_table")
 data class Recipe(
-    var img: Bitmap,
+    var img: ByteArray,
     var name: String,
     var timeToCook: Int,
     var ingredients: String,

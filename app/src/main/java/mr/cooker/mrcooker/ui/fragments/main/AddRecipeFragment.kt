@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.fragment_add_recipe.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.db.entities.Recipe
+import mr.cooker.mrcooker.other.Converters.Companion.toByteArray
 import mr.cooker.mrcooker.ui.viewmodels.MyRecipesViewModel
 
 @ExperimentalCoroutinesApi
@@ -37,7 +38,7 @@ class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
             val instructions = etInstructions.text.toString()
 
             if(name.isNotEmpty() && time.isNotEmpty() && ingredients.isNotEmpty() && instructions.isNotEmpty() && imgBitmap != null) {
-                val recipe = Recipe(imgBitmap!!, name, time.toInt(), ingredients, instructions)
+                val recipe = Recipe(toByteArray(imgBitmap!!), name, time.toInt(), ingredients, instructions)
                 myRecipesViewModel.insertRecipe(recipe)
 
                 Snackbar.make(
