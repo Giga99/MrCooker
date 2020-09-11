@@ -38,7 +38,7 @@ class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
             val instructions = etInstructions.text.toString()
 
             if(name.isNotEmpty() && time.isNotEmpty() && ingredients.isNotEmpty() && instructions.isNotEmpty() && imgBitmap != null) {
-                val recipe = Recipe(toByteArray(imgBitmap!!), name, time.toInt(), ingredients, instructions)
+                val recipe = Recipe(toByteArray(imgBitmap!!), "", name, time.toInt(), ingredients, instructions)
                 myRecipesViewModel.insertRecipe(recipe)
 
                 Snackbar.make(
