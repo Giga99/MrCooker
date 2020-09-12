@@ -13,7 +13,6 @@ data class Recipe(
     var timeToCook: Int,
     var ingredients: String,
     var instructions: String,
-) : Serializable {
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null
-}
+) : Serializable {}

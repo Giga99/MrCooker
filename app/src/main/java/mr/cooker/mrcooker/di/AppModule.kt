@@ -8,7 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import mr.cooker.mrcooker.data.db.RecipeDatabase
-import mr.cooker.mrcooker.data.firebase.RecipesRepo
+import mr.cooker.mrcooker.data.firebase.RecipesFB
 import mr.cooker.mrcooker.other.Constants.RECIPE_DATABASE_NAME
 import javax.inject.Singleton
 
@@ -24,7 +24,7 @@ object AppModule {
         app,
         RecipeDatabase::class.java,
         RECIPE_DATABASE_NAME
-    ).build()
+    ).fallbackToDestructiveMigration().build()
 
     @Singleton
     @Provides
@@ -32,5 +32,5 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideRecipesRepo() = RecipesRepo()
+    fun provideRecipesRepo() = RecipesFB()
 }

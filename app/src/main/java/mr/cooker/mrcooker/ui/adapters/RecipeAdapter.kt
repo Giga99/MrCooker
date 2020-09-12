@@ -13,7 +13,9 @@ import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.db.entities.Recipe
 import mr.cooker.mrcooker.other.Converters.Companion.toBitmap
 
-class RecipeAdapter() : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
+class RecipeAdapter(
+    val allRecipes: Boolean
+) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
 
     inner class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -48,7 +50,8 @@ class RecipeAdapter() : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
         holder.itemView.apply {
             tvName.text = recipe.name
             tvTime.text = "${recipe.timeToCook}min"
-            Glide.with(context).load(toBitmap(recipe.img)).into(ivBackground)
+            if(allRecipes) Glide.with(context).load(recipe.imgUrl).into(ivBackground)
+            else Glide.with(context).load(toBitmap(recipe.img)).into(ivBackground)
             setOnClickListener {
                 onItemClickListener?.let { it(recipe, ivBackground) }
             }

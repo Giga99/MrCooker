@@ -86,7 +86,7 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
     }
 
     private fun setupRecyclerView() = rvRecipes.apply {
-        recipeAdapter = RecipeAdapter()
+        recipeAdapter = RecipeAdapter(false)
         adapter = recipeAdapter
         layoutManager = LinearLayoutManager(requireContext())
     }

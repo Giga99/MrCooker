@@ -8,7 +8,7 @@ import mr.cooker.mrcooker.other.Converters
 
 @Database(
     entities = [Recipe::class],
-    version = 6
+    version = 7
 )
 abstract class RecipeDatabase : RoomDatabase() {
     abstract fun getRecipeDao() : RecipeDAO

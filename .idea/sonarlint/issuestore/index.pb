@@ -58,3 +58,5 @@ Japp/src/main/java/mr/cooker/mrcooker/ui/fragments/auth/RegisterFragment.kt,a\6
 app/.gitignore,5\1\51e1c5d383dfaa35e0e7e5873a0a99355a86880f
 f
 6app/src/main/java/mr/cooker/mrcooker/other/Resource.kt,4\6\46cf7c56ccde2a788cb6942d92d33c02c06bbb74
+q
+Aapp/src/main/java/mr/cooker/mrcooker/data/firebase/RecipesRepo.kt,b\0\b0a5ba7e7dd082f82350af055a06c2cd98249c02

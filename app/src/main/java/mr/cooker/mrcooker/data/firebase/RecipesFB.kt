@@ -7,7 +7,7 @@ import kotlinx.coroutines.tasks.await
 import mr.cooker.mrcooker.data.db.entities.Recipe
 import mr.cooker.mrcooker.other.Resource
 
-class RecipesRepo {
+class RecipesFB {
 
     suspend fun getRecipes(): Resource<MutableList<Recipe>> {
         val recipesList = mutableListOf<Recipe>()
