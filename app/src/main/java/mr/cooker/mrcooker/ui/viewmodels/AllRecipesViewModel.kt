@@ -12,12 +12,5 @@ import java.lang.Exception
 class AllRecipesViewModel @ViewModelInject constructor(
     private val mainRepository: MainRepository
 ) : ViewModel() {
-    val recipesList = liveData<Resource<MutableList<Recipe>>>(Dispatchers.IO) {
-        try {
-            val recipes = mainRepository.getAllRecipesFirebase()
-            emit(recipes)
-        } catch (e: Exception) {
-            emit(Resource.Failure(e.cause!!))
-        }
-    }
+
 }
