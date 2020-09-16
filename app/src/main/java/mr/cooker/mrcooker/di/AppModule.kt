@@ -8,7 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import mr.cooker.mrcooker.data.db.RecipeDatabase
-import mr.cooker.mrcooker.data.firebase.RecipesFB
+import mr.cooker.mrcooker.data.firebase.FirebaseDB
 import mr.cooker.mrcooker.other.Constants.RECIPE_DATABASE_NAME
 import javax.inject.Singleton
 
@@ -32,5 +32,5 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideRecipesRepo() = RecipesFB()
+    fun provideFirebaseDB() = FirebaseDB()
 }

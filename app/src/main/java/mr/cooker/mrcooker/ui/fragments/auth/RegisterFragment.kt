@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.agrawalsuneet.dotsloader.loaders.TrailingCircularDotsLoader
 import com.github.dhaval2404.form_validation.constant.PasswordPattern
@@ -13,6 +14,7 @@ import com.github.dhaval2404.form_validation.validation.FormValidator
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_register.*
 import kotlinx.coroutines.CoroutineScope
@@ -23,16 +25,16 @@ import kotlinx.coroutines.withContext
 import mr.cooker.mrcooker.BaseApplication
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
+import mr.cooker.mrcooker.ui.viewmodels.RegisterViewModel
 import java.lang.Exception
 
+@AndroidEntryPoint
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
-    lateinit var auth: FirebaseAuth
+    private val registerViewModel: RegisterViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        auth = FirebaseAuth.getInstance()
 
         btnRegister.setOnClickListener {
             if(isValidForm()) {
@@ -54,24 +56,16 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         val email = etEmail.text.toString()
         val password = etPassword.text.toString()
 
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                auth.createUserWithEmailAndPassword(email, password).await()
-                auth.currentUser!!.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(username).build())
-                currentUser = auth.currentUser!!
-                withContext(Dispatchers.Main) {
-                    registerLayout.visibility = View.VISIBLE
-                    trailingLoaderRegister.visibility = View.GONE
-                    Toast.makeText(requireContext(), "Successfully registered!", Toast.LENGTH_SHORT).show()
-                }
-                findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    registerLayout.visibility = View.VISIBLE
-                    trailingLoaderRegister.visibility = View.GONE
-                    Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
-                }
-            }
+        try {
+            registerViewModel.register(username, email, password)
+            registerLayout.visibility = View.VISIBLE
+            trailingLoaderRegister.visibility = View.GONE
+            Toast.makeText(requireContext(), "Successfully registered!", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+        } catch (e: Exception) {
+            registerLayout.visibility = View.VISIBLE
+            trailingLoaderRegister.visibility = View.GONE
+            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
         }
     }
 
