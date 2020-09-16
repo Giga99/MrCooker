@@ -51,15 +51,21 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         val email = etLoginEmail.text.toString()
         val password = etLoginPassword.text.toString()
 
-        try {
-            loginViewModel.login(email, password)
-            loginLayout.visibility = View.VISIBLE
-            trailingLoaderLogin.visibility = View.GONE
-            startActivity(Intent(requireContext(), MainActivity::class.java))
-        } catch (e: Exception) {
-            loginLayout.visibility = View.VISIBLE
-            trailingLoaderLogin.visibility = View.GONE
-            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                loginViewModel.login(email, password).join()
+                withContext(Dispatchers.Main) {
+                    loginLayout.visibility = View.VISIBLE
+                    trailingLoaderLogin.visibility = View.GONE
+                }
+                startActivity(Intent(requireContext(), MainActivity::class.java))
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    loginLayout.visibility = View.VISIBLE
+                    trailingLoaderLogin.visibility = View.GONE
+                }
+                Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

@@ -56,16 +56,22 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         val email = etEmail.text.toString()
         val password = etPassword.text.toString()
 
-        try {
-            registerViewModel.register(username, email, password)
-            registerLayout.visibility = View.VISIBLE
-            trailingLoaderRegister.visibility = View.GONE
-            Toast.makeText(requireContext(), "Successfully registered!", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
-        } catch (e: Exception) {
-            registerLayout.visibility = View.VISIBLE
-            trailingLoaderRegister.visibility = View.GONE
-            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                registerViewModel.register(username, email, password).join()
+                withContext(Dispatchers.Main) {
+                    registerLayout.visibility = View.VISIBLE
+                    trailingLoaderRegister.visibility = View.GONE
+                    Toast.makeText(requireContext(), "Successfully registered!", Toast.LENGTH_SHORT).show()
+                }
+                findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    registerLayout.visibility = View.VISIBLE
+                    trailingLoaderRegister.visibility = View.GONE
+                    Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
