@@ -4,7 +4,7 @@ This is an android app for creating your recipes.
 
 Features:
    - Authentication
-   - Saving recipes locally with images.
+   - Saving recipes on Firebase with images.
 
 Using:
    - Kotlin
