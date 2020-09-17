@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_all_recipes.*
 import mr.cooker.mrcooker.R
-import mr.cooker.mrcooker.data.db.entities.Recipe
+import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.other.Constants
 import mr.cooker.mrcooker.ui.activities.RecipeActivity
 import mr.cooker.mrcooker.ui.adapters.RecipeAdapter
@@ -39,7 +39,7 @@ class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
     }
 
     private fun setupRecyclerView() = rvAllRecipes.apply {
-        recipeAdapter = RecipeAdapter(true)
+        recipeAdapter = RecipeAdapter()
         adapter = recipeAdapter
         layoutManager = LinearLayoutManager(requireContext())
     }

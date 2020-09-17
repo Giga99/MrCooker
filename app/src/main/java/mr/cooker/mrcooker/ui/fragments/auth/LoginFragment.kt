@@ -63,8 +63,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 withContext(Dispatchers.Main) {
                     loginLayout.visibility = View.VISIBLE
                     trailingLoaderLogin.visibility = View.GONE
+                    Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
                 }
-                Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -15,18 +16,22 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_add_recipe.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.*
 import mr.cooker.mrcooker.R
-import mr.cooker.mrcooker.data.db.entities.Recipe
-import mr.cooker.mrcooker.other.Converters.Companion.toByteArray
+import mr.cooker.mrcooker.data.entities.Recipe
+import mr.cooker.mrcooker.ui.viewmodels.AllRecipesViewModel
 import mr.cooker.mrcooker.ui.viewmodels.MyRecipesViewModel
+import java.lang.Exception
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
 
     private val myRecipesViewModel: MyRecipesViewModel by viewModels()
+    private val allRecipesViewModel: AllRecipesViewModel by viewModels()
     private var imgBitmap: Bitmap? = null
+    private var imgUri: Uri? = null
+    private var downloadUrl: Uri? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,16 +43,12 @@ class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
             val instructions = etInstructions.text.toString()
 
             if(name.isNotEmpty() && time.isNotEmpty() && ingredients.isNotEmpty() && instructions.isNotEmpty() && imgBitmap != null) {
-                val recipe = Recipe(toByteArray(imgBitmap!!), "", name, time.toInt(), ingredients, instructions)
-                myRecipesViewModel.insertRecipe(recipe)
+                addRecipeLayout.visibility = View.GONE
+                trailingLoaderAddRecipe.visibility = View.VISIBLE
+                trailingLoaderAddRecipe.animate()
 
-                Snackbar.make(
-                    requireActivity().findViewById(R.id.rootView),
-                    "Recipe saved successfully!",
-                    Snackbar.LENGTH_LONG
-                ).show()
+                upload(name, time, ingredients, instructions)
 
-                findNavController().navigate(R.id.action_addRecipeFragment_to_allRecipesFragment)
             } else if(imgBitmap == null){
                 Toast.makeText(context, "Please select the image!", Toast.LENGTH_SHORT).show()
             }else {
@@ -69,12 +70,42 @@ class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
         }
     }
 
+    private fun upload(name: String, time: String, ingredients: String, instructions: String) =
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                downloadUrl = allRecipesViewModel.uploadImage(imgUri!!)
+
+                val recipe = Recipe(downloadUrl.toString(), name, time.toInt(), ingredients, instructions)
+
+                allRecipesViewModel.uploadRecipe(recipe).join()
+
+                withContext(Dispatchers.Main) {
+                    Snackbar.make(
+                        requireActivity().findViewById(R.id.rootView),
+                        "Recipe saved successfully!",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+
+                    addRecipeLayout.visibility = View.VISIBLE
+                    trailingLoaderAddRecipe.visibility = View.GONE
+
+                    findNavController().navigate(R.id.action_addRecipeFragment_to_allRecipesFragment)
+                }
+
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
     // Picked image and now saving it
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         when(resultCode) {
             Activity.RESULT_OK -> {
+                imgUri = data?.data
                 imgBitmap = BitmapFactory.decodeFile(ImagePicker.getFilePath(data)!!)
                 Glide.with(this).load(imgBitmap).into(ivAddImage)
             }

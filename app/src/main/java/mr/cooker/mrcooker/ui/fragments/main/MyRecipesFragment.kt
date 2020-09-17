@@ -7,17 +7,15 @@ import android.widget.ImageView
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_my_recipes.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import mr.cooker.mrcooker.R
-import mr.cooker.mrcooker.data.db.entities.Recipe
+import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.other.Constants.postID
 import mr.cooker.mrcooker.ui.adapters.RecipeAdapter
 import mr.cooker.mrcooker.ui.activities.RecipeActivity
@@ -34,9 +32,9 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-        myRecipesViewModel.recipes.observe(viewLifecycleOwner, Observer {
+        /*myRecipesViewModel.recipes.observe(viewLifecycleOwner, Observer {
             recipeAdapter.submitList(it)
-        })
+        })*/
 
         fab.setOnClickListener {
             findNavController().navigate(R.id.action_myRecipesFragment_to_addRecipeFragment)
@@ -62,13 +60,15 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
                 val recipe = recipeAdapter.differ.currentList[position]
-                myRecipesViewModel.deleteRecipe(recipe)
+                /*myRecipesViewModel.deleteRecipe(recipe)
                 Snackbar.make(view, "Successfully deleted recipe!", Snackbar.LENGTH_LONG).apply {
                     setAction("Undo") {
-                        myRecipesViewModel.insertRecipe(recipe)
+                        CoroutineScope(Dispatchers.IO).launch {
+                            myRecipesViewModel.insertRecipe(recipe)
+                        }
                     }
                     show()
-                }
+                }*/
             }
         }
 
@@ -78,15 +78,15 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
 
         // Swipe to refresh
         swipeRefreshLayout.setOnRefreshListener {
-            myRecipesViewModel.recipes.observe(viewLifecycleOwner, Observer {
+            /*myRecipesViewModel.recipes.observe(viewLifecycleOwner, Observer {
                 recipeAdapter.submitList(it)
                 swipeRefreshLayout.isRefreshing = false
-            })
+            })*/
         }
     }
 
     private fun setupRecyclerView() = rvRecipes.apply {
-        recipeAdapter = RecipeAdapter(false)
+        recipeAdapter = RecipeAdapter()
         adapter = recipeAdapter
         layoutManager = LinearLayoutManager(requireContext())
     }

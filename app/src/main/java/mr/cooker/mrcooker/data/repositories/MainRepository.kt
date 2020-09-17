@@ -1,18 +1,14 @@
 package mr.cooker.mrcooker.data.repositories
 
-import androidx.lifecycle.LiveData
-import mr.cooker.mrcooker.data.db.RecipeDAO
-import mr.cooker.mrcooker.data.db.entities.Recipe
+import android.net.Uri
+import mr.cooker.mrcooker.data.entities.Recipe
+import mr.cooker.mrcooker.data.firebase.FirebaseDB
 import javax.inject.Inject
 
 class MainRepository @Inject constructor(
-    val recipeDao : RecipeDAO,
+    private val firebaseDB: FirebaseDB
 ) {
-    suspend fun insertRecipe(recipe : Recipe) = recipeDao.insertRecipe(recipe)
+    suspend fun uploadImage(imageUri: Uri): Uri? = firebaseDB.uploadImage(imageUri)
 
-    suspend fun deleteRecipe(recipe : Recipe) = recipeDao.deleteRecipe(recipe)
-
-    fun getAllMyRecipes() = recipeDao.getAllRecipes()
-
-    fun getRecipeByID(id: Int) : LiveData<Recipe> = recipeDao.getRecipeByID(id)
+    suspend fun uploadRecipe(recipe: Recipe) = firebaseDB.uploadRecipe(recipe)
 }

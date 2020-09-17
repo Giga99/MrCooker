@@ -58,3 +58,11 @@ Japp/src/main/java/mr/cooker/mrcooker/ui/fragments/auth/RegisterFragment.kt,a\6
 app/.gitignore,5\1\51e1c5d383dfaa35e0e7e5873a0a99355a86880f
 f
 6app/src/main/java/mr/cooker/mrcooker/other/Resource.kt,4\6\46cf7c56ccde2a788cb6942d92d33c02c06bbb74
+x
+Happ/src/main/java/mr/cooker/mrcooker/data/repositories/AuthRepository.kt,1\b\1b386ec2dd39ebe510c20e06837064f052b58f39
+w
+Gapp/src/main/java/mr/cooker/mrcooker/ui/viewmodels/RegisterViewModel.kt,3\0\30aea703dcf20ecdceaa61ab94c014a09b16fca8
+t
+Dapp/src/main/java/mr/cooker/mrcooker/ui/viewmodels/LoginViewModel.kt,f\6\f6cf82d77f9d53c0c78ad107707e549f8e09df96
+p
+@app/src/main/java/mr/cooker/mrcooker/data/firebase/FirebaseDB.kt,7\c\7cf653a2956dd7d0fb9851a9c888ab9eb8ddbea7
