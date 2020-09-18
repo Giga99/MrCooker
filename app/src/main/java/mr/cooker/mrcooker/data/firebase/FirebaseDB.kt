@@ -5,18 +5,20 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
 import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
+import mr.cooker.mrcooker.other.Resource
 import java.util.*
 
 class FirebaseDB {
     companion object {
         val auth: FirebaseAuth = FirebaseAuth.getInstance()
         val firebaseStorage = Firebase.storage.reference
-        val firestore = Firebase.firestore.collection("recipes")
+        val firestoreRecipes = Firebase.firestore.collection("recipes")
     }
 
     suspend fun login(email: String, password: String) {
@@ -46,8 +48,8 @@ class FirebaseDB {
     }
 
     suspend fun uploadRecipe(recipe: Recipe) {
-        firestore.add(recipe).await()
-        val recipeQuery = firestore
+        firestoreRecipes.add(recipe).await()
+        val recipeQuery = firestoreRecipes
             .whereEqualTo("imgUrl", recipe.imgUrl)
             .whereEqualTo("name", recipe.name)
             .whereEqualTo("timeToCook", recipe.timeToCook)
@@ -60,8 +62,27 @@ class FirebaseDB {
         if(recipeQuery.documents.isNotEmpty()) {
             for(document in recipeQuery) {
                 map["id"] = document.id
-                firestore.document(document.id).set(map, SetOptions.merge()).await()
+                firestoreRecipes.document(document.id).set(map, SetOptions.merge()).await()
             }
         }
+    }
+
+    suspend fun getAllRecipes(): Resource<MutableList<Recipe>> {
+        val recipes = mutableListOf<Recipe>()
+        val documentsList = firestoreRecipes.get().await()
+
+        for(document in documentsList.documents) {
+            val recipe = document.toObject<Recipe>()
+            recipes.add(recipe!!)
+        }
+
+        return Resource.Success(recipes)
+    }
+
+    suspend fun getRecipeByID(id: String): Resource<Recipe> {
+        val document = firestoreRecipes.document(id).get().await()
+        val recipe = document.toObject<Recipe>()
+
+        return Resource.Success(recipe!!)
     }
 }
