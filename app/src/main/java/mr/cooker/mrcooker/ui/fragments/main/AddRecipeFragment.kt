@@ -20,16 +20,13 @@ import kotlinx.coroutines.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
-import mr.cooker.mrcooker.ui.viewmodels.AllRecipesViewModel
-import mr.cooker.mrcooker.ui.viewmodels.MyRecipesViewModel
+import mr.cooker.mrcooker.ui.viewmodels.AddingViewModel
 import java.lang.Exception
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
-
-    private val myRecipesViewModel: MyRecipesViewModel by viewModels()
-    private val allRecipesViewModel: AllRecipesViewModel by viewModels()
+    private val addingViewModel: AddingViewModel by viewModels()
     private var imgBitmap: Bitmap? = null
     private var imgUri: Uri? = null
     private var downloadUrl: Uri? = null
@@ -74,11 +71,11 @@ class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
     private fun upload(name: String, time: String, ingredients: String, instructions: String) =
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                downloadUrl = allRecipesViewModel.uploadImage(imgUri!!)
+                downloadUrl = addingViewModel.uploadImage(imgUri!!)
 
                 val recipe = Recipe(downloadUrl.toString(), name, time.toInt(), ingredients, instructions, currentUser.uid)
 
-                allRecipesViewModel.uploadRecipe(recipe).join()
+                addingViewModel.uploadRecipe(recipe).join()
 
                 withContext(Dispatchers.Main) {
                     Snackbar.make(

@@ -14,7 +14,6 @@ import mr.cooker.mrcooker.other.Resource
 class AllRecipesViewModel @ViewModelInject constructor(
     private val mainRepository: MainRepository
 ) : ViewModel() {
-
     val allRecipes = liveData<Resource<MutableList<Recipe>>>(Dispatchers.IO) {
         try {
             val recipes = mainRepository.getAllRecipes()
@@ -22,19 +21,6 @@ class AllRecipesViewModel @ViewModelInject constructor(
         } catch (e: Exception) {
             emit(Resource.Failure(e.cause!!))
         }
-    }
-
-    suspend fun uploadImage(imageUri: Uri): Uri? {
-        var downloadUrl: Uri? = null
-        viewModelScope.launch {
-            downloadUrl = mainRepository.uploadImage(imageUri)
-        }.join()
-
-        return downloadUrl
-    }
-
-    fun uploadRecipe(recipe: Recipe) = viewModelScope.launch {
-        mainRepository.uploadRecipe(recipe)
     }
 
     suspend fun getRecipeByID(id: String): Resource<Recipe> {
