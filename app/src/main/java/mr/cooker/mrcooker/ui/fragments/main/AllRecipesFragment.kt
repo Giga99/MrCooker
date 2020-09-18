@@ -47,10 +47,9 @@ class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
         }
 
         swipeRefreshLayout.setOnRefreshListener {
-            allRecipesViewModel.allRecipes.observe(viewLifecycleOwner, Observer {
-                observe(it)
-                swipeRefreshLayout.isRefreshing = false
-            })
+            val data = allRecipesViewModel.getRealtimeRecipes()
+            observe(data)
+            swipeRefreshLayout.isRefreshing = false
         }
     }
 

@@ -98,4 +98,22 @@ class FirebaseDB {
 
         return Resource.Success(recipe!!)
     }
+
+    fun getRealtimeRecipes(): Resource<MutableList<Recipe>> {
+        val recipes = mutableListOf<Recipe>()
+
+        firestoreRecipes.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+            firebaseFirestoreException?.let {
+                return@addSnapshotListener
+            }
+            querySnapshot?.let {
+                for(document in querySnapshot.documents) {
+                    val recipe = document.toObject<Recipe>()
+                    recipes.add(recipe!!)
+                }
+            }
+        }
+
+        return Resource.Success(recipes)
+    }
 }

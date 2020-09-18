@@ -1,6 +1,5 @@
 package mr.cooker.mrcooker.ui.viewmodels
 
-import android.net.Uri
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
@@ -22,6 +21,8 @@ class AllRecipesViewModel @ViewModelInject constructor(
             emit(Resource.Failure(e.cause!!))
         }
     }
+
+    fun getRealtimeRecipes() = mainRepository.getRealtimeRecipes()
 
     suspend fun getRecipeByID(id: String): Resource<Recipe> {
         var recipe: Resource<Recipe>? = null
