@@ -4,19 +4,24 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_my_recipes.*
+import kotlinx.android.synthetic.main.fragment_my_recipes.fab
+import kotlinx.android.synthetic.main.fragment_my_recipes.swipeRefreshLayout
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.other.Constants.postID
+import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.ui.adapters.RecipeAdapter
 import mr.cooker.mrcooker.ui.activities.RecipeActivity
 import mr.cooker.mrcooker.ui.viewmodels.MyRecipesViewModel
@@ -32,9 +37,9 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-        /*myRecipesViewModel.recipes.observe(viewLifecycleOwner, Observer {
-            recipeAdapter.submitList(it)
-        })*/
+        myRecipesViewModel.myRecipes.observe(viewLifecycleOwner, Observer {
+            observe(it)
+        })
 
         fab.setOnClickListener {
             findNavController().navigate(R.id.action_myRecipesFragment_to_addRecipeFragment)
@@ -78,10 +83,30 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
 
         // Swipe to refresh
         swipeRefreshLayout.setOnRefreshListener {
-            /*myRecipesViewModel.recipes.observe(viewLifecycleOwner, Observer {
-                recipeAdapter.submitList(it)
+            myRecipesViewModel.myRecipes.observe(viewLifecycleOwner, Observer {
+                observe(it)
                 swipeRefreshLayout.isRefreshing = false
-            })*/
+            })
+        }
+    }
+
+    private fun observe(it: Resource<MutableList<Recipe>>?) {
+        when(it) {
+            is Resource.Loading -> {
+                swipeRefreshLayout.isRefreshing = true
+            }
+
+            is Resource.Success -> {
+                recipeAdapter.submitList(it.data)
+            }
+
+            is Resource.Failure -> {
+                Toast.makeText(
+                    requireContext(),
+                    "An error has occurred:${it.throwable.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 

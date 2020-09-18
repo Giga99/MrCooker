@@ -2,12 +2,21 @@ package mr.cooker.mrcooker.ui.viewmodels
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import androidx.lifecycle.liveData
+import kotlinx.coroutines.Dispatchers
+import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.data.repositories.MainRepository
+import mr.cooker.mrcooker.other.Resource
 
-@ExperimentalCoroutinesApi
 class MyRecipesViewModel @ViewModelInject constructor(
     private val mainRepository: MainRepository
 ) : ViewModel() {
-
+    val myRecipes = liveData<Resource<MutableList<Recipe>>>(Dispatchers.IO) {
+        try {
+            val recipes = mainRepository.getMyRecipes()
+            emit(recipes)
+        } catch (e: Exception) {
+            emit(Resource.Failure(e.cause!!))
+        }
+    }
 }

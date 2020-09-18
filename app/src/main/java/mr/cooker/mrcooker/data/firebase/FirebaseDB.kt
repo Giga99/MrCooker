@@ -55,6 +55,7 @@ class FirebaseDB {
             .whereEqualTo("timeToCook", recipe.timeToCook)
             .whereEqualTo("ingredients", recipe.ingredients)
             .whereEqualTo("instructions", recipe.instructions)
+            .whereEqualTo("ownerID", recipe.ownerID)
             .get().await()
 
         val map = mutableMapOf<String, Any>()
@@ -70,6 +71,18 @@ class FirebaseDB {
     suspend fun getAllRecipes(): Resource<MutableList<Recipe>> {
         val recipes = mutableListOf<Recipe>()
         val documentsList = firestoreRecipes.get().await()
+
+        for(document in documentsList.documents) {
+            val recipe = document.toObject<Recipe>()
+            recipes.add(recipe!!)
+        }
+
+        return Resource.Success(recipes)
+    }
+
+    suspend fun getMyRecipes(): Resource<MutableList<Recipe>> {
+        val recipes = mutableListOf<Recipe>()
+        val documentsList = firestoreRecipes.whereEqualTo("ownerID", currentUser.uid).get().await()
 
         for(document in documentsList.documents) {
             val recipe = document.toObject<Recipe>()

@@ -8,5 +8,6 @@ data class Recipe(
     var timeToCook: Int = -1,
     var ingredients: String = "",
     var instructions: String = "",
+    var ownerID: String? = null,
     var id: String? = null
 ) : Serializable {}

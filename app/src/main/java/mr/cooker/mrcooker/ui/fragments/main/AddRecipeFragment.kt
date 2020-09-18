@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.fragment_add_recipe.*
 import kotlinx.coroutines.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.Recipe
+import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.ui.viewmodels.AllRecipesViewModel
 import mr.cooker.mrcooker.ui.viewmodels.MyRecipesViewModel
 import java.lang.Exception
@@ -75,7 +76,7 @@ class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
             try {
                 downloadUrl = allRecipesViewModel.uploadImage(imgUri!!)
 
-                val recipe = Recipe(downloadUrl.toString(), name, time.toInt(), ingredients, instructions)
+                val recipe = Recipe(downloadUrl.toString(), name, time.toInt(), ingredients, instructions, currentUser.uid)
 
                 allRecipesViewModel.uploadRecipe(recipe).join()
 
