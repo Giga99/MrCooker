@@ -3,12 +3,6 @@
 app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
 <
 build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
-n
->app/src/main/java/mr/cooker/mrcooker/data/db/RecipeDatabase.kt,3\d\3dff529b2e18e113faa10d8f7c330c5246ca5a12
-i
-9app/src/main/java/mr/cooker/mrcooker/data/db/RecipeDAO.kt,3\4\34c93bf522ae9de3f642177b40239dacfa5526c8
-o
-?app/src/main/java/mr/cooker/mrcooker/data/db/entities/Recipe.kt,6\9\69780cc5f835e998c1687769b91190edf8167c3b
 P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
 g
@@ -66,3 +60,7 @@ t
 Dapp/src/main/java/mr/cooker/mrcooker/ui/viewmodels/LoginViewModel.kt,f\6\f6cf82d77f9d53c0c78ad107707e549f8e09df96
 p
 @app/src/main/java/mr/cooker/mrcooker/data/firebase/FirebaseDB.kt,7\c\7cf653a2956dd7d0fb9851a9c888ab9eb8ddbea7
+l
+<app/src/main/java/mr/cooker/mrcooker/data/entities/Recipe.kt,e\1\e1d6d857d1a53cb32f0fe4ab3f5974911e49e69d
+u
+Eapp/src/main/java/mr/cooker/mrcooker/ui/viewmodels/AddingViewModel.kt,4\7\4724ae339e6ee1f8fe35e66b0a500abdff6599e4

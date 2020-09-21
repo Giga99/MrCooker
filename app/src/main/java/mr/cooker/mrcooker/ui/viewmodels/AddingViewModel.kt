@@ -23,4 +23,14 @@ class AddingViewModel @ViewModelInject constructor(
     fun uploadRecipe(recipe: Recipe) = viewModelScope.launch {
         mainRepository.uploadRecipe(recipe)
     }
+
+    fun uploadAgain(recipe: Recipe, uri: Uri) = viewModelScope.launch {
+        mainRepository.uploadAgain(recipe, uri)
+    }
+
+    fun deleteRecipe(recipe: Recipe) = viewModelScope.launch {
+        mainRepository.deleteRecipe(recipe)
+    }
+
+    suspend fun getBytes(imgUrl: String) = mainRepository.getBytes(imgUrl)
 }

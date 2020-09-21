@@ -1,6 +1,7 @@
 package mr.cooker.mrcooker.data.firebase
 
 import android.net.Uri
+import android.provider.MediaStore
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.SetOptions
@@ -10,8 +11,10 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
 import mr.cooker.mrcooker.data.entities.Recipe
+import mr.cooker.mrcooker.other.Converters.Companion.toBitmap
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
+import java.io.File
 import java.util.*
 
 class FirebaseDB {
@@ -42,9 +45,8 @@ class FirebaseDB {
     suspend fun uploadImage(imageUri: Uri): Uri? {
         val fileName = "${currentUser.uid}_${Calendar.getInstance().timeInMillis}"
         firebaseStorage.child("images/$fileName").putFile(imageUri).await()
-        val downloadUrl = firebaseStorage.child("images/$fileName").downloadUrl.await()
 
-        return downloadUrl
+        return firebaseStorage.child("images/$fileName").downloadUrl.await()
     }
 
     suspend fun uploadRecipe(recipe: Recipe) {
@@ -66,6 +68,54 @@ class FirebaseDB {
                 firestoreRecipes.document(document.id).set(map, SetOptions.merge()).await()
             }
         }
+    }
+
+    suspend fun uploadAgain(recipe: Recipe, uri: Uri) {
+        firestoreRecipes.document(recipe.id!!).set(recipe).await()
+        val downloadUrl = uploadImage(uri)
+
+        val recipeQuery = firestoreRecipes
+            .whereEqualTo("id", recipe.id)
+            .whereEqualTo("name", recipe.name)
+            .whereEqualTo("timeToCook", recipe.timeToCook)
+            .whereEqualTo("ingredients", recipe.ingredients)
+            .whereEqualTo("instructions", recipe.instructions)
+            .whereEqualTo("ownerID", recipe.ownerID)
+            .get().await()
+
+        val map = mutableMapOf<String, Any>()
+
+        if(recipeQuery.documents.isNotEmpty()) {
+            for(document in recipeQuery) {
+                map["imgUrl"] = downloadUrl.toString()
+                firestoreRecipes.document(document.id).set(map, SetOptions.merge()).await()
+            }
+        }
+    }
+
+    suspend fun deleteRecipe(recipe: Recipe) {
+        deleteImage(recipe.imgUrl)
+        val recipeQuery = firestoreRecipes.whereEqualTo("id", recipe.id).get().await()
+        if(recipeQuery.documents.isNotEmpty()) {
+            for(document in recipeQuery) firestoreRecipes.document(document.id).delete().await()
+        }
+    }
+
+    private suspend fun deleteImage(imgUrl: String) {
+        val filename = getFileName(imgUrl)
+        firebaseStorage.child("images/$filename").delete().await()
+    }
+
+    private fun getFileName(imgUrl: String): String {
+        val pom = imgUrl.removePrefix("https://firebasestorage.googleapis.com/v0/b/mrcooker-d0484.appspot.com/o/images%2F")
+        val index = pom.indexOf('?')
+        return pom.substring(0, index)
+    }
+
+    suspend fun getBytes(imgUrl: String): ByteArray {
+        val downloadSize = 5L*1024*1024
+        val fileName = getFileName(imgUrl)
+        return firebaseStorage.child("images/$fileName").getBytes(downloadSize).await()
     }
 
     suspend fun getAllRecipes(): Resource<MutableList<Recipe>> {
