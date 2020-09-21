@@ -1,13 +1,14 @@
 package mr.cooker.mrcooker.ui.activities
 
-
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.firebase.auth.FirebaseAuth
@@ -16,7 +17,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.other.Constants.ANIMATION_DURATION
-import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.NetworkUtils
 
 @AndroidEntryPoint
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        return when(item.itemId) {
             R.id.signOut -> {
                 MaterialDialog.Builder(this)
                     .setTitle(getString(R.string.exit_dialog_title))
@@ -66,9 +66,25 @@ class MainActivity : AppCompatActivity() {
 
                 return true
             }
-        }
 
-        return super.onOptionsItemSelected(item)
+            R.id.nightMode -> {
+                val mode =
+                    if ((resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
+                        Configuration.UI_MODE_NIGHT_NO
+                    ) {
+                        AppCompatDelegate.MODE_NIGHT_YES
+                    } else {
+                        AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
+                    }
+
+                // Change UI Mode
+                AppCompatDelegate.setDefaultNightMode(mode)
+
+                return true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun checkNetworkConnectivity() {

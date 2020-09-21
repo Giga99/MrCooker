@@ -3,13 +3,12 @@
     <color name="colorPrimary">#f0ad4b</color>
     <color name="colorLightPrimary">#ffe07b</color>
     <color name="colorDarkPrimary">#ba7f19</color>
-    <color name="appBackgroundColor">#388581</color>
-    <color name="appBackgroundColor2">#FBFBFB</color>
+    <color name="appBackgroundColor">#121212</color>
     <color name="colorAccent">#52A39F</color>
     <color name="colorNotSelected">#9AB5B3</color>
     <color name="errorColor">#D50000</color>
     <color name="onlineColor">#43A047</color>
-    <color name="colorPrimaryText">@android:color/black</color>
+    <color name="colorPrimaryText">@android:color/white</color>
     <color name="colorSecondaryText">#606060</color>
-    <color name="colorBackgroundRow">#FFFFFF</color>
+    <color name="colorBackgroundRow">#272727</color>
 </resources>
