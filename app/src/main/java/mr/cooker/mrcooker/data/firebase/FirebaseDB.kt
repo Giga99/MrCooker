@@ -35,6 +35,10 @@ class FirebaseDB {
         currentUser = auth.currentUser!!
     }
 
+    suspend fun resetPassword(email: String) {
+        auth.sendPasswordResetEmail(email).await()
+    }
+
     fun checkPrevLogging(): Boolean {
         return if(auth.currentUser != null) {
             currentUser = auth.currentUser!!

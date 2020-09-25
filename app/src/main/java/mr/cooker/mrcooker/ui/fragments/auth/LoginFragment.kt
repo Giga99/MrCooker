@@ -41,6 +41,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         tvRegister.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
+
+        tvResetPassword.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_resetPasswordFragment)
+        }
     }
 
     private fun loginUser() {

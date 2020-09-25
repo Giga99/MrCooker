@@ -26,4 +26,8 @@
     <string name="profile">Profile</string>
     <string name="sign_out">Sign Out</string>
     <string name="night_mode">Night Mode</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="click_on_the_button_to_reset_your_password_email_link_will_be_sent">Enter an email to reset your password. Check the link in the email.</string>
+    <string name="back_to_login">Back to Login</string>
+    <string name="forgot_password">Forgot password?</string>
 </resources>
