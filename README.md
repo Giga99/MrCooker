@@ -10,7 +10,7 @@ Features:
 Using:
    - Kotlin
    - Coroutines
-   - Room
+   - Firebase
    - Dagger-Hilt Injection
    - ImagePicker (https://github.com/Dhaval2404/ImagePicker)
    - Glide (https://github.com/bumptech/glide)
