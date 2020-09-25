@@ -3,7 +3,7 @@
 This is an android app for creating your recipes.
 
 Features:
-   - Authentication
+   - Authentication with email
    - Saving recipes on Firebase with images.
    - Deleting recipes
 
