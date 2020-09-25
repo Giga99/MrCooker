@@ -16,5 +16,6 @@ Using:
    - Glide (https://github.com/bumptech/glide)
    - Material Dialog (https://github.com/PatilShreyas/MaterialDialog-Android)
    - Custom ProgressBar (https://github.com/agrawalsuneet/DotLoadersPack-Android)
+   - Form Validation (https://github.com/Dhaval2404/android-form-validation)
    - Timber (https://github.com/JakeWharton/timber)
    - MVVM architecture
