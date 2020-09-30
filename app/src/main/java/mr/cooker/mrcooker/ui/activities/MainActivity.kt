@@ -2,6 +2,7 @@ package mr.cooker.mrcooker.ui.activities
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.content.Intent
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -56,7 +57,8 @@ class MainActivity : AppCompatActivity() {
                     .setPositiveButton(getString(R.string.option_yes)) { dialogInterface, _ ->
                         dialogInterface.dismiss()
                         FirebaseAuth.getInstance().signOut()
-                        super.onBackPressed()
+                        startActivity(Intent(this, AuthenticationActivity::class.java))
+                        finish()
                     }
                     .setNegativeButton(getString(R.string.option_no)) { dialogInterface, _ ->
                         dialogInterface.dismiss()
@@ -119,7 +121,8 @@ class MainActivity : AppCompatActivity() {
             .setPositiveButton(getString(R.string.option_yes)) { dialogInterface, _ ->
                 dialogInterface.dismiss()
                 FirebaseAuth.getInstance().signOut()
-                super.onBackPressed()
+                startActivity(Intent(this, AuthenticationActivity::class.java))
+                finish()
             }
             .setNegativeButton(getString(R.string.option_no)) { dialogInterface, _ ->
                 dialogInterface.dismiss()

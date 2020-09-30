@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -88,6 +89,7 @@ class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
                     trailingLoaderAddRecipe.visibility = View.GONE
 
                     findNavController().navigate(R.id.action_addRecipeFragment_to_allRecipesFragment)
+                    findNavController().popBackStack()
                 }
 
             } catch (e: Exception) {

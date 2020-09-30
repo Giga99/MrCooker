@@ -35,106 +35,112 @@
         app:trailingcircular_noOfTrailingDots="5"
         android:visibility="gone"/>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/addRecipeLayout"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
-        <EditText
-            android:id="@+id/etName"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/addRecipeLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:backgroundTint="@color/colorPrimaryText"
-            android:hint="@string/name"
-            android:inputType="text"
-            android:textColor="@color/colorPrimaryText"
-            android:textColorHint="@color/colorSecondaryText"
-            app:layout_constraintEnd_toStartOf="@+id/etTime"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginTop="50dp">
 
-        <EditText
-            android:id="@+id/etTime"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="@color/colorPrimaryText"
-            android:hint="@string/time_to_cook_in_minutes"
-            android:inputType="number"
-            android:textColor="@color/colorPrimaryText"
-            android:textColorHint="@color/colorSecondaryText"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <EditText
+                android:id="@+id/etName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:backgroundTint="@color/colorPrimaryText"
+                android:hint="@string/name"
+                android:inputType="text"
+                android:textColor="@color/colorPrimaryText"
+                android:textColorHint="@color/colorSecondaryText"
+                app:layout_constraintEnd_toStartOf="@+id/etTime"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/etIngredients"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="@color/colorPrimaryText"
-            android:ems="10"
-            android:hint="@string/ingredients"
-            android:inputType="textMultiLine"
-            android:textColor="@color/colorPrimaryText"
-            android:textColorHint="@color/colorSecondaryText"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etName" />
+            <EditText
+                android:id="@+id/etTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/colorPrimaryText"
+                android:hint="@string/time_to_cook_in_minutes"
+                android:inputType="number"
+                android:textColor="@color/colorPrimaryText"
+                android:textColorHint="@color/colorSecondaryText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/etInstructions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="@color/colorPrimaryText"
-            android:ems="10"
-            android:hint="@string/instructions"
-            android:inputType="textMultiLine"
-            android:textColor="@color/colorPrimaryText"
-            android:textColorHint="@color/colorSecondaryText"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etIngredients" />
+            <EditText
+                android:id="@+id/etIngredients"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/colorPrimaryText"
+                android:ems="10"
+                android:hint="@string/ingredients"
+                android:inputType="textMultiLine"
+                android:textColor="@color/colorPrimaryText"
+                android:textColorHint="@color/colorSecondaryText"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etName" />
 
-        <ImageView
-            android:id="@+id/ivAddImage"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/ic_add_photo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/etIngredients"
-            app:layout_constraintTop_toBottomOf="@+id/etTime" />
+            <EditText
+                android:id="@+id/etInstructions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/colorPrimaryText"
+                android:ems="10"
+                android:hint="@string/instructions"
+                android:inputType="textMultiLine"
+                android:textColor="@color/colorPrimaryText"
+                android:textColorHint="@color/colorSecondaryText"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etIngredients" />
+
+            <ImageView
+                android:id="@+id/ivAddImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_add_photo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/etIngredients"
+                app:layout_constraintTop_toBottomOf="@+id/etTime" />
 
 
-        <TextView
-            android:id="@+id/tvCancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/cancel"
-            android:textColor="@color/colorPrimaryText"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toStartOf="@+id/tvAdd"
-            app:layout_constraintTop_toBottomOf="@+id/ivAddImage" />
+            <TextView
+                android:id="@+id/tvCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/cancel"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/tvAdd"
+                app:layout_constraintTop_toBottomOf="@+id/ivAddImage" />
 
-        <TextView
-            android:id="@+id/tvAdd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:text="@string/add"
-            android:textColor="@color/colorPrimaryText"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivAddImage" />
+            <TextView
+                android:id="@+id/tvAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:text="@string/add"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivAddImage" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_all_recipes.*
 import kotlinx.android.synthetic.main.fragment_all_recipes.fab
 import kotlinx.android.synthetic.main.fragment_all_recipes.swipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_my_recipes.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.other.Constants
@@ -25,6 +26,7 @@ import mr.cooker.mrcooker.ui.adapters.RecipeAdapter
 import mr.cooker.mrcooker.ui.viewmodels.AllRecipesViewModel
 
 @AndroidEntryPoint
+@ExperimentalCoroutinesApi
 class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
 
     private val allRecipesViewModel: AllRecipesViewModel by viewModels()
@@ -34,7 +36,7 @@ class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-        allRecipesViewModel.allRecipes.observe(viewLifecycleOwner, Observer {
+        allRecipesViewModel.allRecipes.observe(viewLifecycleOwner, {
             observe(it)
         })
 
