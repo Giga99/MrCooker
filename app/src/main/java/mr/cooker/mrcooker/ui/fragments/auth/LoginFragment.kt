@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import mr.cooker.mrcooker.R
+import mr.cooker.mrcooker.other.EmailNotVerifiedException
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.ui.activities.MainActivity
 import mr.cooker.mrcooker.ui.viewmodels.LoginViewModel
@@ -62,7 +63,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     loginLayout.visibility = View.VISIBLE
                     trailingLoaderLogin.visibility = View.GONE
                 }
-                startActivity(Intent(requireContext(), MainActivity::class.java))
+                if(currentUser.isEmailVerified) startActivity(Intent(requireContext(), MainActivity::class.java))
+                else throw EmailNotVerifiedException()
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     loginLayout.visibility = View.VISIBLE

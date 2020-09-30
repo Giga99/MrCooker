@@ -32,7 +32,7 @@ class FirebaseDB {
     suspend fun register(username: String, email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password).await()
         auth.currentUser!!.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(username).build())
-        currentUser = auth.currentUser!!
+        auth.currentUser!!.sendEmailVerification().await()
     }
 
     suspend fun resetPassword(email: String) {
@@ -40,7 +40,7 @@ class FirebaseDB {
     }
 
     fun checkPrevLogging(): Boolean {
-        return if(auth.currentUser != null) {
+        return if(auth.currentUser != null && auth.currentUser!!.isEmailVerified) {
             currentUser = auth.currentUser!!
             true
         } else false
