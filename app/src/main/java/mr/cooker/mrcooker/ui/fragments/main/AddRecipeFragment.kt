@@ -89,7 +89,7 @@ class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
                     trailingLoaderAddRecipe.visibility = View.GONE
 
                     findNavController().navigate(R.id.action_addRecipeFragment_to_allRecipesFragment)
-                    findNavController().popBackStack()
+                    //findNavController().popBackStack()
                 }
 
             } catch (e: Exception) {

@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -19,9 +20,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.other.Constants.ANIMATION_DURATION
 import mr.cooker.mrcooker.other.NetworkUtils
+import mr.cooker.mrcooker.ui.viewmodels.SignOutViewModel
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    private val signOutViewModel: SignOutViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +61,7 @@ class MainActivity : AppCompatActivity() {
                     .setMessage(getString(R.string.exit_dialog_message))
                     .setPositiveButton(getString(R.string.option_yes)) { dialogInterface, _ ->
                         dialogInterface.dismiss()
-                        FirebaseAuth.getInstance().signOut()
+                        signOutViewModel.signOut()
                         startActivity(Intent(this, AuthenticationActivity::class.java))
                         finish()
                     }
@@ -120,7 +125,7 @@ class MainActivity : AppCompatActivity() {
             .setMessage(getString(R.string.exit_dialog_message))
             .setPositiveButton(getString(R.string.option_yes)) { dialogInterface, _ ->
                 dialogInterface.dismiss()
-                FirebaseAuth.getInstance().signOut()
+                signOutViewModel.signOut()
                 startActivity(Intent(this, AuthenticationActivity::class.java))
                 finish()
             }

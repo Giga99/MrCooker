@@ -1,7 +1,6 @@
 package mr.cooker.mrcooker.data.firebase
 
 import android.net.Uri
-import android.provider.MediaStore
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.SetOptions
@@ -11,10 +10,8 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
 import mr.cooker.mrcooker.data.entities.Recipe
-import mr.cooker.mrcooker.other.Converters.Companion.toBitmap
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
-import java.io.File
 import java.util.*
 
 class FirebaseDB {
@@ -29,6 +26,10 @@ class FirebaseDB {
         currentUser = auth.currentUser!!
     }
 
+    fun signOut() {
+        auth.signOut()
+    }
+
     suspend fun register(username: String, email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password).await()
         auth.currentUser!!.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(username).build())
@@ -37,6 +38,21 @@ class FirebaseDB {
 
     suspend fun resetPassword(email: String) {
         auth.sendPasswordResetEmail(email).await()
+    }
+
+    suspend fun deleteAccount() {
+        val recipeQuery = firestoreRecipes
+            .whereEqualTo("ownerID", currentUser.uid)
+            .get().await()
+
+        if(recipeQuery.documents.isNotEmpty()) {
+            for(document in recipeQuery.documents) {
+                val recipe = document.toObject<Recipe>()
+                deleteRecipe(recipe!!)
+            }
+        }
+
+        currentUser.delete().await()
     }
 
     fun checkPrevLogging(): Boolean {

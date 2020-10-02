@@ -60,7 +60,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     loginLayout.visibility = View.VISIBLE
                     trailingLoaderLogin.visibility = View.GONE
                 }
-                if(currentUser.isEmailVerified) startActivity(Intent(requireContext(), MainActivity::class.java))
+                if(!currentUser.isEmailVerified) startActivity(Intent(requireContext(), MainActivity::class.java))
                 else throw EmailNotVerifiedException()
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {

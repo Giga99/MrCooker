@@ -30,4 +30,6 @@
     <string name="click_on_the_button_to_reset_your_password_email_link_will_be_sent">Enter an email to reset your password. Check the link in the email.</string>
     <string name="back_to_login">Back to Login</string>
     <string name="forgot_password">Forgot password?</string>
+    <string name="delete_account">Delete account</string>
+    <string name="your_profile">Your Profile</string>
 </resources>
