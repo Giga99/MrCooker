@@ -68,3 +68,5 @@ Eapp/src/main/java/mr/cooker/mrcooker/ui/viewmodels/AddingViewModel.kt,4\7\4724
 Lapp/src/main/java/mr/cooker/mrcooker/ui/viewmodels/ResetPasswordViewModel.kt,e\e\ee21597c156446bb02c79ae96333a49b39526e08
 
 Oapp/src/main/java/mr/cooker/mrcooker/ui/fragments/auth/ResetPasswordFragment.kt,d\7\d7eb788e7350b6ca3599035e1cb3deaa874c79c5
+‚
+Rapp/src/main/java/mr/cooker/mrcooker/other/exceptions/EmailNotVerifiedException.kt,0\c\0c112f145d7157fdecbfd8dda8f1560e4960803c

@@ -10,6 +10,7 @@
     <color name="errorColor">#D50000</color>
     <color name="onlineColor">#43A047</color>
     <color name="colorPrimaryText">@android:color/black</color>
+    <color name="colorPrimaryText2">@android:color/white</color>
     <color name="colorSecondaryText">#606060</color>
     <color name="colorBackgroundRow">#FFFFFF</color>
 </resources>
