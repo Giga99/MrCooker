@@ -45,6 +45,7 @@ class ResetPasswordFragment : Fragment(R.layout.fragment_reset_password) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 resetPasswordViewModel.resetPassword(email).join()
+                if(resetPasswordViewModel.status.value!!.throwable) resetPasswordViewModel.status.value!!.throwException()
                 withContext(Dispatchers.Main) {
                     resetPasswordLayout.visibility = View.VISIBLE
                     trailingLoaderResetPassword.visibility = View.GONE

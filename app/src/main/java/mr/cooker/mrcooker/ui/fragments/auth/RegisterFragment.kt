@@ -59,6 +59,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 registerViewModel.register(username, email, password).join()
+                if(registerViewModel.status.value!!.throwable) registerViewModel.status.value!!.throwException()
                 withContext(Dispatchers.Main) {
                     registerLayout.visibility = View.VISIBLE
                     trailingLoaderRegister.visibility = View.GONE
