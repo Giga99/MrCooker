@@ -9,6 +9,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.form_validation.rule.NonEmptyRule
 import com.github.dhaval2404.form_validation.validation.FormValidator
+import com.google.firebase.auth.FirebaseAuthException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.coroutines.CoroutineScope
@@ -56,6 +58,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 loginViewModel.login(email, password).join()
+                if(loginViewModel.status.value!!.throwable) loginViewModel.status.value!!.throwException()
                 withContext(Dispatchers.Main) {
                     loginLayout.visibility = View.VISIBLE
                     trailingLoaderLogin.visibility = View.GONE
