@@ -12,18 +12,15 @@ class LoginViewModel @ViewModelInject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
-    val status = MutableLiveData<EventFirebaseAuth<Exception>>()
+    val status = EventFirebaseAuth(null)
 
     fun login(email: String, password: String) = viewModelScope.launch {
         try {
             authRepository.login(email, password)
-            val event = EventFirebaseAuth(null)
-            event.throwable = false
-            status.postValue(event)
+            status.throwable = false
         } catch (e: Exception) {
-            val event = EventFirebaseAuth(e)
-            event.throwable = true
-            status.postValue(event)
+            status.throwable = true
+            status.exception = e
         }
     }
 

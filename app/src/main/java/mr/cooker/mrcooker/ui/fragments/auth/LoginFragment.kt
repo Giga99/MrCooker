@@ -58,7 +58,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 loginViewModel.login(email, password).join()
-                if(loginViewModel.status.value!!.throwable) loginViewModel.status.value!!.throwException()
+                if(loginViewModel.status.throwable) loginViewModel.status.throwException()
                 withContext(Dispatchers.Main) {
                     loginLayout.visibility = View.VISIBLE
                     trailingLoaderLogin.visibility = View.GONE

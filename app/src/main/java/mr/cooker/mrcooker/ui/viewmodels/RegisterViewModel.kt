@@ -4,6 +4,8 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
 import kotlinx.coroutines.launch
 import mr.cooker.mrcooker.data.repositories.AuthRepository
 import mr.cooker.mrcooker.other.EventFirebaseAuth
@@ -12,18 +14,15 @@ class RegisterViewModel @ViewModelInject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
-    val status = MutableLiveData<EventFirebaseAuth<Exception>>()
+    val status = EventFirebaseAuth(null)
 
     fun register(username: String, email: String, password: String) = viewModelScope.launch {
         try {
             authRepository.register(username, email, password)
-            val event = EventFirebaseAuth(null)
-            event.throwable = false
-            status.postValue(event)
+            status.throwable = false
         } catch (e: Exception) {
-            val event = EventFirebaseAuth(e)
-            event.throwable = true
-            status.postValue(event)
+            status.throwable = true
+            status.exception = e
         }
     }
 }

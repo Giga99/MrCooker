@@ -12,18 +12,15 @@ class ResetPasswordViewModel @ViewModelInject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
-    val status = MutableLiveData<EventFirebaseAuth<Exception>>()
+    val status = EventFirebaseAuth(null)
 
     fun resetPassword(email: String) = viewModelScope.launch {
         try {
             authRepository.resetPassword(email)
-            val event = EventFirebaseAuth(null)
-            event.throwable = false
-            status.postValue(event)
+            status.throwable = false
         } catch (e: Exception) {
-            val event = EventFirebaseAuth(e)
-            event.throwable = true
-            status.postValue(event)
+            status.throwable = true
+            status.exception = e
         }
     }
 }
