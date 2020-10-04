@@ -1,6 +1,6 @@
 package mr.cooker.mrcooker.other
 
-import android.net.Uri
+import android.content.SharedPreferences
 import com.google.firebase.auth.FirebaseUser
 import java.util.*
 
@@ -12,3 +12,9 @@ fun isNight(): Boolean {
 object FirebaseUtils {
     lateinit var currentUser: FirebaseUser
 }
+
+object SharedPrefUtils {
+    lateinit var sharedPreferences: SharedPreferences
+}
+
+fun getNightMode(): Int = SharedPrefUtils.sharedPreferences.getInt("mode", 0)

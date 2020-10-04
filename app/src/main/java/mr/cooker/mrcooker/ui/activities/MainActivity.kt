@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.other.Constants.ANIMATION_DURATION
 import mr.cooker.mrcooker.other.NetworkUtils
+import mr.cooker.mrcooker.other.SharedPrefUtils
 import mr.cooker.mrcooker.ui.viewmodels.SignOutViewModel
 import javax.inject.Inject
 
@@ -83,6 +84,12 @@ class MainActivity : AppCompatActivity() {
                     } else {
                         AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
                     }
+
+                val editor = SharedPrefUtils.sharedPreferences.edit()
+                editor.apply {
+                    putInt("mode", mode)
+                    apply()
+                }
 
                 // Change UI Mode
                 AppCompatDelegate.setDefaultNightMode(mode)

@@ -62,7 +62,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 withContext(Dispatchers.Main) {
                     loginLayout.visibility = View.VISIBLE
                     trailingLoaderLogin.visibility = View.GONE
-                }
+                }// TODO remove '!'
                 if(!currentUser.isEmailVerified) startActivity(Intent(requireContext(), MainActivity::class.java))
                 else throw EmailNotVerifiedException()
             } catch (e: Exception) {

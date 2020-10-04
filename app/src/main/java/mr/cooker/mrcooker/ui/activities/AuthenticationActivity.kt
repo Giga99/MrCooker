@@ -11,14 +11,13 @@ import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
-import com.google.firebase.auth.FirebaseAuth
 import com.shreyaspatil.MaterialDialog.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.other.Constants
-import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.NetworkUtils
+import mr.cooker.mrcooker.other.SharedPrefUtils.sharedPreferences
 import mr.cooker.mrcooker.ui.viewmodels.LoginViewModel
 
 @AndroidEntryPoint
@@ -59,6 +58,12 @@ class AuthenticationActivity : AppCompatActivity() {
                     } else {
                         AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
                     }
+
+                val editor = sharedPreferences.edit()
+                editor.apply {
+                    putInt("mode", mode)
+                    apply()
+                }
 
                 // Change UI Mode
                 AppCompatDelegate.setDefaultNightMode(mode)
