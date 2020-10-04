@@ -3,6 +3,7 @@ package mr.cooker.mrcooker.data.firebase
 import android.net.Uri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -77,6 +78,7 @@ class FirebaseDB {
             .whereEqualTo("timeToCook", recipe.timeToCook)
             .whereEqualTo("ingredients", recipe.ingredients)
             .whereEqualTo("instructions", recipe.instructions)
+            .whereEqualTo("timePosted", recipe.timePosted)
             .whereEqualTo("ownerID", recipe.ownerID)
             .get().await()
 
@@ -100,6 +102,7 @@ class FirebaseDB {
             .whereEqualTo("timeToCook", recipe.timeToCook)
             .whereEqualTo("ingredients", recipe.ingredients)
             .whereEqualTo("instructions", recipe.instructions)
+            .whereEqualTo("timePosted", recipe.timePosted)
             .whereEqualTo("ownerID", recipe.ownerID)
             .get().await()
 
@@ -140,7 +143,7 @@ class FirebaseDB {
 
     suspend fun getAllRecipes(): Resource<MutableList<Recipe>> {
         val recipes = mutableListOf<Recipe>()
-        val documentsList = firestoreRecipes.get().await()
+        val documentsList = firestoreRecipes.orderBy("timePosted", Query.Direction.DESCENDING).get().await()
 
         for(document in documentsList.documents) {
             val recipe = document.toObject<Recipe>()
@@ -152,7 +155,9 @@ class FirebaseDB {
 
     suspend fun getMyRecipes(): Resource<MutableList<Recipe>> {
         val recipes = mutableListOf<Recipe>()
-        val documentsList = firestoreRecipes.whereEqualTo("ownerID", currentUser.uid).get().await()
+        val documentsList =
+            firestoreRecipes.whereEqualTo("ownerID", currentUser.uid)
+                .orderBy("timePosted", Query.Direction.DESCENDING).get().await()
 
         for(document in documentsList.documents) {
             val recipe = document.toObject<Recipe>()
@@ -172,7 +177,7 @@ class FirebaseDB {
     fun getRealtimeRecipes(): Resource<MutableList<Recipe>> {
         val recipes = mutableListOf<Recipe>()
 
-        firestoreRecipes.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+        firestoreRecipes.orderBy("timePosted", Query.Direction.DESCENDING).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
             firebaseFirestoreException?.let {
                 return@addSnapshotListener
             }

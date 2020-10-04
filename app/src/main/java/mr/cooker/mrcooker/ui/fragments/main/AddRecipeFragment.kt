@@ -23,6 +23,7 @@ import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.ui.viewmodels.AddingViewModel
 import java.lang.Exception
+import java.util.*
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -74,7 +75,15 @@ class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
             try {
                 downloadUrl = addingViewModel.uploadImage(imgUri!!)
 
-                val recipe = Recipe(downloadUrl.toString(), name, time.toInt(), ingredients, instructions, currentUser.uid)
+                val recipe = Recipe(
+                    downloadUrl.toString(),
+                    name,
+                    time.toInt(),
+                    ingredients,
+                    instructions,
+                    Calendar.getInstance().timeInMillis,
+                    currentUser.uid
+                )
 
                 addingViewModel.uploadRecipe(recipe).join()
 

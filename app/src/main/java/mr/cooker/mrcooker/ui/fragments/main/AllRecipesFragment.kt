@@ -24,6 +24,7 @@ import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.ui.activities.RecipeActivity
 import mr.cooker.mrcooker.ui.adapters.RecipeAdapter
 import mr.cooker.mrcooker.ui.viewmodels.AllRecipesViewModel
+import timber.log.Timber
 
 @AndroidEntryPoint
 @ExperimentalCoroutinesApi
@@ -66,6 +67,7 @@ class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
             }
 
             is Resource.Failure -> {
+                Timber.e(it.throwable)
                 Toast.makeText(
                     requireContext(),
                     "An error has occurred:${it.throwable.message}",
