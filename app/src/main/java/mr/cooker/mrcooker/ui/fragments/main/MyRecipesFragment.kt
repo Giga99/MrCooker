@@ -1,18 +1,15 @@
 package mr.cooker.mrcooker.ui.fragments.main
 
-import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityOptionsCompat
-import androidx.core.net.toUri
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -28,6 +25,7 @@ import kotlinx.android.synthetic.main.fragment_my_recipes.swipeRefreshLayout
 import kotlinx.coroutines.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.Recipe
+import mr.cooker.mrcooker.other.Constants
 import mr.cooker.mrcooker.other.Constants.postID
 import mr.cooker.mrcooker.other.Converters.Companion.toBitmap
 import mr.cooker.mrcooker.other.Resource
@@ -35,7 +33,7 @@ import mr.cooker.mrcooker.ui.adapters.RecipeAdapter
 import mr.cooker.mrcooker.ui.activities.RecipeActivity
 import mr.cooker.mrcooker.ui.viewmodels.AddingViewModel
 import mr.cooker.mrcooker.ui.viewmodels.MyRecipesViewModel
-import timber.log.Timber
+import mr.cooker.mrcooker.ui.viewmodels.SearchViewModel
 import java.io.*
 import java.lang.Exception
 import java.util.*
@@ -45,6 +43,7 @@ import java.util.*
 class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
 
     private val myRecipesViewModel: MyRecipesViewModel by viewModels()
+    private val searchViewModel: SearchViewModel by viewModels()
     private val addingViewModel: AddingViewModel by viewModels()
     private lateinit var recipeAdapter: RecipeAdapter
 
@@ -55,6 +54,26 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
         myRecipesViewModel.myRecipes.observe(viewLifecycleOwner, Observer {
             observe(it)
         })
+
+        var job: Job? = null
+        etSearchMy.addTextChangedListener{ editable ->
+            job?.cancel()
+            if(editable.toString() != "") {
+                job = CoroutineScope(Dispatchers.Main).launch {
+                    delay(Constants.SEARCH_RECIPES_TIME_DELAY)
+                    editable?.let {
+                        if (editable.toString().isNotEmpty()) {
+                            val recipes =
+                                searchViewModel.getSearchedRecipes(editable.toString().toLowerCase(Locale.ROOT))
+                            observe(recipes)
+                        }
+                    }
+                }
+            } else if(editable.toString() == "") {
+                val data = myRecipesViewModel.getRealtimeRecipes()
+                observe(data)
+            }
+        }
 
         fab.setOnClickListener {
             findNavController().navigate(R.id.action_myRecipesFragment_to_addRecipeFragment)
@@ -88,10 +107,9 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
 
         // Swipe to refresh
         swipeRefreshLayout.setOnRefreshListener {
-            myRecipesViewModel.myRecipes.observe(viewLifecycleOwner, Observer {
-                observe(it)
-                swipeRefreshLayout.isRefreshing = false
-            })
+            val data = myRecipesViewModel.getRealtimeRecipes()
+            observe(data)
+            swipeRefreshLayout.isRefreshing = false
         }
     }
 

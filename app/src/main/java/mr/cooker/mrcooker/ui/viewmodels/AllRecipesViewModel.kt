@@ -14,6 +14,8 @@ class AllRecipesViewModel @ViewModelInject constructor(
     private val mainRepository: MainRepository
 ) : ViewModel() {
     val allRecipes = liveData<Resource<MutableList<Recipe>>>(Dispatchers.IO) {
+        // TODO emit(Resource.Loading)
+        // TODO hasInternetConnection in getRecipes()
         try {
             val recipes = mainRepository.getAllRecipes()
             emit(recipes)

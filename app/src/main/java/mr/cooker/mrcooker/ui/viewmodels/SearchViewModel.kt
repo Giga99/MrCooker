@@ -9,18 +9,18 @@ import kotlinx.coroutines.launch
 import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.data.repositories.MainRepository
 import mr.cooker.mrcooker.other.Resource
+import timber.log.Timber
 
-class MyRecipesViewModel @ViewModelInject constructor(
+class SearchViewModel @ViewModelInject constructor(
     private val mainRepository: MainRepository
 ) : ViewModel() {
-    val myRecipes = liveData<Resource<MutableList<Recipe>>>(Dispatchers.IO) {
-        try {
-            val recipes = mainRepository.getMyRecipes()
-            emit(recipes)
-        } catch (e: Exception) {
-            emit(Resource.Failure(e.cause!!))
-        }
-    }
 
-    fun getRealtimeRecipes() = mainRepository.getRealtimeRecipes()
+    suspend fun getSearchedRecipes(search: String): Resource<MutableList<Recipe>> {
+        var recipes: Resource<MutableList<Recipe>>? = null
+        viewModelScope.launch {
+            recipes = mainRepository.getSearchedRecipes(search)
+        }.join()
+
+        return recipes!!
+    }
 }

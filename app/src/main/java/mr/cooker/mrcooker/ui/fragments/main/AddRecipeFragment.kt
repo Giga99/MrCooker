@@ -24,6 +24,7 @@ import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.ui.viewmodels.AddingViewModel
 import java.lang.Exception
 import java.util.*
+import kotlin.collections.ArrayList
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint

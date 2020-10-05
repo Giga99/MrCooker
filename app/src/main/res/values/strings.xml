@@ -32,4 +32,5 @@
     <string name="forgot_password">Forgot password?</string>
     <string name="delete_account">Delete account</string>
     <string name="your_profile">Your Profile</string>
+    <string name="search">Search...</string>
 </resources>

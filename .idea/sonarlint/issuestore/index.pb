@@ -76,3 +76,5 @@ Fapp/src/main/java/mr/cooker/mrcooker/ui/viewmodels/SignOutViewModel.kt,a\5\a55
 Lapp/src/main/java/mr/cooker/mrcooker/ui/viewmodels/DeleteAccountViewModel.kt,3\4\3458ec558d7239adfd7b7ecb604de3ae38dbde51
 o
 ?app/src/main/java/mr/cooker/mrcooker/other/EventFirebaseAuth.kt,8\e\8e182dbeec7da3900f8b70e32ba22de6fd2286c4
+u
+Eapp/src/main/java/mr/cooker/mrcooker/ui/viewmodels/SearchViewModel.kt,4\6\463dbff5ad6dd79c52cbbe8f8f77437c39d38f32

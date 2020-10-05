@@ -159,9 +159,11 @@ class FirebaseDB {
             firestoreRecipes.whereEqualTo("ownerID", currentUser.uid)
                 .orderBy("timePosted", Query.Direction.DESCENDING).get().await()
 
-        for(document in documentsList.documents) {
-            val recipe = document.toObject<Recipe>()
-            recipes.add(recipe!!)
+        if(!documentsList.isEmpty) {
+            for (document in documentsList.documents) {
+                val recipe = document.toObject<Recipe>()
+                recipes.add(recipe!!)
+            }
         }
 
         return Resource.Success(recipes)
@@ -174,20 +176,35 @@ class FirebaseDB {
         return Resource.Success(recipe!!)
     }
 
+    suspend fun getSearchedRecipes(search: String): Resource<MutableList<Recipe>> {
+        val recipes = mutableListOf<Recipe>()
+        val documentList = firestoreRecipes.get().await()
+
+        if(!documentList.isEmpty) {
+            for (document in documentList.documents) {
+                val recipe = document.toObject<Recipe>()
+                if(recipe!!.name.toLowerCase(Locale.ROOT).contains(search)) recipes.add(recipe)
+            }
+        }
+
+        return Resource.Success(recipes)
+    }
+
     fun getRealtimeRecipes(): Resource<MutableList<Recipe>> {
         val recipes = mutableListOf<Recipe>()
 
-        firestoreRecipes.orderBy("timePosted", Query.Direction.DESCENDING).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-            firebaseFirestoreException?.let {
-                return@addSnapshotListener
-            }
-            querySnapshot?.let {
-                for(document in querySnapshot.documents) {
-                    val recipe = document.toObject<Recipe>()
-                    recipes.add(recipe!!)
+        firestoreRecipes.orderBy("timePosted", Query.Direction.DESCENDING)
+            .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                firebaseFirestoreException?.let {
+                    return@addSnapshotListener
+                }
+                querySnapshot?.let {
+                    for(document in querySnapshot.documents) {
+                        val recipe = document.toObject<Recipe>()
+                        recipes.add(recipe!!)
+                    }
                 }
             }
-        }
 
         return Resource.Success(recipes)
     }

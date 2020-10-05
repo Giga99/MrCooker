@@ -11,4 +11,4 @@ data class Recipe(
     var timePosted: Long = -1,
     var ownerID: String? = null,
     var id: String? = null
-) : Serializable {}
+) : Serializable
