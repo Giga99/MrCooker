@@ -55,7 +55,6 @@ class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
         swipeRefreshLayout.setOnRefreshListener {
             val data = allRecipesViewModel.getRealtimeRecipes()
             observe(data)
-            swipeRefreshLayout.isRefreshing = false
         }
 
         var job: Job? = null
@@ -81,9 +80,12 @@ class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
 
     private fun observe(it: Resource<MutableList<Recipe>>?) {
         when(it) {
-            is Resource.Loading -> { /* NO-OP */ }
+            is Resource.Loading -> {
+                swipeRefreshLayout.isRefreshing = true
+            }
 
             is Resource.Success -> {
+                swipeRefreshLayout.isRefreshing = false
                 recipeAdapter.submitList(it.data)
             }
 

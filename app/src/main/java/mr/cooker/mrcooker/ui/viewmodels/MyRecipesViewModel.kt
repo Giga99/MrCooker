@@ -14,6 +14,7 @@ class MyRecipesViewModel @ViewModelInject constructor(
     private val mainRepository: MainRepository
 ) : ViewModel() {
     val myRecipes = liveData<Resource<MutableList<Recipe>>>(Dispatchers.IO) {
+        emit(Resource.Loading())
         try {
             val recipes = mainRepository.getMyRecipes()
             emit(recipes)

@@ -109,7 +109,6 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
         swipeRefreshLayout.setOnRefreshListener {
             val data = myRecipesViewModel.getRealtimeRecipes()
             observe(data)
-            swipeRefreshLayout.isRefreshing = false
         }
     }
 
@@ -151,6 +150,7 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
             }
 
             is Resource.Success -> {
+                swipeRefreshLayout.isRefreshing = false
                 recipeAdapter.submitList(it.data)
             }
 
