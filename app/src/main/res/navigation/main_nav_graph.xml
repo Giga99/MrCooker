@@ -43,4 +43,8 @@
         android:id="@+id/profileFragment"
         android:name="mr.cooker.mrcooker.ui.fragments.main.ProfileFragment"
         android:label="ProfileFragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="mr.cooker.mrcooker.ui.fragments.main.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>

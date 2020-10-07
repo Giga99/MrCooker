@@ -13,4 +13,8 @@
         android:title="@string/profile"
         android:icon="@drawable/ic_profile"/>
 
+    <item android:id="@+id/settingsFragment"
+        android:title="@string/settings"
+        android:icon="@drawable/ic_settings"/>
+
 </menu>

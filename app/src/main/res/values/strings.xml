@@ -33,4 +33,5 @@
     <string name="delete_account">Delete account</string>
     <string name="your_profile">Your Profile</string>
     <string name="search">Search...</string>
+    <string name="settings">Settings</string>
 </resources>

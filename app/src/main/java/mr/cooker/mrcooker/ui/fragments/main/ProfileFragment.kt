@@ -27,7 +27,6 @@ import mr.cooker.mrcooker.ui.viewmodels.MyRecipesViewModel
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private val myRecipesViewModel: MyRecipesViewModel by viewModels()
-    private val deleteAccountViewModel: DeleteAccountViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,33 +50,5 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }
             }
         })
-
-        tvDeleteAccount.setOnClickListener {
-            MaterialDialog.Builder(requireActivity())
-                .setTitle("Deleting account")
-                .setMessage("Are you sure you want to delete account?")
-                .setPositiveButton(getString(R.string.option_yes)) { dialogInterface, _ ->
-                    dialogInterface.dismiss()
-                    profileLayout.visibility = View.GONE
-                    trailingLoaderProfile.visibility = View.VISIBLE
-                    trailingLoaderProfile.animate()
-                    deleteAccount()
-                }
-                .setNegativeButton(getString(R.string.option_no)) { dialogInterface, _ ->
-                    dialogInterface.dismiss()
-                }
-                .build()
-                .show()
-        }
-    }
-
-    private fun deleteAccount() = CoroutineScope(Dispatchers.IO).launch {
-        deleteAccountViewModel.deleteAccount().join()
-        withContext(Dispatchers.Main) {
-            profileLayout.visibility = View.VISIBLE
-            trailingLoaderProfile.visibility = View.GONE
-        }
-        startActivity(Intent(requireActivity(), AuthenticationActivity::class.java))
-        requireActivity().finish()
     }
 }
