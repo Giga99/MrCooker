@@ -24,8 +24,8 @@
             app:destination="@id/addRecipeFragment"
             app:enterAnim="@anim/slide_in_bottom_right"
             app:exitAnim="@anim/slide_out_bottom_left"
-            app:popEnterAnim="@anim/slide_in_bottom_right"
-            app:popExitAnim="@anim/slide_out_bottom_left"/>
+            app:popEnterAnim="@anim/slide_in_bottom_left"
+            app:popExitAnim="@anim/slide_out_bottom_right"/>
     </fragment>
     <fragment
         android:id="@+id/myRecipesFragment"
@@ -36,8 +36,8 @@
             app:destination="@id/addRecipeFragment"
             app:enterAnim="@anim/slide_in_bottom_right"
             app:exitAnim="@anim/slide_out_bottom_left"
-            app:popEnterAnim="@anim/slide_in_bottom_right"
-            app:popExitAnim="@anim/slide_out_bottom_left"/>
+            app:popEnterAnim="@anim/slide_in_bottom_left"
+            app:popExitAnim="@anim/slide_out_bottom_right"/>
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -48,8 +48,8 @@
             app:destination="@id/addRecipeFragment"
             app:enterAnim="@anim/slide_in_bottom_left"
             app:exitAnim="@anim/slide_out_bottom_right"
-            app:popEnterAnim="@anim/slide_in_bottom_left"
-            app:popExitAnim="@anim/slide_out_bottom_right"/>
+            app:popEnterAnim="@anim/slide_in_bottom_right"
+            app:popExitAnim="@anim/slide_out_bottom_left"/>
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -60,7 +60,7 @@
             app:destination="@id/addRecipeFragment"
             app:enterAnim="@anim/slide_in_bottom_left"
             app:exitAnim="@anim/slide_out_bottom_right"
-            app:popEnterAnim="@anim/slide_in_bottom_left"
-            app:popExitAnim="@anim/slide_out_bottom_right"/>
+            app:popEnterAnim="@anim/slide_in_bottom_right"
+            app:popExitAnim="@anim/slide_out_bottom_left"/>
     </fragment>
 </navigation>

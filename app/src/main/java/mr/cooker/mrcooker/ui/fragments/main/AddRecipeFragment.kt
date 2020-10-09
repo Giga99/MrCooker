@@ -68,7 +68,7 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
         }
 
         tvCancel.setOnClickListener {
-            findNavController().navigate(R.id.action_addRecipeFragment_to_allRecipesFragment)
+            findNavController().popBackStack()
         }
     }
 
@@ -100,8 +100,6 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
                     trailingLoaderAddRecipe.visibility = View.GONE
 
                     findNavController().navigate(R.id.action_addRecipeFragment_to_allRecipesFragment)
-                    // findNavController().popBackStack() TODO
-                    // settings fragment
                 }
 
             } catch (e: Exception) {
