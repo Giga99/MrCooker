@@ -33,7 +33,9 @@ class FirebaseDB {
 
     suspend fun register(username: String, email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password).await()
-        auth.currentUser!!.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(username).build())
+        auth.currentUser!!.updateProfile(
+            UserProfileChangeRequest.Builder().setDisplayName(username).build()
+        )
         auth.currentUser!!.sendEmailVerification().await()
     }
 
@@ -46,8 +48,8 @@ class FirebaseDB {
             .whereEqualTo("ownerID", currentUser.uid)
             .get().await()
 
-        if(recipeQuery.documents.isNotEmpty()) {
-            for(document in recipeQuery.documents) {
+        if (recipeQuery.documents.isNotEmpty()) {
+            for (document in recipeQuery.documents) {
                 val recipe = document.toObject<Recipe>()
                 deleteRecipe(recipe!!)
             }
@@ -57,7 +59,7 @@ class FirebaseDB {
     }
 
     fun checkPrevLogging(): Boolean {
-        return if(auth.currentUser != null && !auth.currentUser!!.isEmailVerified) {// TODO remove '!'
+        return if (auth.currentUser != null && !auth.currentUser!!.isEmailVerified) {// TODO remove '!'
             currentUser = auth.currentUser!!
             true
         } else false
@@ -84,8 +86,8 @@ class FirebaseDB {
 
         val map = mutableMapOf<String, Any>()
 
-        if(recipeQuery.documents.isNotEmpty()) {
-            for(document in recipeQuery) {
+        if (recipeQuery.documents.isNotEmpty()) {
+            for (document in recipeQuery) {
                 map["id"] = document.id
                 firestoreRecipes.document(document.id).set(map, SetOptions.merge()).await()
             }
@@ -108,8 +110,8 @@ class FirebaseDB {
 
         val map = mutableMapOf<String, Any>()
 
-        if(recipeQuery.documents.isNotEmpty()) {
-            for(document in recipeQuery) {
+        if (recipeQuery.documents.isNotEmpty()) {
+            for (document in recipeQuery) {
                 map["imgUrl"] = downloadUrl.toString()
                 firestoreRecipes.document(document.id).set(map, SetOptions.merge()).await()
             }
@@ -119,8 +121,8 @@ class FirebaseDB {
     suspend fun deleteRecipe(recipe: Recipe) {
         deleteImage(recipe.imgUrl)
         val recipeQuery = firestoreRecipes.whereEqualTo("id", recipe.id).get().await()
-        if(recipeQuery.documents.isNotEmpty()) {
-            for(document in recipeQuery) firestoreRecipes.document(document.id).delete().await()
+        if (recipeQuery.documents.isNotEmpty()) {
+            for (document in recipeQuery) firestoreRecipes.document(document.id).delete().await()
         }
     }
 
@@ -130,22 +132,24 @@ class FirebaseDB {
     }
 
     private fun getFileName(imgUrl: String): String {
-        val pom = imgUrl.removePrefix("https://firebasestorage.googleapis.com/v0/b/mrcooker-d0484.appspot.com/o/images%2F")
+        val pom =
+            imgUrl.removePrefix("https://firebasestorage.googleapis.com/v0/b/mrcooker-d0484.appspot.com/o/images%2F")
         val index = pom.indexOf('?')
         return pom.substring(0, index)
     }
 
     suspend fun getBytes(imgUrl: String): ByteArray {
-        val downloadSize = 5L*1024*1024
+        val downloadSize = 5L * 1024 * 1024
         val fileName = getFileName(imgUrl)
         return firebaseStorage.child("images/$fileName").getBytes(downloadSize).await()
     }
 
     suspend fun getAllRecipes(): Resource<MutableList<Recipe>> {
         val recipes = mutableListOf<Recipe>()
-        val documentsList = firestoreRecipes.orderBy("timePosted", Query.Direction.DESCENDING).get().await()
+        val documentsList =
+            firestoreRecipes.orderBy("timePosted", Query.Direction.DESCENDING).get().await()
 
-        for(document in documentsList.documents) {
+        for (document in documentsList.documents) {
             val recipe = document.toObject<Recipe>()
             recipes.add(recipe!!)
         }
@@ -159,7 +163,7 @@ class FirebaseDB {
             firestoreRecipes.whereEqualTo("ownerID", currentUser.uid)
                 .orderBy("timePosted", Query.Direction.DESCENDING).get().await()
 
-        if(!documentsList.isEmpty) {
+        if (!documentsList.isEmpty) {
             for (document in documentsList.documents) {
                 val recipe = document.toObject<Recipe>()
                 recipes.add(recipe!!)
@@ -180,10 +184,10 @@ class FirebaseDB {
         val recipes = mutableListOf<Recipe>()
         val documentList = firestoreRecipes.get().await()
 
-        if(!documentList.isEmpty) {
+        if (!documentList.isEmpty) {
             for (document in documentList.documents) {
                 val recipe = document.toObject<Recipe>()
-                if(recipe!!.name.toLowerCase(Locale.ROOT).contains(search)) recipes.add(recipe)
+                if (recipe!!.name.toLowerCase(Locale.ROOT).contains(search)) recipes.add(recipe)
             }
         }
 
@@ -199,7 +203,7 @@ class FirebaseDB {
                     return@addSnapshotListener
                 }
                 querySnapshot?.let {
-                    for(document in querySnapshot.documents) {
+                    for (document in querySnapshot.documents) {
                         val recipe = document.toObject<Recipe>()
                         recipes.add(recipe!!)
                     }

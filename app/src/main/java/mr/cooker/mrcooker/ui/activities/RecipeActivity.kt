@@ -38,7 +38,7 @@ class RecipeActivity : AppCompatActivity() {
 
     fun getRecipe(postId: String) = CoroutineScope(Dispatchers.IO).launch {
         val data = allRecipesViewModel.getRecipeByID(postId)
-        when(data) {
+        when (data) {
             is Resource.Loading -> {
                 swipeRefreshLayout.isRefreshing = true
             }
@@ -67,7 +67,7 @@ class RecipeActivity : AppCompatActivity() {
 
     // Back button and for future menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId) {
             android.R.id.home -> {
                 supportFinishAfterTransition()
                 return true

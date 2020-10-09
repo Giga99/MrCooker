@@ -28,7 +28,7 @@ import kotlin.collections.ArrayList
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
+class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
     private val addingViewModel: AddingViewModel by viewModels()
     private var imgBitmap: Bitmap? = null
     private var imgUri: Uri? = null
@@ -43,17 +43,18 @@ class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
             val ingredients = etIngredients.text.toString()
             val instructions = etInstructions.text.toString()
 
-            if(name.isNotEmpty() && time.isNotEmpty() && ingredients.isNotEmpty() && instructions.isNotEmpty() && imgBitmap != null) {
+            if (name.isNotEmpty() && time.isNotEmpty() && ingredients.isNotEmpty() && instructions.isNotEmpty() && imgBitmap != null) {
                 addRecipeLayout.visibility = View.GONE
                 trailingLoaderAddRecipe.visibility = View.VISIBLE
                 trailingLoaderAddRecipe.animate()
 
                 upload(name, time, ingredients, instructions)
 
-            } else if(imgBitmap == null){
+            } else if (imgBitmap == null) {
                 Toast.makeText(context, "Please select the image!", Toast.LENGTH_SHORT).show()
-            }else {
-                Toast.makeText(context, "Please enter all the information!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Please enter all the information!", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 
@@ -114,14 +115,18 @@ class AddRecipeFragment: Fragment(R.layout.fragment_add_recipe) {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        when(resultCode) {
+        when (resultCode) {
             Activity.RESULT_OK -> {
                 imgUri = data?.data
                 imgBitmap = BitmapFactory.decodeFile(ImagePicker.getFilePath(data)!!)
                 Glide.with(this).load(imgBitmap).into(ivAddImage)
             }
 
-            ImagePicker.RESULT_ERROR -> Toast.makeText(context, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+            ImagePicker.RESULT_ERROR -> Toast.makeText(
+                context,
+                ImagePicker.getError(data),
+                Toast.LENGTH_SHORT
+            ).show()
 
             else -> Toast.makeText(context, "Task Cancelled", Toast.LENGTH_SHORT).show()
         }

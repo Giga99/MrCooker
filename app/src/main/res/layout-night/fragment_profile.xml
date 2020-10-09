@@ -24,6 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="120dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header_title"
@@ -32,8 +33,7 @@
         app:trailingcircular_bigCircleRadius="40dp"
         app:trailingcircular_dotsColor="@color/colorPrimary"
         app:trailingcircular_dotsRadius="11dp"
-        app:trailingcircular_noOfTrailingDots="5"
-        android:visibility="gone"/>
+        app:trailingcircular_noOfTrailingDots="5" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/profileLayout"

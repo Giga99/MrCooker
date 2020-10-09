@@ -9,11 +9,9 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_all_recipes.*
-import kotlinx.android.synthetic.main.fragment_all_recipes.fab
 import kotlinx.android.synthetic.main.fragment_all_recipes.swipeRefreshLayout
 import kotlinx.coroutines.*
 import mr.cooker.mrcooker.R
@@ -44,10 +42,6 @@ class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
             observe(it)
         })
 
-        fab.setOnClickListener {
-            findNavController().navigate(R.id.action_allRecipesFragment_to_addRecipeFragment)
-        }
-
         recipeAdapter.setOnItemClickListener { recipe, iv ->
             showRecipe(recipe, iv)
         }
@@ -58,20 +52,22 @@ class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
         }
 
         var job: Job? = null
-        etSearch.addTextChangedListener{ editable ->
+        etSearch.addTextChangedListener { editable ->
             job?.cancel()
-            if(editable.toString() != "") {
+            if (editable.toString() != "") {
                 job = CoroutineScope(Dispatchers.Main).launch {
                     delay(SEARCH_RECIPES_TIME_DELAY)
                     editable?.let {
                         if (editable.toString().isNotEmpty()) {
                             val recipes =
-                                searchViewModel.getSearchedRecipes(editable.toString().toLowerCase(Locale.ROOT))
+                                searchViewModel.getSearchedRecipes(
+                                    editable.toString().toLowerCase(Locale.ROOT)
+                                )
                             observe(recipes)
                         }
                     }
                 }
-            } else if(editable.toString() == "") {
+            } else if (editable.toString() == "") {
                 val data = allRecipesViewModel.getRealtimeRecipes()
                 observe(data)
             }
@@ -79,7 +75,7 @@ class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
     }
 
     private fun observe(it: Resource<MutableList<Recipe>>?) {
-        when(it) {
+        when (it) {
             is Resource.Loading -> {
                 swipeRefreshLayout.isRefreshing = true
             }

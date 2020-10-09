@@ -42,9 +42,25 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="mr.cooker.mrcooker.ui.fragments.main.ProfileFragment"
-        android:label="ProfileFragment" />
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_addRecipeFragment"
+            app:destination="@id/addRecipeFragment"
+            app:enterAnim="@anim/slide_in_bottom_left"
+            app:exitAnim="@anim/slide_out_bottom_right"
+            app:popEnterAnim="@anim/slide_in_bottom_left"
+            app:popExitAnim="@anim/slide_out_bottom_right"/>
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="mr.cooker.mrcooker.ui.fragments.main.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="SettingsFragment" >
+        <action
+            android:id="@+id/action_settingsFragment_to_addRecipeFragment"
+            app:destination="@id/addRecipeFragment"
+            app:enterAnim="@anim/slide_in_bottom_left"
+            app:exitAnim="@anim/slide_out_bottom_right"
+            app:popEnterAnim="@anim/slide_in_bottom_left"
+            app:popExitAnim="@anim/slide_out_bottom_right"/>
+    </fragment>
 </navigation>

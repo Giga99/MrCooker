@@ -9,7 +9,8 @@ class AuthRepository @Inject constructor(
 
     suspend fun login(email: String, password: String) = firebaseDB.login(email, password)
 
-    suspend fun register(username: String, email: String, password: String) = firebaseDB.register(username, email, password)
+    suspend fun register(username: String, email: String, password: String) =
+        firebaseDB.register(username, email, password)
 
     fun signOut() = firebaseDB.signOut()
 

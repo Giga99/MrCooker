@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -24,6 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="120dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
@@ -32,8 +32,7 @@
         app:trailingcircular_bigCircleRadius="40dp"
         app:trailingcircular_dotsColor="@color/colorPrimary"
         app:trailingcircular_dotsRadius="11dp"
-        app:trailingcircular_noOfTrailingDots="5"
-        android:visibility="gone"/>
+        app:trailingcircular_noOfTrailingDots="5" />
 
     <ScrollView
         android:layout_width="match_parent"

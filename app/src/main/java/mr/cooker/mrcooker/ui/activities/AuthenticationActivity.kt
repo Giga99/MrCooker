@@ -37,7 +37,7 @@ class AuthenticationActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        if(loginViewModel.checkPrevLogging()) {
+        if (loginViewModel.checkPrevLogging()) {
             startActivity(Intent(this, MainActivity::class.java))
         }
     }
@@ -48,7 +48,7 @@ class AuthenticationActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
+        return when (item.itemId) {
             R.id.nightMode -> {
                 val mode =
                     if ((resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==

@@ -34,8 +34,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         tvUsername.text = currentUser.displayName
 
         myRecipesViewModel.myRecipes.observe(viewLifecycleOwner, Observer {
-            when(it) {
-                is Resource.Loading -> { /* NO-OP */ }
+            when (it) {
+                is Resource.Loading -> { /* NO-OP */
+                }
 
                 is Resource.Success -> {
                     tvNumOfRecipes.text = "${it.data.size}"

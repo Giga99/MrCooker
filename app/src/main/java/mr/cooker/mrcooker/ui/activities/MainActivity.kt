@@ -13,17 +13,15 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.firebase.auth.FirebaseAuth
 import com.shreyaspatil.MaterialDialog.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.fab
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.other.Constants.ANIMATION_DURATION
 import mr.cooker.mrcooker.other.NetworkUtils
-import mr.cooker.mrcooker.other.SharedPrefUtils
 import mr.cooker.mrcooker.other.SharedPrefUtils.sharedPreferences
 import mr.cooker.mrcooker.ui.viewmodels.SignOutViewModel
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -34,18 +32,45 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        bottomNavigationView.background = null
+        bottomNavigationView.menu.getItem(2).isEnabled = false
+
         setSupportActionBar(toolbar)
 
         bottomNavigationView.setupWithNavController(navHostFragment.findNavController())
-        //bottomNavigationView.setOnNavigationItemReselectedListener { /* NO-OP */ }
 
         navHostFragment.findNavController()
             .addOnDestinationChangedListener { _, destination, _ ->
-                when(destination.id) {
-                    R.id.allRecipesFragment, R.id.myRecipesFragment, R.id.profileFragment -> bottomNavigationView.visibility = View.VISIBLE
-                    R.id.addRecipeFragment -> bottomNavigationView.visibility = View.GONE
+                when (destination.id) {
+                    R.id.allRecipesFragment, R.id.myRecipesFragment, R.id.profileFragment -> {
+                        fab.isEnabled = true
+                    }
+
+                    R.id.addRecipeFragment -> {
+                        fab.isEnabled = false
+                    }
                 }
             }
+
+        fab.setOnClickListener {
+            when (navHostFragment.findNavController().currentDestination?.id) {
+                R.id.allRecipesFragment ->
+                    navHostFragment.findNavController()
+                        .navigate(R.id.action_allRecipesFragment_to_addRecipeFragment)
+
+                R.id.myRecipesFragment ->
+                    navHostFragment.findNavController()
+                        .navigate(R.id.action_myRecipesFragment_to_addRecipeFragment)
+
+                R.id.profileFragment ->
+                    navHostFragment.findNavController()
+                        .navigate(R.id.action_profileFragment_to_addRecipeFragment)
+
+                R.id.settingsFragment ->
+                    navHostFragment.findNavController()
+                        .navigate(R.id.action_settingsFragment_to_addRecipeFragment)
+            }
+        }
 
         checkNetworkConnectivity()
     }
@@ -56,7 +81,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
+        return when (item.itemId) {
             R.id.signOut -> {
                 MaterialDialog.Builder(this)
                     .setTitle(getString(R.string.exit_dialog_title))
@@ -115,7 +140,8 @@ class MainActivity : AppCompatActivity() {
                 networkStatusLayout.apply {
                     setBackgroundColor(getColor(R.color.onlineColor))
 
-                    animate().alpha(1f).setStartDelay(ANIMATION_DURATION).setDuration(ANIMATION_DURATION)
+                    animate().alpha(1f).setStartDelay(ANIMATION_DURATION)
+                        .setDuration(ANIMATION_DURATION)
                         .setListener(object : AnimatorListenerAdapter() {
                             override fun onAnimationEnd(animation: Animator?) {
                                 super.onAnimationEnd(animation)

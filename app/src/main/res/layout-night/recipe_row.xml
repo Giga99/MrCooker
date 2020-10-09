@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    android:elevation="12dp"
-    android:background="@color/colorBackgroundRow">
+    android:background="@color/colorBackgroundRow"
+    android:elevation="12dp">
 
     <ImageView
         android:id="@+id/ivBackground"

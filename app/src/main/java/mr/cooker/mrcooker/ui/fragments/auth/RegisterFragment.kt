@@ -37,7 +37,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         super.onViewCreated(view, savedInstanceState)
 
         btnRegister.setOnClickListener {
-            if(isValidForm()) {
+            if (isValidForm()) {
                 registerUser()
             }
         }
@@ -59,11 +59,12 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 registerViewModel.register(username, email, password).join()
-                if(registerViewModel.status.throwable) registerViewModel.status.throwException()
+                if (registerViewModel.status.throwable) registerViewModel.status.throwException()
                 withContext(Dispatchers.Main) {
                     registerLayout.visibility = View.VISIBLE
                     trailingLoaderRegister.visibility = View.GONE
-                    Toast.makeText(requireContext(), "Successfully registered!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Successfully registered!", Toast.LENGTH_SHORT)
+                        .show()
                 }
                 findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
             } catch (e: Exception) {
@@ -82,13 +83,20 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             .addField(etUsername, NonEmptyRule("Please, enter your username!"))
             .addField(
                 etPassword,
-                PasswordRule(PasswordPattern.ALPHA_NUMERIC, "Please, provide strong password with at least one letter and one number!"),
+                PasswordRule(
+                    PasswordPattern.ALPHA_NUMERIC,
+                    "Please, provide strong password with at least one letter and one number!"
+                ),
                 MinLengthRule(6, "Please, provide strong password with minimum 6 length!"),
-                NonEmptyRule("Please, enter your password!"))
+                NonEmptyRule("Please, enter your password!")
+            )
             .addField(
                 etConfirmPassword,
                 NonEmptyRule("Please, confirm your password!"),
-                EqualRule(etPassword.text.toString(), "Please, confirm your password, they are not same!")
+                EqualRule(
+                    etPassword.text.toString(),
+                    "Please, confirm your password, they are not same!"
+                )
             )
             .validate()
     }

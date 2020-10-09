@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_my_recipes.*
-import kotlinx.android.synthetic.main.fragment_my_recipes.fab
 import kotlinx.android.synthetic.main.fragment_my_recipes.swipeRefreshLayout
 import kotlinx.coroutines.*
 import mr.cooker.mrcooker.R
@@ -56,27 +55,25 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
         })
 
         var job: Job? = null
-        etSearchMy.addTextChangedListener{ editable ->
+        etSearchMy.addTextChangedListener { editable ->
             job?.cancel()
-            if(editable.toString() != "") {
+            if (editable.toString() != "") {
                 job = CoroutineScope(Dispatchers.Main).launch {
                     delay(Constants.SEARCH_RECIPES_TIME_DELAY)
                     editable?.let {
                         if (editable.toString().isNotEmpty()) {
                             val recipes =
-                                searchViewModel.getSearchedRecipes(editable.toString().toLowerCase(Locale.ROOT))
+                                searchViewModel.getSearchedRecipes(
+                                    editable.toString().toLowerCase(Locale.ROOT)
+                                )
                             observe(recipes)
                         }
                     }
                 }
-            } else if(editable.toString() == "") {
+            } else if (editable.toString() == "") {
                 val data = myRecipesViewModel.getRealtimeRecipes()
                 observe(data)
             }
-        }
-
-        fab.setOnClickListener {
-            findNavController().navigate(R.id.action_myRecipesFragment_to_addRecipeFragment)
         }
 
         recipeAdapter.setOnItemClickListener { recipe, iv ->
@@ -112,39 +109,40 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
         }
     }
 
-    private fun deleteRecipe(viewHolder: RecyclerView.ViewHolder) = CoroutineScope(Dispatchers.IO).launch {
-        try {
-            val position = viewHolder.adapterPosition
-            val recipe = recipeAdapter.differ.currentList[position]
-            val byteArray = addingViewModel.getBytes(recipe.imgUrl)
-            val bitmap = toBitmap(byteArray)
+    private fun deleteRecipe(viewHolder: RecyclerView.ViewHolder) =
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val position = viewHolder.adapterPosition
+                val recipe = recipeAdapter.differ.currentList[position]
+                val byteArray = addingViewModel.getBytes(recipe.imgUrl)
+                val bitmap = toBitmap(byteArray)
 
-            // Making uri from bitmap, deprecated TODO
-            val bytes = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-            val path = MediaStore.Images.Media
-                .insertImage(context?.contentResolver, bitmap, "Title", null)
-            val uri = Uri.parse(path.toString())
+                // Making uri from bitmap, deprecated TODO
+                val bytes = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+                val path = MediaStore.Images.Media
+                    .insertImage(context?.contentResolver, bitmap, "Title", null)
+                val uri = Uri.parse(path.toString())
 
-            addingViewModel.deleteRecipe(recipe).join()
-            Snackbar.make(requireView(), "Successfully deleted recipe!", Snackbar.LENGTH_LONG)
-                .apply {
-                    setAction("Undo") {
-                        CoroutineScope(Dispatchers.IO).launch {
-                            addingViewModel.uploadAgain(recipe, uri!!)
+                addingViewModel.deleteRecipe(recipe).join()
+                Snackbar.make(requireView(), "Successfully deleted recipe!", Snackbar.LENGTH_LONG)
+                    .apply {
+                        setAction("Undo") {
+                            CoroutineScope(Dispatchers.IO).launch {
+                                addingViewModel.uploadAgain(recipe, uri!!)
+                            }
                         }
+                        show()
                     }
-                    show()
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
                 }
-        } catch (e: Exception) {
-            withContext(Dispatchers.Main) {
-                Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
             }
         }
-    }
 
     private fun observe(it: Resource<MutableList<Recipe>>?) {
-        when(it) {
+        when (it) {
             is Resource.Loading -> {
                 swipeRefreshLayout.isRefreshing = true
             }

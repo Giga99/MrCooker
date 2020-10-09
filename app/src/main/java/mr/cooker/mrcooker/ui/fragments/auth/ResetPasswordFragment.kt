@@ -31,7 +31,7 @@ class ResetPasswordFragment : Fragment(R.layout.fragment_reset_password) {
         }
 
         btnResetPassword.setOnClickListener {
-            if(isValidForm()) resetPassword()
+            if (isValidForm()) resetPassword()
         }
     }
 
@@ -45,7 +45,7 @@ class ResetPasswordFragment : Fragment(R.layout.fragment_reset_password) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 resetPasswordViewModel.resetPassword(email).join()
-                if(resetPasswordViewModel.status.throwable) resetPasswordViewModel.status.throwException()
+                if (resetPasswordViewModel.status.throwable) resetPasswordViewModel.status.throwException()
                 withContext(Dispatchers.Main) {
                     resetPasswordLayout.visibility = View.VISIBLE
                     trailingLoaderResetPassword.visibility = View.GONE

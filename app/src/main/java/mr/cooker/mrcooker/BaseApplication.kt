@@ -17,7 +17,7 @@ class BaseApplication : Application() {
 
         SharedPrefUtils.sharedPreferences = getSharedPreferences("nightMode", MODE_PRIVATE)
 
-        if(getNightMode() != 0) AppCompatDelegate.setDefaultNightMode(getNightMode())
+        if (getNightMode() != 0) AppCompatDelegate.setDefaultNightMode(getNightMode())
         else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
     }
 }

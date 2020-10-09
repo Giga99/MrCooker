@@ -14,13 +14,14 @@ object NetworkUtils : ConnectivityManager.NetworkCallback() {
     private val networkLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getNetworkLiveData(context: Context): LiveData<Boolean> {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             connectivityManager.registerDefaultNetworkCallback(this)
         else {
             val builder = NetworkRequest.Builder()
-            connectivityManager.registerNetworkCallback(builder.build(),this)
+            connectivityManager.registerNetworkCallback(builder.build(), this)
         }
 
         var isConnected = false
@@ -29,7 +30,7 @@ object NetworkUtils : ConnectivityManager.NetworkCallback() {
             val networkCapability = connectivityManager.getNetworkCapabilities(network)
 
             networkCapability?.let {
-                if(it.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
+                if (it.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
                     isConnected = true
                     return@forEach
                 }
