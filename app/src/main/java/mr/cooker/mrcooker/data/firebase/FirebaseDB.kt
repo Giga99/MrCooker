@@ -75,7 +75,7 @@ class FirebaseDB {
     }
 
     fun checkPrevLogging(): Boolean {
-        return if (auth.currentUser != null && !auth.currentUser!!.isEmailVerified) {// TODO remove '!'
+        return if (auth.currentUser != null && auth.currentUser!!.isEmailVerified) {
             currentUser = auth.currentUser!!
             true
         } else false
