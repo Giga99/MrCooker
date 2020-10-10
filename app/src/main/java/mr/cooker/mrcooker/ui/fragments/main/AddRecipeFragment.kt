@@ -76,7 +76,7 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 downloadUrl = addingViewModel.uploadImage(imgUri!!)
-
+                if(addingViewModel.status.throwable) addingViewModel.status.throwException()
                 val recipe = Recipe(
                     downloadUrl.toString(),
                     name,
@@ -104,6 +104,8 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
 
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
+                    addRecipeLayout.visibility = View.VISIBLE
+                    trailingLoaderAddRecipe.visibility = View.GONE
                     Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
                 }
             }

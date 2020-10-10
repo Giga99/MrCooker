@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import com.shreyaspatil.MaterialDialog.MaterialDialog
@@ -37,8 +38,12 @@ class AuthenticationActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        if (loginViewModel.checkPrevLogging()) {
-            startActivity(Intent(this, MainActivity::class.java))
+        try {
+            if (loginViewModel.checkPrevLogging()) {
+                startActivity(Intent(this, MainActivity::class.java))
+            }
+        } catch (e: Exception) {
+            Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.findNavController
@@ -87,10 +88,14 @@ class MainActivity : AppCompatActivity() {
                     .setTitle(getString(R.string.exit_dialog_title))
                     .setMessage(getString(R.string.exit_dialog_message))
                     .setPositiveButton(getString(R.string.option_yes)) { dialogInterface, _ ->
-                        dialogInterface.dismiss()
-                        signOutViewModel.signOut()
-                        startActivity(Intent(this, AuthenticationActivity::class.java))
-                        finish()
+                        try {
+                            dialogInterface.dismiss()
+                            signOutViewModel.signOut()
+                            startActivity(Intent(this, AuthenticationActivity::class.java))
+                            finish()
+                        } catch (e: Exception) {
+                            Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+                        }
                     }
                     .setNegativeButton(getString(R.string.option_no)) { dialogInterface, _ ->
                         dialogInterface.dismiss()
@@ -158,10 +163,14 @@ class MainActivity : AppCompatActivity() {
             .setTitle(getString(R.string.exit_dialog_title))
             .setMessage(getString(R.string.exit_dialog_message))
             .setPositiveButton(getString(R.string.option_yes)) { dialogInterface, _ ->
-                dialogInterface.dismiss()
-                signOutViewModel.signOut()
-                startActivity(Intent(this, AuthenticationActivity::class.java))
-                finish()
+                try {
+                    dialogInterface.dismiss()
+                    signOutViewModel.signOut()
+                    startActivity(Intent(this, AuthenticationActivity::class.java))
+                    finish()
+                } catch (e: Exception) {
+                    Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+                }
             }
             .setNegativeButton(getString(R.string.option_no)) { dialogInterface, _ ->
                 dialogInterface.dismiss()
