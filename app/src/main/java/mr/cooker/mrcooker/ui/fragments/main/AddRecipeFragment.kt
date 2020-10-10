@@ -49,10 +49,10 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
                 trailingLoaderAddRecipe.visibility = View.VISIBLE
                 trailingLoaderAddRecipe.animate()
 
-                val name = etName.text.toString()
-                val time = etTime.text.toString()
-                val ingredients = etIngredients.text.toString()
-                val instructions = etInstructions.text.toString()
+                val name = etName.editText?.text.toString()
+                val time = etTime.editText?.text.toString()
+                val ingredients = etIngredients.editText?.text.toString()
+                val instructions = etInstructions.editText?.text.toString()
 
                 upload(name, time, ingredients, instructions)
 
@@ -64,17 +64,17 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
             }
         }
 
-        etIngredients.addTextChangedListener {
+        etIngredients.editText?.addTextChangedListener {
             if (it != null) {
                 if (it.length > lengthBefore) {
-                    if (etIngredients.text.toString().length == 1) {
-                        etIngredients.setText("• " + etIngredients.text.toString())
-                        etIngredients.setSelection(etIngredients.text.length)
+                    if (etIngredients.editText?.text.toString().length == 1) {
+                        etIngredients.editText?.setText("• " + etIngredients.editText?.text.toString())
+                        etIngredients.editText?.setSelection(etIngredients.editText!!.text.length)
                     }
-                    if (etIngredients.text.toString().endsWith("\n")) {
-                        etIngredients.setText(etIngredients.text.toString().replace("\n", "\n• "))
-                        etIngredients.setText(etIngredients.text.toString().replace("• •", "•"))
-                        etIngredients.setSelection(etIngredients.text.length)
+                    if (etIngredients.editText?.text.toString().endsWith("\n")) {
+                        etIngredients.editText?.setText(etIngredients.editText?.text.toString().replace("\n", "\n• "))
+                        etIngredients.editText?.setText(etIngredients.editText?.text.toString().replace("• •", "•"))
+                        etIngredients.editText?.setSelection(etIngredients.editText!!.text.length)
                     }
                 }
 

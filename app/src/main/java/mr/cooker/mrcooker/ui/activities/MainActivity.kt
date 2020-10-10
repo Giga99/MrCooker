@@ -40,19 +40,6 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigationView.setupWithNavController(navHostFragment.findNavController())
 
-        navHostFragment.findNavController()
-            .addOnDestinationChangedListener { _, destination, _ ->
-                when (destination.id) {
-                    R.id.allRecipesFragment, R.id.myRecipesFragment, R.id.profileFragment -> {
-                        fab.isEnabled = true
-                    }
-
-                    R.id.addRecipeFragment -> {
-                        fab.isEnabled = false
-                    }
-                }
-            }
-
         fab.setOnClickListener {
             when (navHostFragment.findNavController().currentDestination?.id) {
                 R.id.allRecipesFragment ->

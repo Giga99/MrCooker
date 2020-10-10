@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -19,7 +18,6 @@
             android:text="@string/add_new_recipe"
             android:textColor="@color/colorPrimaryText"
             android:textSize="20sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -53,75 +51,120 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/etName"
-                    android:layout_width="0dp"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
                     android:hint="@string/name"
-                    android:inputType="text"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textColorHint="@color/colorSecondaryText"
-                    app:layout_constraintEnd_toStartOf="@+id/etTime"
+                    android:textColorHint="@color/appBackgroundColor"
+                    app:hintTextColor="@color/colorPrimary"
+                    app:boxBackgroundMode="outline"
+                    app:boxStrokeColor="@color/appBackgroundColor"
+                    app:boxStrokeErrorColor="@color/errorColor"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/colorPrimary"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <EditText
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textColor="@color/appBackgroundColor" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/etTime"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:hint="@string/time_to_cook_in_minutes"
-                    android:inputType="number"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textColorHint="@color/colorSecondaryText"
+                    android:textColorHint="@color/appBackgroundColor"
+                    app:hintTextColor="@color/colorPrimary"
+                    app:boxBackgroundMode="outline"
+                    app:boxStrokeColor="@color/appBackgroundColor"
+                    app:boxStrokeErrorColor="@color/errorColor"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/colorPrimary"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toEndOf="@+id/etName"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <EditText
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:textColor="@color/appBackgroundColor" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/etIngredients"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="20dp"
-                    android:ems="10"
+                    android:layout_marginEnd="20dp"
                     android:hint="@string/ingredients"
-                    android:inputType="textMultiLine"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textColorHint="@color/colorSecondaryText"
+                    android:textColorHint="@color/appBackgroundColor"
+                    app:hintTextColor="@color/colorPrimary"
+                    app:boxBackgroundMode="outline"
+                    app:boxStrokeColor="@color/appBackgroundColor"
+                    app:boxStrokeErrorColor="@color/errorColor"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/colorPrimary"
+                    app:layout_constraintEnd_toStartOf="@+id/ivAddImage"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/etName" />
+                    app:layout_constraintTop_toBottomOf="@+id/etName">
 
-                <EditText
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:textColor="@color/appBackgroundColor" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/etInstructions"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="75dp"
+                    android:layout_marginTop="50dp"
                     android:layout_marginEnd="20dp"
-                    android:ems="10"
                     android:hint="@string/instructions"
-                    android:inputType="textMultiLine"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textColorHint="@color/colorSecondaryText"
+                    android:textColorHint="@color/appBackgroundColor"
+                    app:hintTextColor="@color/colorPrimary"
+                    app:boxBackgroundMode="outline"
+                    app:boxStrokeColor="@color/appBackgroundColor"
+                    app:boxStrokeErrorColor="@color/errorColor"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/colorPrimary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/etIngredients" />
+                    app:layout_constraintTop_toBottomOf="@+id/etIngredients">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:textColor="@color/appBackgroundColor" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageView
                     android:id="@+id/ivAddImage"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:layout_marginStart="10dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="10dp"
                     android:src="@drawable/ic_add_photo"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.743"
-                    app:layout_constraintStart_toEndOf="@+id/etIngredients"
                     app:layout_constraintTop_toBottomOf="@+id/etTime" />
 
 
