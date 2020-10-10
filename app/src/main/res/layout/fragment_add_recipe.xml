@@ -1,153 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/add_new_recipe"
-        android:textColor="@color/colorPrimaryText"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.agrawalsuneet.dotsloader.loaders.TrailingCircularDotsLoader
-        android:id="@+id/trailingLoaderAddRecipe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:trailingcircular_animDelay="200"
-        app:trailingcircular_animDuration="1200"
-        app:trailingcircular_bigCircleRadius="40dp"
-        app:trailingcircular_dotsColor="@color/colorPrimary"
-        app:trailingcircular_dotsRadius="11dp"
-        app:trailingcircular_noOfTrailingDots="5" />
-
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        android:padding="10dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/addRecipeLayout"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp">
+            android:layout_marginTop="20dp"
+            android:text="@string/add_new_recipe"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/etName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:backgroundTint="@color/colorPrimaryText"
-                android:hint="@string/name"
-                android:inputType="text"
-                android:textColor="@color/colorPrimaryText"
-                android:textColorHint="@color/colorSecondaryText"
-                app:layout_constraintEnd_toStartOf="@+id/etTime"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <com.agrawalsuneet.dotsloader.loaders.TrailingCircularDotsLoader
+            android:id="@+id/trailingLoaderAddRecipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="120dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:trailingcircular_animDelay="200"
+            app:trailingcircular_animDuration="1200"
+            app:trailingcircular_bigCircleRadius="40dp"
+            app:trailingcircular_dotsColor="@color/colorPrimary"
+            app:trailingcircular_dotsRadius="11dp"
+            app:trailingcircular_noOfTrailingDots="5" />
 
-            <EditText
-                android:id="@+id/etTime"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:backgroundTint="@color/colorPrimaryText"
-                android:hint="@string/time_to_cook_in_minutes"
-                android:inputType="number"
-                android:textColor="@color/colorPrimaryText"
-                android:textColorHint="@color/colorSecondaryText"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="80dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView">
 
-            <EditText
-                android:id="@+id/etIngredients"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
-                android:backgroundTint="@color/colorPrimaryText"
-                android:ems="10"
-                android:hint="@string/ingredients"
-                android:inputType="textMultiLine"
-                android:textColor="@color/colorPrimaryText"
-                android:textColorHint="@color/colorSecondaryText"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etName" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/addRecipeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/etInstructions"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:backgroundTint="@color/colorPrimaryText"
-                android:ems="10"
-                android:hint="@string/instructions"
-                android:inputType="textMultiLine"
-                android:textColor="@color/colorPrimaryText"
-                android:textColorHint="@color/colorSecondaryText"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ivAddImage" />
+                <EditText
+                    android:id="@+id/etName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:hint="@string/name"
+                    android:inputType="text"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textColorHint="@color/colorSecondaryText"
+                    app:layout_constraintEnd_toStartOf="@+id/etTime"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/ivAddImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_add_photo"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.743"
-                app:layout_constraintStart_toEndOf="@+id/etIngredients"
-                app:layout_constraintTop_toBottomOf="@+id/etTime" />
+                <EditText
+                    android:id="@+id/etTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:hint="@string/time_to_cook_in_minutes"
+                    android:inputType="number"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textColorHint="@color/colorSecondaryText"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/etIngredients"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:ems="10"
+                    android:hint="@string/ingredients"
+                    android:inputType="textMultiLine"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textColorHint="@color/colorSecondaryText"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/etName" />
+
+                <EditText
+                    android:id="@+id/etInstructions"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="75dp"
+                    android:layout_marginEnd="20dp"
+                    android:ems="10"
+                    android:hint="@string/instructions"
+                    android:inputType="textMultiLine"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textColorHint="@color/colorSecondaryText"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/etIngredients" />
+
+                <ImageView
+                    android:id="@+id/ivAddImage"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/ic_add_photo"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.743"
+                    app:layout_constraintStart_toEndOf="@+id/etIngredients"
+                    app:layout_constraintTop_toBottomOf="@+id/etTime" />
 
 
-            <TextView
-                android:id="@+id/tvCancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="20dp"
-                android:text="@string/cancel"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toStartOf="@+id/tvAdd"
-                app:layout_constraintTop_toBottomOf="@+id/etInstructions" />
+                <TextView
+                    android:id="@+id/tvCancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="150dp"
+                    android:text="@string/cancel"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/tvAdd"
+                    app:layout_constraintTop_toBottomOf="@+id/etInstructions" />
 
-            <TextView
-                android:id="@+id/tvAdd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="20dp"
-                android:text="@string/add"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etInstructions" />
+                <TextView
+                    android:id="@+id/tvAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="150dp"
+                    android:text="@string/add"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/etInstructions" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
+        </ScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

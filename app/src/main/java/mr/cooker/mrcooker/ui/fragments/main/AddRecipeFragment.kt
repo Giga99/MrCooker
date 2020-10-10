@@ -8,15 +8,19 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.github.dhaval2404.form_validation.rule.NonEmptyRule
+import com.github.dhaval2404.form_validation.validation.FormValidator
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_add_recipe.*
+import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import kotlinx.coroutines.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.Recipe
@@ -34,19 +38,21 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
     private var imgUri: Uri? = null
     private var downloadUrl: Uri? = null
 
+    private var lengthBefore = 0
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         tvAdd.setOnClickListener {
-            val name = etName.text.toString()
-            val time = etTime.text.toString()
-            val ingredients = etIngredients.text.toString()
-            val instructions = etInstructions.text.toString()
-
-            if (name.isNotEmpty() && time.isNotEmpty() && ingredients.isNotEmpty() && instructions.isNotEmpty() && imgBitmap != null) {
+            if (isValidForm() && imgBitmap != null) {
                 addRecipeLayout.visibility = View.GONE
                 trailingLoaderAddRecipe.visibility = View.VISIBLE
                 trailingLoaderAddRecipe.animate()
+
+                val name = etName.text.toString()
+                val time = etTime.text.toString()
+                val ingredients = etIngredients.text.toString()
+                val instructions = etInstructions.text.toString()
 
                 upload(name, time, ingredients, instructions)
 
@@ -55,6 +61,24 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
             } else {
                 Toast.makeText(context, "Please enter all the information!", Toast.LENGTH_SHORT)
                     .show()
+            }
+        }
+
+        etIngredients.addTextChangedListener {
+            if (it != null) {
+                if (it.length > lengthBefore) {
+                    if (etIngredients.text.toString().length == 1) {
+                        etIngredients.setText("• " + etIngredients.text.toString())
+                        etIngredients.setSelection(etIngredients.text.length)
+                    }
+                    if (etIngredients.text.toString().endsWith("\n")) {
+                        etIngredients.setText(etIngredients.text.toString().replace("\n", "\n• "))
+                        etIngredients.setText(etIngredients.text.toString().replace("• •", "•"))
+                        etIngredients.setSelection(etIngredients.text.length)
+                    }
+                }
+
+                lengthBefore = it.length
             }
         }
 
@@ -76,7 +100,7 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 downloadUrl = addingViewModel.uploadImage(imgUri!!)
-                if(addingViewModel.status.throwable) addingViewModel.status.throwException()
+                if (addingViewModel.status.throwable) addingViewModel.status.throwException()
                 val recipe = Recipe(
                     downloadUrl.toString(),
                     name,
@@ -130,5 +154,14 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
 
             else -> Toast.makeText(context, "Task Cancelled", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun isValidForm(): Boolean {
+        return FormValidator.getInstance()
+            .addField(etName, NonEmptyRule("Please, enter a recipe name!"))
+            .addField(etTime, NonEmptyRule("Please, enter a time to cook!"))
+            .addField(etIngredients, NonEmptyRule("Please, enter ingredients!"))
+            .addField(etInstructions, NonEmptyRule("Please, enter instructions!"))
+            .validate()
     }
 }

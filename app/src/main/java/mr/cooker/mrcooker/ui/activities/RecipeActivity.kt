@@ -58,7 +58,7 @@ class RecipeActivity : AppCompatActivity() {
 
         withContext(Dispatchers.Main) {
             tvName.text = recipe.name
-            tvTime.text = recipe.timeToCook.toString()
+            tvTime.text = "${recipe.timeToCook.toString()}min"
             tvIngredients.text = recipe.ingredients
             tvInstructions.text = recipe.instructions
             Glide.with(this@RecipeActivity).load(recipe.imgUrl).into(ivHeader)
