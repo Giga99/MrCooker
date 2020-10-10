@@ -60,23 +60,34 @@
                 app:text="A"
                 app:textSize="22sp" />
 
-            <EditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/etEditName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="10dp"
-                android:backgroundTint="@color/colorPrimaryText"
                 android:hint="@string/name"
-                android:inputType="text"
-                android:textSize="20sp"
-                android:textColor="@color/colorPrimaryText"
-                android:textColorHint="@color/colorSecondaryText"
+                android:textColorHint="@color/appBackgroundColor"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/appBackgroundColor"
+                app:boxStrokeErrorColor="@color/errorColor"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/colorPrimary"
+                app:hintTextColor="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ivChangeProfileImage" />
+                app:layout_constraintTop_toBottomOf="@+id/ivChangeProfileImage">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textColor="@color/appBackgroundColor"
+                    android:textSize="20sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/btnSubmit"
