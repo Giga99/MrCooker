@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.github.abdularis.civ.AvatarImageView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_profile.*
 import mr.cooker.mrcooker.R
@@ -41,5 +42,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }
             }
         })
+
+        if(currentUser.photoUrl == null) {
+            ivProfileImage.text = currentUser.displayName?.substring(0, 1)
+            ivProfileImage.state = AvatarImageView.SHOW_INITIAL
+        } else {
+            ivProfileImage.setImageURI(currentUser.photoUrl)
+            ivProfileImage.state = AvatarImageView.SHOW_IMAGE
+        }
     }
 }

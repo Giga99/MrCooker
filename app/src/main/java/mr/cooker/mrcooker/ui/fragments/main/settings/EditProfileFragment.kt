@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.github.abdularis.civ.AvatarImageView
 import com.github.dhaval2404.form_validation.rule.NonEmptyRule
 import com.github.dhaval2404.form_validation.validation.FormValidator
 import com.shreyaspatil.MaterialDialog.MaterialDialog
@@ -42,6 +43,14 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
 
         btnCancel.setOnClickListener {
             findNavController().popBackStack()
+        }
+
+        if(currentUser.photoUrl == null) {
+            ivChangeProfileImage.text = currentUser.displayName?.substring(0, 1)
+            ivChangeProfileImage.state = AvatarImageView.SHOW_INITIAL
+        } else {
+            ivChangeProfileImage.setImageURI(currentUser.photoUrl)
+            ivChangeProfileImage.state = AvatarImageView.SHOW_IMAGE
         }
 
         tvDeleteAccount.setOnClickListener {
