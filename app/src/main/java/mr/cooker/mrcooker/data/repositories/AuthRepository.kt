@@ -1,5 +1,6 @@
 package mr.cooker.mrcooker.data.repositories
 
+import android.net.Uri
 import mr.cooker.mrcooker.data.firebase.FirebaseDB
 import javax.inject.Inject
 
@@ -18,7 +19,7 @@ class AuthRepository @Inject constructor(
 
     fun checkPrevLogging(): Boolean = firebaseDB.checkPrevLogging()
 
-    suspend fun editAccount(name: String) = firebaseDB.editAccount(name)
+    suspend fun editAccount(name: String, imgUri: Uri?) = firebaseDB.editAccount(name, imgUri)
 
     suspend fun changePassword(email: String, oldPassword: String, newPassword: String) =
         firebaseDB.changePassword(email, oldPassword, newPassword)

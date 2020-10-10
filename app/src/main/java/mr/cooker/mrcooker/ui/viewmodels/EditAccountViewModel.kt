@@ -1,5 +1,6 @@
 package mr.cooker.mrcooker.ui.viewmodels
 
+import android.net.Uri
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,9 +15,9 @@ class EditAccountViewModel @ViewModelInject constructor(
 
     val status = EventFirebase(null)
 
-    fun editAccount(name: String) = viewModelScope.launch {
+    fun editAccount(name: String, imgUri: Uri?) = viewModelScope.launch {
         try {
-            authRepository.editAccount(name)
+            authRepository.editAccount(name, imgUri)
             status.throwable = false
         } catch (e: Exception) {
             status.throwable = true

@@ -45,9 +45,11 @@ class FirebaseDB {
         auth.sendPasswordResetEmail(email).await()
     }
 
-    suspend fun editAccount(name: String) {
-        val userProfileChangeRequest =
-            UserProfileChangeRequest.Builder().setDisplayName(name).build()
+    suspend fun editAccount(name: String, imgUri: Uri?) {
+        val userProfileChangeRequest = UserProfileChangeRequest.Builder()
+            .setDisplayName(name)
+            .setPhotoUri(imgUri)
+            .build()
         currentUser.updateProfile(userProfileChangeRequest).await()
     }
 

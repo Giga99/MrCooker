@@ -1,17 +1,24 @@
 package mr.cooker.mrcooker.ui.fragments.main.settings
 
+import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.github.abdularis.civ.AvatarImageView
 import com.github.dhaval2404.form_validation.rule.NonEmptyRule
 import com.github.dhaval2404.form_validation.validation.FormValidator
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.shreyaspatil.MaterialDialog.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_add_recipe.*
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +33,9 @@ import mr.cooker.mrcooker.ui.viewmodels.EditAccountViewModel
 class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
 
     private val editAccountViewModel: EditAccountViewModel by viewModels()
+
+    private var imgUri: Uri? = null
+    private var imgBitmap: Bitmap? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,7 +60,16 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
             ivChangeProfileImage.state = AvatarImageView.SHOW_INITIAL
         } else {
             ivChangeProfileImage.setImageURI(currentUser.photoUrl)
+            imgUri = currentUser.photoUrl
             ivChangeProfileImage.state = AvatarImageView.SHOW_IMAGE
+        }
+
+        ivChangeProfileImage.setOnClickListener {
+            ImagePicker.with(this)
+                .cropSquare()
+                .compress(1024)
+                .maxResultSize(1080, 1080)
+                .start()
         }
 
         tvDeleteAccount.setOnClickListener {
@@ -75,7 +94,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
     private fun editAccount() = CoroutineScope(Dispatchers.IO).launch {
         try {
             val name = etEditName.text.toString()
-            editAccountViewModel.editAccount(name).join()
+            editAccountViewModel.editAccount(name, imgUri).join()
             if (editAccountViewModel.status.throwable) editAccountViewModel.status.throwException()
             withContext(Dispatchers.Main) {
                 editProfileLayout.visibility = View.VISIBLE
@@ -113,5 +132,26 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
         return FormValidator.getInstance()
             .addField(etEditName, NonEmptyRule("Please, enter a new name!"))
             .validate()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when (resultCode) {
+            Activity.RESULT_OK -> {
+                imgUri = data?.data
+                ivChangeProfileImage.setImageURI(imgUri)
+                ivChangeProfileImage.state = AvatarImageView.SHOW_IMAGE
+                //Glide.with(this).load(imgBitmap).into(ivChangeProfileImage)
+            }
+
+            ImagePicker.RESULT_ERROR -> Toast.makeText(
+                context,
+                ImagePicker.getError(data),
+                Toast.LENGTH_SHORT
+            ).show()
+
+            else -> Toast.makeText(context, "Task Cancelled", Toast.LENGTH_SHORT).show()
+        }
     }
 }

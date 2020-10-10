@@ -37,7 +37,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView">
@@ -46,13 +45,12 @@
             android:id="@+id/editProfileLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp">
+            android:layout_marginTop="30dp">
 
             <com.github.abdularis.civ.AvatarImageView
                 android:id="@+id/ivChangeProfileImage"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_marginStart="15dp"
                 android:layout_marginTop="20dp"
                 android:src="@drawable/ic_profile"
                 app:avatarBackgroundColor="@color/colorPrimary"
@@ -72,6 +70,7 @@
                 android:backgroundTint="@color/colorPrimaryText"
                 android:hint="@string/name"
                 android:inputType="text"
+                android:textSize="20sp"
                 android:textColor="@color/colorPrimaryText"
                 android:textColorHint="@color/colorSecondaryText"
                 app:layout_constraintEnd_toEndOf="parent"

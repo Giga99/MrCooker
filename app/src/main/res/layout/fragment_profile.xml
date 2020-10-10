@@ -51,7 +51,6 @@
             android:id="@+id/ivProfileImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginTop="20dp"
             android:src="@drawable/ic_profile"
             app:avatarBackgroundColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
