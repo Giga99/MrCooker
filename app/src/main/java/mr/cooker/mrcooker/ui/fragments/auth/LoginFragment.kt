@@ -52,8 +52,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         trailingLoaderLogin.visibility = View.VISIBLE
         trailingLoaderLogin.animate()
 
-        val email = etLoginEmail.text.toString()
-        val password = etLoginPassword.text.toString()
+        val email = etLoginEmail.editText?.text.toString()
+        val password = etLoginPassword.editText?.text.toString()
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
