@@ -1,18 +1,17 @@
 package mr.cooker.mrcooker.ui.viewmodels
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import mr.cooker.mrcooker.data.repositories.AuthRepository
-import mr.cooker.mrcooker.other.EventFirebaseAuth
+import mr.cooker.mrcooker.other.EventFirebase
 
 class ResetPasswordViewModel @ViewModelInject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
-    val status = EventFirebaseAuth(null)
+    val status = EventFirebase(null)
 
     fun resetPassword(email: String) = viewModelScope.launch {
         try {

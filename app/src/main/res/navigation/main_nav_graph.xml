@@ -62,5 +62,43 @@
             app:exitAnim="@anim/slide_out_bottom_right"
             app:popEnterAnim="@anim/slide_in_bottom_right"
             app:popExitAnim="@anim/slide_out_bottom_left"/>
+        <action
+            android:id="@+id/action_settingsFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_settingsFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="mr.cooker.mrcooker.ui.fragments.main.settings.ChangePasswordFragment"
+        android:label="ChangePasswordFragment" >
+        <action
+            android:id="@+id/action_changePasswordFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
+    </fragment>
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="mr.cooker.mrcooker.ui.fragments.main.settings.EditProfileFragment"
+        android:label="EditProfileFragment" >
+        <action
+            android:id="@+id/action_editProfileFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
     </fragment>
 </navigation>

@@ -18,5 +18,10 @@ class AuthRepository @Inject constructor(
 
     fun checkPrevLogging(): Boolean = firebaseDB.checkPrevLogging()
 
+    suspend fun editAccount(name: String) = firebaseDB.editAccount(name)
+
+    suspend fun changePassword(email: String, oldPassword: String, newPassword: String) =
+        firebaseDB.changePassword(email, oldPassword, newPassword)
+
     suspend fun deleteAccount() = firebaseDB.deleteAccount()
 }

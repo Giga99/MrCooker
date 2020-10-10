@@ -1,20 +1,17 @@
 package mr.cooker.mrcooker.ui.viewmodels
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthException
 import kotlinx.coroutines.launch
 import mr.cooker.mrcooker.data.repositories.AuthRepository
-import mr.cooker.mrcooker.other.EventFirebaseAuth
+import mr.cooker.mrcooker.other.EventFirebase
 
 class RegisterViewModel @ViewModelInject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
-    val status = EventFirebaseAuth(null)
+    val status = EventFirebase(null)
 
     fun register(username: String, email: String, password: String) = viewModelScope.launch {
         try {

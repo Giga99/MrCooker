@@ -1,6 +1,8 @@
 package mr.cooker.mrcooker.data.firebase
 
 import android.net.Uri
+import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.Query
@@ -41,6 +43,18 @@ class FirebaseDB {
 
     suspend fun resetPassword(email: String) {
         auth.sendPasswordResetEmail(email).await()
+    }
+
+    suspend fun editAccount(name: String) {
+        val userProfileChangeRequest =
+            UserProfileChangeRequest.Builder().setDisplayName(name).build()
+        currentUser.updateProfile(userProfileChangeRequest).await()
+    }
+
+    suspend fun changePassword(email: String, oldPassword: String, newPassword: String) {
+        val credential: AuthCredential = EmailAuthProvider.getCredential(email, oldPassword)
+        currentUser.reauthenticate(credential).await()
+        currentUser.updatePassword(newPassword).await()
     }
 
     suspend fun deleteAccount() {

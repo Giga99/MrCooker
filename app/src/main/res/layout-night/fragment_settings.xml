@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp">
@@ -18,45 +19,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.agrawalsuneet.dotsloader.loaders.TrailingCircularDotsLoader
-        android:id="@+id/trailingLoaderSettings"
+
+    <Button
+        android:id="@+id/btnEditProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
-        android:visibility="gone"
+        android:layout_marginTop="50dp"
+        android:text="@string/edit_profile"
+        android:textColor="@color/colorPrimaryText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_title"
-        app:trailingcircular_animDelay="200"
-        app:trailingcircular_animDuration="1200"
-        app:trailingcircular_bigCircleRadius="40dp"
-        app:trailingcircular_dotsColor="@color/colorPrimary"
-        app:trailingcircular_dotsRadius="11dp"
-        app:trailingcircular_noOfTrailingDots="5" />
+        app:layout_constraintTop_toBottomOf="@id/header_title" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/settingsLayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <Button
+        android:id="@+id/btnChangePassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/change_password"
+        android:textColor="@color/colorPrimaryText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_title">
+        app:layout_constraintTop_toBottomOf="@+id/btnEditProfile" />
 
-        <TextView
-            android:id="@+id/tvDeleteAccount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/delete_account"
-            android:textColor="@color/errorColor"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
