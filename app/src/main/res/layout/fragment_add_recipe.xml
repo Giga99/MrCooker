@@ -51,6 +51,7 @@
                 android:id="@+id/etName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:backgroundTint="@color/colorPrimaryText"
@@ -67,6 +68,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
                 android:backgroundTint="@color/colorPrimaryText"
                 android:hint="@string/time_to_cook_in_minutes"
                 android:inputType="number"
@@ -79,7 +81,8 @@
                 android:id="@+id/etIngredients"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
                 android:backgroundTint="@color/colorPrimaryText"
                 android:ems="10"
                 android:hint="@string/ingredients"
@@ -91,25 +94,30 @@
 
             <EditText
                 android:id="@+id/etInstructions"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
                 android:backgroundTint="@color/colorPrimaryText"
                 android:ems="10"
                 android:hint="@string/instructions"
                 android:inputType="textMultiLine"
                 android:textColor="@color/colorPrimaryText"
                 android:textColorHint="@color/colorSecondaryText"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etIngredients" />
+                app:layout_constraintTop_toBottomOf="@+id/ivAddImage" />
 
             <ImageView
                 android:id="@+id/ivAddImage"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
                 android:src="@drawable/ic_add_photo"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.743"
                 app:layout_constraintStart_toEndOf="@+id/etIngredients"
                 app:layout_constraintTop_toBottomOf="@+id/etTime" />
 
@@ -118,25 +126,25 @@
                 android:id="@+id/tvCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="20dp"
                 android:text="@string/cancel"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@+id/tvAdd"
-                app:layout_constraintTop_toBottomOf="@+id/ivAddImage" />
+                app:layout_constraintTop_toBottomOf="@+id/etInstructions" />
 
             <TextView
                 android:id="@+id/tvAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginEnd="20dp"
                 android:text="@string/add"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ivAddImage" />
+                app:layout_constraintTop_toBottomOf="@+id/etInstructions" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
