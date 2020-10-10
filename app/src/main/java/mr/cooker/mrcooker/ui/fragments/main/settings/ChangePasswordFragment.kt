@@ -47,9 +47,9 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
 
     private fun changePassword() = CoroutineScope(Dispatchers.IO).launch {
         try {
-            val email = etEmail.text.toString()
-            val oldPassword = etOldPassword.text.toString()
-            val newPassword = etNewPassword.text.toString()
+            val email = etEmail.editText?.text.toString()
+            val oldPassword = etOldPassword.editText?.text.toString()
+            val newPassword = etNewPassword.editText?.text.toString()
             editAccountViewModel.changePassword(email, oldPassword, newPassword).join()
             if (editAccountViewModel.status.throwable) editAccountViewModel.status.throwException()
             withContext(Dispatchers.Main) {
@@ -83,7 +83,7 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
                 etConfirmNewPassword,
                 NonEmptyRule("Please, confirm your password!"),
                 EqualRule(
-                    etNewPassword.text.toString(),
+                    etNewPassword.editText?.text.toString(),
                     "Please, confirm your password, they are not same!"
                 )
             )
