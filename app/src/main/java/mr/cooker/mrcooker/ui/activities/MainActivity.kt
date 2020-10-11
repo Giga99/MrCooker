@@ -60,6 +60,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // TODO back button pressed findNavController().popBackStack()
+        // TODO splash screen
+
         checkNetworkConnectivity()
     }
 
