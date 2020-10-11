@@ -138,8 +138,6 @@ class RecipeActivity : AppCompatActivity() {
                 }
 
             withContext(Dispatchers.Main) {
-                recipeLayout.visibility = View.VISIBLE
-                trailingLoaderRecipe.visibility = View.GONE
                 startActivity(Intent(this@RecipeActivity, MainActivity::class.java))
             }
         } catch (e: Exception) {

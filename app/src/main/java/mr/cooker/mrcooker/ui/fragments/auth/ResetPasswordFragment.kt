@@ -47,8 +47,6 @@ class ResetPasswordFragment : Fragment(R.layout.fragment_reset_password) {
                 resetPasswordViewModel.resetPassword(email).join()
                 if (resetPasswordViewModel.status.throwable) resetPasswordViewModel.status.throwException()
                 withContext(Dispatchers.Main) {
-                    resetPasswordLayout.visibility = View.VISIBLE
-                    trailingLoaderResetPassword.visibility = View.GONE
                     Toast.makeText(requireContext(), "Check your email!", Toast.LENGTH_SHORT).show()
                 }
                 findNavController().navigate(R.id.action_resetPasswordFragment_to_loginFragment)

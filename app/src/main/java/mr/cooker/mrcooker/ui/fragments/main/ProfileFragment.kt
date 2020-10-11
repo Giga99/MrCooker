@@ -22,6 +22,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        profileLayout.visibility = View.GONE
+        trailingLoaderProfile.visibility = View.VISIBLE
+        trailingLoaderProfile.animate()
+
         myRecipesViewModel.myRecipes.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Resource.Loading -> { /* NO-OP */
@@ -30,6 +34,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 is Resource.Success -> {
                     tvUsername.text = currentUser.displayName
                     tvNumOfRecipes.text = "${it.data.size}"
+                    profileLayout.visibility = View.VISIBLE
+                    trailingLoaderProfile.visibility = View.GONE
                 }
 
                 is Resource.Failure -> {

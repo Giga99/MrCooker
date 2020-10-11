@@ -59,10 +59,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             try {
                 loginViewModel.login(email, password).join()
                 if (loginViewModel.status.throwable) loginViewModel.status.throwException()
-                withContext(Dispatchers.Main) {
-                    loginLayout.visibility = View.VISIBLE
-                    trailingLoaderLogin.visibility = View.GONE
-                }
                 if (currentUser.isEmailVerified) startActivity(
                     Intent(
                         requireContext(),

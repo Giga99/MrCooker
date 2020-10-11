@@ -124,10 +124,7 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
                         Snackbar.LENGTH_LONG
                     ).show()
 
-                    addRecipeLayout.visibility = View.VISIBLE
-                    trailingLoaderAddRecipe.visibility = View.GONE
-
-                    findNavController().navigate(R.id.action_addRecipeFragment_to_allRecipesFragment)
+                    findNavController().popBackStack()
                 }
 
             } catch (e: Exception) {

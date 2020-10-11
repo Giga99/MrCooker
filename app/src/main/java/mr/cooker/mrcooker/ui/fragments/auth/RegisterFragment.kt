@@ -61,8 +61,6 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 registerViewModel.register(username, email, password).join()
                 if (registerViewModel.status.throwable) registerViewModel.status.throwException()
                 withContext(Dispatchers.Main) {
-                    registerLayout.visibility = View.VISIBLE
-                    trailingLoaderRegister.visibility = View.GONE
                     Toast.makeText(requireContext(), "Successfully registered!", Toast.LENGTH_SHORT)
                         .show()
                 }
