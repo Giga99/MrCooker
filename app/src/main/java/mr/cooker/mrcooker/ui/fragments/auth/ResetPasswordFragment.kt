@@ -40,7 +40,7 @@ class ResetPasswordFragment : Fragment(R.layout.fragment_reset_password) {
         trailingLoaderResetPassword.visibility = View.VISIBLE
         trailingLoaderResetPassword.animate()
 
-        val email = etEmailResetPass.text.toString()
+        val email = etEmailResetPass.editText?.text.toString()
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
