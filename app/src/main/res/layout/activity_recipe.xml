@@ -45,6 +45,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -55,58 +56,86 @@
             android:layout_height="match_parent"
             android:padding="10dp">
 
-            <TextView
-                android:id="@+id/tvName"
+            <com.agrawalsuneet.dotsloader.loaders.TrailingCircularDotsLoader
+                android:id="@+id/trailingLoaderRecipe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Name"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="30sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tvIngredients"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="30dp"
-                android:text="Ingredients"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toStartOf="@+id/tvTime"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvName" />
-
-            <TextView
-                android:id="@+id/tvTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:text="Time"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="20sp"
-                android:textStyle="italic"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvName" />
-
-            <TextView
-                android:id="@+id/tvInstructions"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="10dp"
-                android:text="Instructions"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="20sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvIngredients" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:trailingcircular_animDelay="200"
+                app:trailingcircular_animDuration="1200"
+                app:trailingcircular_bigCircleRadius="40dp"
+                app:trailingcircular_dotsColor="@color/colorPrimary"
+                app:trailingcircular_dotsRadius="11dp"
+                app:trailingcircular_noOfTrailingDots="5" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/recipeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text=""
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="30sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvIngredients"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:text=""
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toStartOf="@+id/tvTime"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvName" />
+
+                <TextView
+                    android:id="@+id/tvTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="10dp"
+                    android:text=""
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="20sp"
+                    android:textStyle="italic"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvName" />
+
+                <TextView
+                    android:id="@+id/tvInstructions"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:text=""
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvIngredients" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

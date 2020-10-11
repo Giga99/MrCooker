@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
                     .build()
                     .show()
 
-                return true
+                true
             }
 
             R.id.nightMode -> {
@@ -115,7 +115,7 @@ class MainActivity : AppCompatActivity() {
                 // Change UI Mode
                 AppCompatDelegate.setDefaultNightMode(mode)
 
-                return true
+                true
             }
 
             else -> super.onOptionsItemSelected(item)
