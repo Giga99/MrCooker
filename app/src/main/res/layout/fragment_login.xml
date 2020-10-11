@@ -13,7 +13,6 @@
         android:text="@string/login"
         android:textColor="@color/colorPrimaryText"
         android:textSize="25sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -51,17 +50,17 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/etLoginEmail"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/enter_your_email"
                 android:textColorHint="@color/appBackgroundColor"
+                android:textSize="20sp"
                 app:boxBackgroundMode="outline"
                 app:boxStrokeColor="@color/appBackgroundColor"
                 app:boxStrokeErrorColor="@color/errorColor"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/colorPrimary"
                 app:hintTextColor="@color/colorPrimary"
-                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -76,20 +75,19 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/etLoginPassword"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:hint="@string/enter_your_password"
                 android:textColorHint="@color/appBackgroundColor"
+                android:textSize="20sp"
                 app:boxBackgroundMode="outline"
                 app:boxStrokeColor="@color/appBackgroundColor"
                 app:boxStrokeErrorColor="@color/errorColor"
                 app:endIconMode="password_toggle"
                 app:endIconTint="@color/colorPrimary"
                 app:hintTextColor="@color/colorPrimary"
-                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etLoginEmail">
 

@@ -52,9 +52,9 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         trailingLoaderRegister.visibility = View.VISIBLE
         trailingLoaderRegister.animate()
 
-        val username = etUsername.text.toString()
-        val email = etEmail.text.toString()
-        val password = etPassword.text.toString()
+        val username = etUsername.editText?.text.toString()
+        val email = etEmail.editText?.text.toString()
+        val password = etPassword.editText?.text.toString()
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -94,7 +94,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 etConfirmPassword,
                 NonEmptyRule("Please, confirm your password!"),
                 EqualRule(
-                    etPassword.text.toString(),
+                    etPassword.editText?.text.toString(),
                     "Please, confirm your password, they are not same!"
                 )
             )
