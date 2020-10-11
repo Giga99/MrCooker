@@ -11,20 +11,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/etSearchMy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:backgroundTint="@color/colorPrimaryText"
             android:hint="@string/search"
-            android:textColor="@color/colorPrimaryText"
-            android:textColorHint="@color/colorSecondaryText"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/colorPrimary"
+            app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:startIconDrawable="@drawable/ic_search">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etSearchInside"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvRecipes"

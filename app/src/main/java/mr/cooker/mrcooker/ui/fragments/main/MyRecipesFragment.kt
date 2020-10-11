@@ -55,7 +55,7 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
         })
 
         var job: Job? = null
-        etSearchMy.addTextChangedListener { editable ->
+        etSearchMy.editText?.addTextChangedListener { editable ->
             job?.cancel()
             if (editable.toString() != "") {
                 job = CoroutineScope(Dispatchers.Main).launch {

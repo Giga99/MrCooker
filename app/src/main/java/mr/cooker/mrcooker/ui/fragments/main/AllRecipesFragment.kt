@@ -2,6 +2,7 @@ package mr.cooker.mrcooker.ui.fragments.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -52,7 +53,7 @@ class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
         }
 
         var job: Job? = null
-        etSearch.addTextChangedListener { editable ->
+        etSearch.editText?.addTextChangedListener { editable ->
             job?.cancel()
             if (editable.toString() != "") {
                 job = CoroutineScope(Dispatchers.Main).launch {

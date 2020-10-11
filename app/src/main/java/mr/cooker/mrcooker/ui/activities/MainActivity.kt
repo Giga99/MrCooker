@@ -62,6 +62,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // TODO splash screen
+        // TODO photo deleted from device problem
 
         checkNetworkConnectivity()
     }
