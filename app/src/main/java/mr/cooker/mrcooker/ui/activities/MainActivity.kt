@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.shreyaspatil.MaterialDialog.MaterialDialog
@@ -60,7 +61,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // TODO back button pressed findNavController().popBackStack()
         // TODO splash screen
 
         checkNetworkConnectivity()
@@ -149,23 +149,27 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        MaterialDialog.Builder(this)
-            .setTitle(getString(R.string.exit_dialog_title))
-            .setMessage(getString(R.string.exit_dialog_message))
-            .setPositiveButton(getString(R.string.option_yes)) { dialogInterface, _ ->
-                try {
-                    dialogInterface.dismiss()
-                    signOutViewModel.signOut()
-                    startActivity(Intent(this, AuthenticationActivity::class.java))
-                    finish()
-                } catch (e: Exception) {
-                    Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+        if (navHostFragment.findNavController().previousBackStackEntry == null) {
+            MaterialDialog.Builder(this)
+                .setTitle(getString(R.string.exit_dialog_title))
+                .setMessage(getString(R.string.exit_dialog_message))
+                .setPositiveButton(getString(R.string.option_yes)) { dialogInterface, _ ->
+                    try {
+                        dialogInterface.dismiss()
+                        signOutViewModel.signOut()
+                        startActivity(Intent(this, AuthenticationActivity::class.java))
+                        finish()
+                    } catch (e: Exception) {
+                        Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
-            .setNegativeButton(getString(R.string.option_no)) { dialogInterface, _ ->
-                dialogInterface.dismiss()
-            }
-            .build()
-            .show()
+                .setNegativeButton(getString(R.string.option_no)) { dialogInterface, _ ->
+                    dialogInterface.dismiss()
+                }
+                .build()
+                .show()
+        } else {
+            navHostFragment.findNavController().popBackStack()
+        }
     }
 }

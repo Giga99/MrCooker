@@ -125,7 +125,7 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
                 val uri = Uri.parse(path.toString())
 
                 addingViewModel.deleteRecipe(recipe).join()
-                if(addingViewModel.status.throwable) addingViewModel.status.throwException()
+                if (addingViewModel.status.throwable) addingViewModel.status.throwException()
                 Snackbar.make(requireView(), "Successfully deleted recipe!", Snackbar.LENGTH_LONG)
                     .apply {
                         setAction("Undo") {

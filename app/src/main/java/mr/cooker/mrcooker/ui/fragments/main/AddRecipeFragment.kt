@@ -72,8 +72,12 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
                         etIngredients.editText?.setSelection(etIngredients.editText!!.text.length)
                     }
                     if (etIngredients.editText?.text.toString().endsWith("\n")) {
-                        etIngredients.editText?.setText(etIngredients.editText?.text.toString().replace("\n", "\n• "))
-                        etIngredients.editText?.setText(etIngredients.editText?.text.toString().replace("• •", "•"))
+                        etIngredients.editText?.setText(
+                            etIngredients.editText?.text.toString().replace("\n", "\n• ")
+                        )
+                        etIngredients.editText?.setText(
+                            etIngredients.editText?.text.toString().replace("• •", "•")
+                        )
                         etIngredients.editText?.setSelection(etIngredients.editText!!.text.length)
                     }
                 }
