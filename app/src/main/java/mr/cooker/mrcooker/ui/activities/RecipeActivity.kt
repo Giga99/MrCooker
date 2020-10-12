@@ -1,7 +1,6 @@
 package mr.cooker.mrcooker.ui.activities
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
@@ -12,16 +11,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.Snackbar
 import com.shreyaspatil.MaterialDialog.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_recipe.*
-import kotlinx.android.synthetic.main.fragment_all_recipes.*
-import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import kotlinx.coroutines.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.Recipe
@@ -29,7 +22,6 @@ import mr.cooker.mrcooker.other.Constants.postID
 import mr.cooker.mrcooker.other.Converters
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
-import mr.cooker.mrcooker.other.SharedPrefUtils
 import mr.cooker.mrcooker.ui.viewmodels.AddingViewModel
 import mr.cooker.mrcooker.ui.viewmodels.AllRecipesViewModel
 import java.io.ByteArrayOutputStream
@@ -62,12 +54,20 @@ class RecipeActivity : AppCompatActivity() {
 
     private fun getRecipe(postId: String) = CoroutineScope(Dispatchers.IO).launch {
         when (val data = allRecipesViewModel.getRecipeByID(postId)) {
-            is Resource.Loading -> {
-                swipeRefreshLayout.isRefreshing = true
-            }
+            is Resource.Loading -> { /* NO-OP */ }
 
             is Resource.Success -> {
                 recipe = data.data
+                withContext(Dispatchers.Main) {
+                    tvName.text = recipe.name
+                    tvTime.text = "${recipe.timeToCook}min"
+                    tvIngredients.text = recipe.ingredients
+                    tvInstructions.text = recipe.instructions
+                    Glide.with(this@RecipeActivity).load(recipe.imgUrl).into(ivHeader)
+                    toolbar.menu.getItem(0).isVisible = recipe.ownerID.equals(currentUser.uid)
+                    recipeLayout.visibility = View.VISIBLE
+                    trailingLoaderRecipe.visibility = View.GONE
+                }
             }
 
             is Resource.Failure -> {
@@ -76,18 +76,9 @@ class RecipeActivity : AppCompatActivity() {
                     "An error has occurred:${data.throwable.message}",
                     Toast.LENGTH_SHORT
                 ).show()
+                startActivity(Intent(this@RecipeActivity, MainActivity::class.java))
+                finish()
             }
-        }
-
-        withContext(Dispatchers.Main) {
-            tvName.text = recipe.name
-            tvTime.text = "${recipe.timeToCook.toString()}min"
-            tvIngredients.text = recipe.ingredients
-            tvInstructions.text = recipe.instructions
-            Glide.with(this@RecipeActivity).load(recipe.imgUrl).into(ivHeader)
-            toolbar.menu.getItem(0).isVisible = recipe.ownerID.equals(currentUser.uid)
-            recipeLayout.visibility = View.VISIBLE
-            trailingLoaderRecipe.visibility = View.GONE
         }
     }
 
