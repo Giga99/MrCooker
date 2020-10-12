@@ -61,8 +61,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // TODO splash screen
-        // TODO photo deleted from device problem
+        // TODO splash screen (third and fourth logo background #F5F5F5)
+        // TODO photo deleted from device problem(companion object profile url to firestore photo)
+        // TODO recipe deleted or added, refresh in allRecipes and myRecipes fragments
 
         checkNetworkConnectivity()
     }
