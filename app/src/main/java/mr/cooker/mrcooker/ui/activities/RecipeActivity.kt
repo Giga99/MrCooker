@@ -124,16 +124,6 @@ class RecipeActivity : AppCompatActivity() {
 
     private fun deleteRecipe() = CoroutineScope(Dispatchers.IO).launch {
         try {
-            val byteArray = addingViewModel.getBytes(recipe.imgUrl)
-            val bitmap = Converters.toBitmap(byteArray)
-
-            // Making uri from bitmap, deprecated TODO
-            val bytes = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-            val path = MediaStore.Images.Media
-                .insertImage(this@RecipeActivity.contentResolver, bitmap, "Title", null)
-            val uri = Uri.parse(path.toString())
-
             addingViewModel.deleteRecipe(recipe).join()
             if (addingViewModel.status.throwable) addingViewModel.status.throwException()
 
