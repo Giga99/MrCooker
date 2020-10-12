@@ -7,7 +7,6 @@ import javax.inject.Inject
 class AuthRepository @Inject constructor(
     private val firebaseDB: FirebaseDB
 ) {
-
     suspend fun login(email: String, password: String) = firebaseDB.login(email, password)
 
     suspend fun register(username: String, email: String, password: String) =
@@ -20,6 +19,8 @@ class AuthRepository @Inject constructor(
     fun checkPrevLogging(): Boolean = firebaseDB.checkPrevLogging()
 
     suspend fun editAccount(name: String, imgUri: Uri?) = firebaseDB.editAccount(name, imgUri)
+
+    suspend fun uploadProfilePhoto(imageUri: Uri): Uri? = firebaseDB.uploadProfilePhoto(imageUri)
 
     suspend fun changePassword(email: String, oldPassword: String, newPassword: String) =
         firebaseDB.changePassword(email, oldPassword, newPassword)

@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
 import com.github.abdularis.civ.AvatarImageView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -26,7 +26,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         trailingLoaderProfile.visibility = View.VISIBLE
         trailingLoaderProfile.animate()
 
-        myRecipesViewModel.myRecipes.observe(viewLifecycleOwner, Observer {
+        myRecipesViewModel.myRecipes.observe(viewLifecycleOwner, {
             when (it) {
                 is Resource.Loading -> { /* NO-OP */
                 }
@@ -34,6 +34,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 is Resource.Success -> {
                     tvUsername.text = currentUser.displayName
                     tvNumOfRecipes.text = "${it.data.size}"
+                    if (currentUser.photoUrl == null) {
+                        ivProfileImage.text = currentUser.displayName?.substring(0, 1)
+                        ivProfileImage.state = AvatarImageView.SHOW_INITIAL
+                    } else {
+                        Glide.with(this).load(currentUser.photoUrl).into(ivProfileImage)
+                        ivProfileImage.state = AvatarImageView.SHOW_IMAGE
+                    }
                     profileLayout.visibility = View.VISIBLE
                     trailingLoaderProfile.visibility = View.GONE
                 }
@@ -47,13 +54,5 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }
             }
         })
-
-        if (currentUser.photoUrl == null) {
-            ivProfileImage.text = currentUser.displayName?.substring(0, 1)
-            ivProfileImage.state = AvatarImageView.SHOW_INITIAL
-        } else {
-            ivProfileImage.setImageURI(currentUser.photoUrl)
-            ivProfileImage.state = AvatarImageView.SHOW_IMAGE
-        }
     }
 }

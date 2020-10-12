@@ -81,6 +81,13 @@ class FirebaseDB {
         } else false
     }
 
+    suspend fun uploadProfilePhoto(imageUri: Uri): Uri? {
+        val fileName = "${currentUser.uid}_${Calendar.getInstance().timeInMillis}"
+        firebaseStorage.child("profileImages/$fileName").putFile(imageUri).await()
+
+        return firebaseStorage.child("profileImages/$fileName").downloadUrl.await()
+    }
+
     suspend fun uploadImage(imageUri: Uri): Uri? {
         val fileName = "${currentUser.uid}_${Calendar.getInstance().timeInMillis}"
         firebaseStorage.child("images/$fileName").putFile(imageUri).await()

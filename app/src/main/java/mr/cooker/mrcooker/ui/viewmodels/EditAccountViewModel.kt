@@ -25,6 +25,21 @@ class EditAccountViewModel @ViewModelInject constructor(
         }
     }
 
+    suspend fun uploadProfilePhoto(imageUri: Uri): Uri? {
+        return try {
+            var downloadUrl: Uri? = null
+            viewModelScope.launch {
+                downloadUrl = authRepository.uploadProfilePhoto(imageUri)
+            }.join()
+            status.throwable = false
+            downloadUrl
+        } catch (e: Exception) {
+            status.throwable = true
+            status.exception = e
+            null
+        }
+    }
+
     fun changePassword(email: String, oldPassword: String, newPassword: String) =
         viewModelScope.launch {
             try {
