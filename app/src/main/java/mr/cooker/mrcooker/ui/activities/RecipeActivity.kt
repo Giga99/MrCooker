@@ -17,9 +17,11 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import com.shreyaspatil.MaterialDialog.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_recipe.*
 import kotlinx.android.synthetic.main.fragment_all_recipes.*
+import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import kotlinx.coroutines.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.Recipe
@@ -104,10 +106,24 @@ class RecipeActivity : AppCompatActivity() {
             }
 
             R.id.deleteRecipe -> {
-                recipeLayout.visibility = View.GONE
-                trailingLoaderRecipe.visibility = View.VISIBLE
-                trailingLoaderRecipe.animate()
-                deleteRecipe()
+                MaterialDialog.Builder(this)
+                    .setTitle("Deleting recipe")
+                    .setMessage("Are you sure you want to delete recipe?")
+                    .setPositiveButton(getString(R.string.option_yes)) { dialogInterface, _ ->
+                        dialogInterface.dismiss()
+                        toolbar.menu.getItem(0).isVisible = false
+                        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                        recipeLayout.visibility = View.GONE
+                        trailingLoaderRecipe.visibility = View.VISIBLE
+                        trailingLoaderRecipe.animate()
+                        deleteRecipe()
+                    }
+                    .setNegativeButton(getString(R.string.option_no)) { dialogInterface, _ ->
+                        dialogInterface.dismiss()
+                    }
+                    .build()
+                    .show()
+
                 true
             }
 
@@ -129,19 +145,21 @@ class RecipeActivity : AppCompatActivity() {
 
             addingViewModel.deleteRecipe(recipe).join()
             if (addingViewModel.status.throwable) addingViewModel.status.throwException()
-            Snackbar.make(tvInstructions, "Successfully deleted recipe!", Snackbar.LENGTH_LONG)
-                .apply {
-                    setAction("Undo") {
-                        addingViewModel.uploadAgain(recipe, uri!!)
-                    }
-                    show()
-                }
 
             withContext(Dispatchers.Main) {
+                Toast.makeText(
+                    this@RecipeActivity,
+                    "Successfully deleted recipe!",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
                 startActivity(Intent(this@RecipeActivity, MainActivity::class.java))
+                finish()
             }
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
+                toolbar.menu.getItem(0).isVisible = true
+                supportActionBar?.setDisplayHomeAsUpEnabled(true)
                 recipeLayout.visibility = View.VISIBLE
                 trailingLoaderRecipe.visibility = View.GONE
                 Toast.makeText(this@RecipeActivity, e.message, Toast.LENGTH_SHORT).show()
