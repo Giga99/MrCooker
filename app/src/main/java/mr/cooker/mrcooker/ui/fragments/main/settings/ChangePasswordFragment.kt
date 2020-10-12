@@ -52,6 +52,13 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_change_password) {
             val newPassword = etNewPassword.editText?.text.toString()
             editAccountViewModel.changePassword(email, oldPassword, newPassword).join()
             if (editAccountViewModel.status.throwable) editAccountViewModel.status.throwException()
+            withContext(Dispatchers.Main) {
+                Toast.makeText(
+                    requireContext(),
+                    "Successfully changed the password!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
             findNavController().navigate(R.id.action_changePasswordFragment_to_settingsFragment)
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
