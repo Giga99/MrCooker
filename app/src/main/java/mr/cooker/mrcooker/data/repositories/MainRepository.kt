@@ -20,7 +20,9 @@ class MainRepository @Inject constructor(
 
     suspend fun getAllRecipes() = firebaseDB.getAllRecipes()
 
-    fun getRealtimeRecipes() = firebaseDB.getRealtimeRecipes()
+    suspend fun getRealtimeRecipes() = firebaseDB.getAllRecipes()
+
+    suspend fun getRealtimeMyRecipes() = firebaseDB.getMyRecipes()
 
     suspend fun getMyRecipes() = firebaseDB.getMyRecipes()
 

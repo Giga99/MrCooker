@@ -124,7 +124,8 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
                         Snackbar.LENGTH_LONG
                     ).show()
 
-                    findNavController().popBackStack()
+                    //findNavController().popBackStack()
+                    findNavController().navigate(R.id.action_addRecipeFragment_to_allRecipesFragment)
                 }
 
             } catch (e: Exception) {

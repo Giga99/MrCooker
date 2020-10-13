@@ -71,8 +71,7 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
                     }
                 }
             } else if (editable.toString() == "") {
-                val data = myRecipesViewModel.getRealtimeRecipes()
-                observe(data)
+                realtimeUpdate()
             }
         }
 
@@ -104,7 +103,13 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
 
         // Swipe to refresh
         swipeRefreshLayout.setOnRefreshListener {
-            val data = myRecipesViewModel.getRealtimeRecipes()
+            realtimeUpdate()
+        }
+    }
+
+    private fun realtimeUpdate() = CoroutineScope(Dispatchers.IO).launch {
+        val data = myRecipesViewModel.getRealtimeMyRecipes()
+        withContext(Dispatchers.Main) {
             observe(data)
         }
     }
@@ -181,5 +186,11 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
         )
 
         startActivity(intent, options.toBundle())
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        realtimeUpdate()
     }
 }

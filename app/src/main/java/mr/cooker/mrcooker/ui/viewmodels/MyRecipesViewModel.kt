@@ -23,5 +23,5 @@ class MyRecipesViewModel @ViewModelInject constructor(
         }
     }
 
-    fun getRealtimeRecipes() = mainRepository.getRealtimeRecipes()
+    suspend fun getRealtimeMyRecipes() = mainRepository.getRealtimeMyRecipes()
 }

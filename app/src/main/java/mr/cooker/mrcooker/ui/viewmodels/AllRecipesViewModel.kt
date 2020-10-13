@@ -23,7 +23,7 @@ class AllRecipesViewModel @ViewModelInject constructor(
         }
     }
 
-    fun getRealtimeRecipes() = mainRepository.getRealtimeRecipes()
+    suspend fun getRealtimeRecipes() = mainRepository.getRealtimeRecipes()
 
     suspend fun getRecipeByID(id: String): Resource<Recipe> {
         var recipe: Resource<Recipe>? = null

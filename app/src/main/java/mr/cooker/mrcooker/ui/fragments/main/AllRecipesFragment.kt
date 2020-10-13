@@ -2,7 +2,6 @@ package mr.cooker.mrcooker.ui.fragments.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -48,8 +47,7 @@ class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
         }
 
         swipeRefreshLayout.setOnRefreshListener {
-            val data = allRecipesViewModel.getRealtimeRecipes()
-            observe(data)
+            realtimeUpdate()
         }
 
         var job: Job? = null
@@ -69,9 +67,15 @@ class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
                     }
                 }
             } else if (editable.toString() == "") {
-                val data = allRecipesViewModel.getRealtimeRecipes()
-                observe(data)
+                realtimeUpdate()
             }
+        }
+    }
+
+    private fun realtimeUpdate() = CoroutineScope(Dispatchers.IO).launch {
+        val data = allRecipesViewModel.getRealtimeRecipes()
+        withContext(Dispatchers.Main) {
+            observe(data)
         }
     }
 
@@ -115,5 +119,11 @@ class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
         )
 
         startActivity(intent, options.toBundle())
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        realtimeUpdate()
     }
 }
