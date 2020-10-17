@@ -39,6 +39,7 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
     private var downloadUrl: Uri? = null
 
     private var lengthBefore = 0
+    private var showToEveryone = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -95,6 +96,11 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
                 .start()
         }
 
+        show.setOnClickListener {
+            show.isChecked = !showToEveryone
+            showToEveryone = !showToEveryone
+        }
+
         tvCancel.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -111,6 +117,7 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
                     time.toInt(),
                     ingredients,
                     instructions,
+                    showToEveryone,
                     Calendar.getInstance().timeInMillis,
                     currentUser.uid
                 )

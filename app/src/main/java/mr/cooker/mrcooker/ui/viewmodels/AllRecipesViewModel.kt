@@ -34,4 +34,13 @@ class AllRecipesViewModel @ViewModelInject constructor(
 
         return recipe!!
     }
+
+    suspend fun getSearchedRecipes(search: String): Resource<MutableList<Recipe>> {
+        var recipes: Resource<MutableList<Recipe>>? = null
+        viewModelScope.launch {
+            recipes = mainRepository.getSearchedRecipes(search)
+        }.join()
+
+        return recipes!!
+    }
 }

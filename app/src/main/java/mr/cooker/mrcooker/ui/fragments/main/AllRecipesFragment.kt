@@ -22,7 +22,6 @@ import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.ui.activities.RecipeActivity
 import mr.cooker.mrcooker.ui.adapters.RecipeAdapter
 import mr.cooker.mrcooker.ui.viewmodels.AllRecipesViewModel
-import mr.cooker.mrcooker.ui.viewmodels.SearchViewModel
 import timber.log.Timber
 import java.util.*
 
@@ -31,7 +30,6 @@ import java.util.*
 class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
 
     private val allRecipesViewModel: AllRecipesViewModel by viewModels()
-    private val searchViewModel: SearchViewModel by viewModels()
     private lateinit var recipeAdapter: RecipeAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,7 +57,7 @@ class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
                     editable?.let {
                         if (editable.toString().isNotEmpty()) {
                             val recipes =
-                                searchViewModel.getSearchedRecipes(
+                                allRecipesViewModel.getSearchedRecipes(
                                     editable.toString().toLowerCase(Locale.ROOT)
                                 )
                             observe(recipes)

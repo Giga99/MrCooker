@@ -23,5 +23,14 @@ class MyRecipesViewModel @ViewModelInject constructor(
         }
     }
 
+    suspend fun getSearchedMyRecipes(search: String): Resource<MutableList<Recipe>> {
+        var recipes: Resource<MutableList<Recipe>>? = null
+        viewModelScope.launch {
+            recipes = mainRepository.getSearchedMyRecipes(search)
+        }.join()
+
+        return recipes!!
+    }
+
     suspend fun getRealtimeMyRecipes() = mainRepository.getRealtimeMyRecipes()
 }

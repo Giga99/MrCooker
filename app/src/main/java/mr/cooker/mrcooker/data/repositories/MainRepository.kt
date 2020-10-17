@@ -29,4 +29,6 @@ class MainRepository @Inject constructor(
     suspend fun getRecipeByID(id: String) = firebaseDB.getRecipeByID(id)
 
     suspend fun getSearchedRecipes(search: String) = firebaseDB.getSearchedRecipes(search)
+
+    suspend fun getSearchedMyRecipes(search: String) = firebaseDB.getSearchedMyRecipes(search)
 }

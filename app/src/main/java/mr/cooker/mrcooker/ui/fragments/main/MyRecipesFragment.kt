@@ -13,7 +13,6 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,7 +31,6 @@ import mr.cooker.mrcooker.ui.adapters.RecipeAdapter
 import mr.cooker.mrcooker.ui.activities.RecipeActivity
 import mr.cooker.mrcooker.ui.viewmodels.AddingViewModel
 import mr.cooker.mrcooker.ui.viewmodels.MyRecipesViewModel
-import mr.cooker.mrcooker.ui.viewmodels.SearchViewModel
 import java.io.*
 import java.lang.Exception
 import java.util.*
@@ -42,7 +40,6 @@ import java.util.*
 class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
 
     private val myRecipesViewModel: MyRecipesViewModel by viewModels()
-    private val searchViewModel: SearchViewModel by viewModels()
     private val addingViewModel: AddingViewModel by viewModels()
     private lateinit var recipeAdapter: RecipeAdapter
 
@@ -63,7 +60,7 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
                     editable?.let {
                         if (editable.toString().isNotEmpty()) {
                             val recipes =
-                                searchViewModel.getSearchedRecipes(
+                                myRecipesViewModel.getSearchedMyRecipes(
                                     editable.toString().toLowerCase(Locale.ROOT)
                                 )
                             observe(recipes)

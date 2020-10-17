@@ -103,6 +103,7 @@ class FirebaseDB {
             .whereEqualTo("timeToCook", recipe.timeToCook)
             .whereEqualTo("ingredients", recipe.ingredients)
             .whereEqualTo("instructions", recipe.instructions)
+            .whereEqualTo("showToEveryone", recipe.showToEveryone)
             .whereEqualTo("timePosted", recipe.timePosted)
             .whereEqualTo("ownerID", recipe.ownerID)
             .get().await()
@@ -127,6 +128,7 @@ class FirebaseDB {
             .whereEqualTo("timeToCook", recipe.timeToCook)
             .whereEqualTo("ingredients", recipe.ingredients)
             .whereEqualTo("instructions", recipe.instructions)
+            .whereEqualTo("showToEveryone", recipe.showToEveryone)
             .whereEqualTo("timePosted", recipe.timePosted)
             .whereEqualTo("ownerID", recipe.ownerID)
             .get().await()
@@ -174,7 +176,7 @@ class FirebaseDB {
 
         for (document in documentsList.documents) {
             val recipe = document.toObject<Recipe>()
-            recipes.add(recipe!!)
+            if(recipe!!.showToEveryone || recipe.ownerID.equals(currentUser.uid)) recipes.add(recipe)
         }
 
         return Resource.Success(recipes)
@@ -206,6 +208,21 @@ class FirebaseDB {
     suspend fun getSearchedRecipes(search: String): Resource<MutableList<Recipe>> {
         val recipes = mutableListOf<Recipe>()
         val documentList = firestoreRecipes.get().await()
+
+        if (!documentList.isEmpty) {
+            for (document in documentList.documents) {
+                val recipe = document.toObject<Recipe>()
+                if (recipe!!.name.toLowerCase(Locale.ROOT).contains(search)
+                    && (recipe.showToEveryone || recipe.ownerID.equals(currentUser.uid))) recipes.add(recipe)
+            }
+        }
+
+        return Resource.Success(recipes)
+    }
+
+    suspend fun getSearchedMyRecipes(search: String): Resource<MutableList<Recipe>> {
+        val recipes = mutableListOf<Recipe>()
+        val documentList = firestoreRecipes.whereEqualTo("ownerID", currentUser.uid).get().await()
 
         if (!documentList.isEmpty) {
             for (document in documentList.documents) {
