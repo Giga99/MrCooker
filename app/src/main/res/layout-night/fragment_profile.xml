@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/your_profile"
-        android:textColor="@color/colorPrimaryText"
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -65,7 +64,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:text="Username"
-            android:textColor="@color/colorPrimaryText"
             android:textSize="22sp"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@id/ivProfileImage" />
@@ -76,7 +74,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="Number of recipes: "
-            android:textColor="@color/colorPrimaryText"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
@@ -87,7 +84,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text=""
-            android:textColor="@color/colorPrimaryText"
             android:textSize="20sp"
             app:layout_constraintStart_toEndOf="@+id/tvTitle"
             app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
