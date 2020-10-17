@@ -61,9 +61,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // TODO splash screen (third and fourth logo background #F5F5F5)
-        // TODO checkPrevLogin() in SplashScreen
-
         checkNetworkConnectivity()
     }
 
