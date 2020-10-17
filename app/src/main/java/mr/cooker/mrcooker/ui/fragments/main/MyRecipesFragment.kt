@@ -100,7 +100,22 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
 
         // Swipe to refresh
         swipeRefreshLayout.setOnRefreshListener {
-            realtimeUpdate()
+            if (etSearchMy.editText?.editableText.toString() != "") {
+                job = CoroutineScope(Dispatchers.Main).launch {
+                    delay(Constants.SEARCH_RECIPES_TIME_DELAY)
+                    etSearchMy.editText?.editableText.let {
+                        if (etSearchMy.editText?.editableText.toString().isNotEmpty()) {
+                            val recipes =
+                                myRecipesViewModel.getSearchedMyRecipes(
+                                    etSearchMy.editText?.editableText.toString().toLowerCase(Locale.ROOT)
+                                )
+                            observe(recipes)
+                        }
+                    }
+                }
+            } else if (etSearchMy.editText?.editableText.toString() == "") {
+                realtimeUpdate()
+            }
         }
     }
 

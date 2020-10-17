@@ -44,10 +44,6 @@ class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
             showRecipe(recipe, iv)
         }
 
-        swipeRefreshLayout.setOnRefreshListener {
-            realtimeUpdate()
-        }
-
         var job: Job? = null
         etSearch.editText?.addTextChangedListener { editable ->
             job?.cancel()
@@ -65,6 +61,25 @@ class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
                     }
                 }
             } else if (editable.toString() == "") {
+                realtimeUpdate()
+            }
+        }
+
+        swipeRefreshLayout.setOnRefreshListener {
+            if (etSearch.editText?.editableText.toString() != "") {
+                job = CoroutineScope(Dispatchers.Main).launch {
+                    delay(SEARCH_RECIPES_TIME_DELAY)
+                    etSearch.editText?.editableText.let {
+                        if (etSearch.editText?.editableText.toString().isNotEmpty()) {
+                            val recipes =
+                                allRecipesViewModel.getSearchedRecipes(
+                                    etSearch.editText?.editableText.toString().toLowerCase(Locale.ROOT)
+                                )
+                            observe(recipes)
+                        }
+                    }
+                }
+            } else if (etSearch.editText?.editableText.toString() == "") {
                 realtimeUpdate()
             }
         }
