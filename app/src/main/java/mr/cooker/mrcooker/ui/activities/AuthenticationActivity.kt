@@ -24,8 +24,6 @@ import mr.cooker.mrcooker.ui.viewmodels.LoginViewModel
 @AndroidEntryPoint
 class AuthenticationActivity : AppCompatActivity() {
 
-    private val loginViewModel: LoginViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_authentication)
@@ -33,18 +31,6 @@ class AuthenticationActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         checkNetworkConnectivity()
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        try {
-            if (loginViewModel.checkPrevLogging()) {
-                startActivity(Intent(this, MainActivity::class.java))
-            }
-        } catch (e: Exception) {
-            Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -93,9 +79,8 @@ class AuthenticationActivity : AppCompatActivity() {
                 networkStatusLayout.apply {
                     setBackgroundColor(getColor(R.color.onlineColor))
 
-                    animate().alpha(1f).setStartDelay(Constants.ANIMATION_DURATION).setDuration(
-                        Constants.ANIMATION_DURATION
-                    )
+                    animate().alpha(1f).setStartDelay(Constants.ANIMATION_DURATION)
+                        .setDuration(Constants.ANIMATION_DURATION)
                         .setListener(object : AnimatorListenerAdapter() {
                             override fun onAnimationEnd(animation: Animator?) {
                                 super.onAnimationEnd(animation)
