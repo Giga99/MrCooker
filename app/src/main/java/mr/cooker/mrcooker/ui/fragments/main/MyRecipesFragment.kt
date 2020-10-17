@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -56,16 +57,7 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
             job?.cancel()
             if (editable.toString() != "") {
                 job = CoroutineScope(Dispatchers.Main).launch {
-                    delay(Constants.SEARCH_RECIPES_TIME_DELAY)
-                    editable?.let {
-                        if (editable.toString().isNotEmpty()) {
-                            val recipes =
-                                myRecipesViewModel.getSearchedMyRecipes(
-                                    editable.toString().toLowerCase(Locale.ROOT)
-                                )
-                            observe(recipes)
-                        }
-                    }
+                    search(editable)
                 }
             } else if (editable.toString() == "") {
                 realtimeUpdate()
@@ -102,19 +94,23 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
         swipeRefreshLayout.setOnRefreshListener {
             if (etSearchMy.editText?.editableText.toString() != "") {
                 job = CoroutineScope(Dispatchers.Main).launch {
-                    delay(Constants.SEARCH_RECIPES_TIME_DELAY)
-                    etSearchMy.editText?.editableText.let {
-                        if (etSearchMy.editText?.editableText.toString().isNotEmpty()) {
-                            val recipes =
-                                myRecipesViewModel.getSearchedMyRecipes(
-                                    etSearchMy.editText?.editableText.toString().toLowerCase(Locale.ROOT)
-                                )
-                            observe(recipes)
-                        }
-                    }
+                    search(etSearchMy.editText?.editableText)
                 }
             } else if (etSearchMy.editText?.editableText.toString() == "") {
                 realtimeUpdate()
+            }
+        }
+    }
+
+    private suspend fun search(editable: Editable?) {
+        delay(Constants.SEARCH_RECIPES_TIME_DELAY)
+        editable.let {
+            if (editable.toString().isNotEmpty()) {
+                val recipes =
+                    myRecipesViewModel.getSearchedMyRecipes(
+                        editable.toString().toLowerCase(Locale.ROOT)
+                    )
+                observe(recipes)
             }
         }
     }
@@ -168,6 +164,7 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
             is Resource.Success -> {
                 swipeRefreshLayout.isRefreshing = false
                 recipeAdapter.submitList(it.data)
+                rvRecipes.smoothScrollToPosition(0)
             }
 
             is Resource.Failure -> {
