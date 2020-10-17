@@ -86,3 +86,5 @@ Japp/src/main/java/mr/cooker/mrcooker/ui/viewmodels/EditAccountViewModel.kt,3\8
 Yapp/src/main/java/mr/cooker/mrcooker/ui/fragments/main/settings/ChangePasswordFragment.kt,e\6\e62a9b2857ea12c0e881a68fad4d40f5d10de1d8
 z
 Japp/src/main/java/mr/cooker/mrcooker/ui/fragments/main/SettingsFragment.kt,2\8\283d59c3040d135870c0241d78fa3ad62b37e805
+t
+Dapp/src/main/java/mr/cooker/mrcooker/ui/activities/SplashActivity.kt,3\6\36d938d0cd2c8ec683c16c4c49343a2e7c3b254e

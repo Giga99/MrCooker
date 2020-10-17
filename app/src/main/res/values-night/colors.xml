@@ -11,4 +11,5 @@
     <color name="colorPrimaryText">@android:color/white</color>
     <color name="colorSecondaryText">#606060</color>
     <color name="colorBackgroundRow">#272727</color>
+    <color name="colorSplashBackground">#393939</color>
 </resources>
