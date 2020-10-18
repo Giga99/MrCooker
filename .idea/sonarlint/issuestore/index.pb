@@ -72,8 +72,6 @@ Oapp/src/main/java/mr/cooker/mrcooker/ui/fragments/auth/ResetPasswordFragment.kt
 Rapp/src/main/java/mr/cooker/mrcooker/other/exceptions/EmailNotVerifiedException.kt,0\c\0c112f145d7157fdecbfd8dda8f1560e4960803c
 v
 Fapp/src/main/java/mr/cooker/mrcooker/ui/viewmodels/SignOutViewModel.kt,a\5\a5599272f20ecbf41171e899c84c837d84d5e2b7
-u
-Eapp/src/main/java/mr/cooker/mrcooker/ui/viewmodels/SearchViewModel.kt,4\6\463dbff5ad6dd79c52cbbe8f8f77437c39d38f32
 H
 app/google-services.json,f\d\fd8d34b142d02ec743a8efefefd2c097961666e9
 k

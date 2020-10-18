@@ -7,6 +7,7 @@
     android:background="@color/colorSplashBackground">
 
     <ImageView
+        android:id="@+id/splashImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_splash"

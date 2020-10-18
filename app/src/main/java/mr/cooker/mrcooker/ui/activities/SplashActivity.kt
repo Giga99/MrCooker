@@ -7,8 +7,12 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.content.res.AppCompatResources
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_splash.*
 import mr.cooker.mrcooker.R
+import mr.cooker.mrcooker.other.getNightMode
 import mr.cooker.mrcooker.ui.viewmodels.LoginViewModel
 
 @AndroidEntryPoint
@@ -19,6 +23,17 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+
+        // Fix for API 23 and lower
+        if (getNightMode() == AppCompatDelegate.MODE_NIGHT_YES) splashImage.setImageDrawable(
+            AppCompatResources.getDrawable(this, R.drawable.ic_splash_dark)
+        )
+        else splashImage.setImageDrawable(
+            AppCompatResources.getDrawable(
+                this,
+                R.drawable.ic_splash
+            )
+        )
 
         try {
             if (loginViewModel.checkPrevLogging()) {
