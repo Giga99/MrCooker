@@ -29,6 +29,13 @@
                     android:layout_height="?android:attr/actionBarSize"
                     app:menu="@menu/activity_main_menu">
 
+                    <ImageView
+                        android:id="@+id/ivFavorites"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_favorite"
+                        android:layout_marginEnd="10dp"/>
+
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/tvToolbarTitle"
                         android:layout_width="match_parent"
