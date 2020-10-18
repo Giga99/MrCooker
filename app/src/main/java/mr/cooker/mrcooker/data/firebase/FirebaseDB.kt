@@ -12,10 +12,12 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
+import mr.cooker.mrcooker.data.entities.FavoriteRecipe
 import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
 import java.util.*
+import javax.inject.Inject
 
 class FirebaseDB {
     companion object {
@@ -176,7 +178,9 @@ class FirebaseDB {
 
         for (document in documentsList.documents) {
             val recipe = document.toObject<Recipe>()
-            if(recipe!!.showToEveryone || recipe.ownerID.equals(currentUser.uid)) recipes.add(recipe)
+            if (recipe!!.showToEveryone || recipe.ownerID.equals(currentUser.uid)) recipes.add(
+                recipe
+            )
         }
 
         return Resource.Success(recipes)
@@ -213,7 +217,8 @@ class FirebaseDB {
             for (document in documentList.documents) {
                 val recipe = document.toObject<Recipe>()
                 if (recipe!!.name.toLowerCase(Locale.ROOT).contains(search)
-                    && (recipe.showToEveryone || recipe.ownerID.equals(currentUser.uid))) recipes.add(recipe)
+                    && (recipe.showToEveryone || recipe.ownerID.equals(currentUser.uid))
+                ) recipes.add(recipe)
             }
         }
 
@@ -251,5 +256,27 @@ class FirebaseDB {
             }
 
         return Resource.Success(recipes)
+    }
+
+    suspend fun addToFavoriteRecipes(favoriteRecipe: FavoriteRecipe) {
+        Firebase.firestore.collection(currentUser.uid).add(favoriteRecipe).await()
+    }
+
+    suspend fun removeFavoriteRecipe(recipeID: String) {
+        val recipeQuery = Firebase.firestore.collection(currentUser.uid)
+            .whereEqualTo("recipeID", recipeID).get().await()
+        if (recipeQuery.documents.isNotEmpty()) {
+            for (document in recipeQuery) Firebase.firestore.collection(currentUser.uid)
+                .document(document.id).delete()
+                .await()
+        }
+    }
+
+    suspend fun isItFavoriteRecipe(recipeID: String): Boolean {
+        val documentList =
+            Firebase.firestore.collection(currentUser.uid).whereEqualTo("recipeID", recipeID).get()
+                .await()
+
+        return !documentList.isEmpty
     }
 }

@@ -8,18 +8,21 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import com.bumptech.glide.Glide
 import com.shreyaspatil.MaterialDialog.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_recipe.*
 import kotlinx.coroutines.*
 import mr.cooker.mrcooker.R
+import mr.cooker.mrcooker.data.entities.FavoriteRecipe
 import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.other.Constants.postID
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.ui.viewmodels.AddingViewModel
 import mr.cooker.mrcooker.ui.viewmodels.AllRecipesViewModel
+import mr.cooker.mrcooker.ui.viewmodels.FavoriteRecipesViewModel
 import java.lang.Exception
 
 @ExperimentalCoroutinesApi
@@ -28,7 +31,11 @@ class RecipeActivity : AppCompatActivity() {
 
     private val allRecipesViewModel: AllRecipesViewModel by viewModels()
     private val addingViewModel: AddingViewModel by viewModels()
+    private val favoriteRecipesViewModel: FavoriteRecipesViewModel by viewModels()
     private lateinit var recipe: Recipe
+    private var favorite = false
+
+    private var counter = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,11 +52,74 @@ class RecipeActivity : AppCompatActivity() {
             ?: throw IllegalArgumentException("`postID` must be non-null")
 
         getRecipe(postId)
+        isItFavoriteRecipe(postId)
+
+        icAddToFavorites.setOnClickListener {
+            recipeLayout.visibility = View.GONE
+            trailingLoaderRecipe.visibility = View.VISIBLE
+            trailingLoaderRecipe.animate()
+
+            if (favorite) removeFromFavorites(postId)
+            else addToFavorites()
+        }
+    }
+
+    private fun addToFavorites() = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            favoriteRecipesViewModel.addToFavoriteRecipes(FavoriteRecipe(recipe.id!!))
+            if (favoriteRecipesViewModel.status.throwable) favoriteRecipesViewModel.status.throwException()
+            withContext(Dispatchers.Main) {
+                icAddToFavorites.setImageDrawable(
+                    AppCompatResources.getDrawable(
+                        this@RecipeActivity,
+                        R.drawable.ic_favorite
+                    )
+                )
+                favorite = true
+                recipeLayout.visibility = View.VISIBLE
+                trailingLoaderRecipe.visibility = View.GONE
+            }
+        } catch (e: Exception) {
+            Toast.makeText(
+                this@RecipeActivity,
+                "An error has occurred:${e.message}",
+                Toast.LENGTH_SHORT
+            ).show()
+            recipeLayout.visibility = View.VISIBLE
+            trailingLoaderRecipe.visibility = View.GONE
+        }
+    }
+
+    private fun removeFromFavorites(postId: String) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            favoriteRecipesViewModel.removeFavoriteRecipe(postId)
+            if (favoriteRecipesViewModel.status.throwable) favoriteRecipesViewModel.status.throwException()
+            withContext(Dispatchers.Main) {
+                icAddToFavorites.setImageDrawable(
+                    AppCompatResources.getDrawable(
+                        this@RecipeActivity,
+                        R.drawable.ic_not_favorite
+                    )
+                )
+                favorite = false
+                recipeLayout.visibility = View.VISIBLE
+                trailingLoaderRecipe.visibility = View.GONE
+            }
+        } catch (e: Exception) {
+            Toast.makeText(
+                this@RecipeActivity,
+                "An error has occurred:${e.message}",
+                Toast.LENGTH_SHORT
+            ).show()
+            recipeLayout.visibility = View.VISIBLE
+            trailingLoaderRecipe.visibility = View.GONE
+        }
     }
 
     private fun getRecipe(postId: String) = CoroutineScope(Dispatchers.IO).launch {
         when (val data = allRecipesViewModel.getRecipeByID(postId)) {
-            is Resource.Loading -> { /* NO-OP */ }
+            is Resource.Loading -> { /* NO-OP */
+            }
 
             is Resource.Success -> {
                 recipe = data.data
@@ -60,15 +130,59 @@ class RecipeActivity : AppCompatActivity() {
                     tvInstructions.text = recipe.instructions
                     Glide.with(this@RecipeActivity).load(recipe.imgUrl).into(ivHeader)
                     toolbar.menu.getItem(0).isVisible = recipe.ownerID.equals(currentUser.uid)
-                    recipeLayout.visibility = View.VISIBLE
-                    trailingLoaderRecipe.visibility = View.GONE
+                    counter++
+                    if (counter == 2) {
+                        recipeLayout.visibility = View.VISIBLE
+                        trailingLoaderRecipe.visibility = View.GONE
+                    }
                 }
             }
 
             is Resource.Failure -> {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        this@RecipeActivity,
+                        "An error has occurred:${data.throwable.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    startActivity(Intent(this@RecipeActivity, MainActivity::class.java))
+                    finish()
+                }
+            }
+        }
+    }
+
+    private fun isItFavoriteRecipe(postId: String) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            if (favoriteRecipesViewModel.isItFavoriteRecipe(postId)) {
+                withContext(Dispatchers.Main) {
+                    icAddToFavorites.setImageDrawable(
+                        AppCompatResources.getDrawable(
+                            this@RecipeActivity,
+                            R.drawable.ic_favorite
+                        )
+                    )
+                    favorite = true
+                    counter++
+                    if (counter == 2) {
+                        recipeLayout.visibility = View.VISIBLE
+                        trailingLoaderRecipe.visibility = View.GONE
+                    }
+                }
+            } else {
+                withContext(Dispatchers.Main) {
+                    counter++
+                    if (counter == 2) {
+                        recipeLayout.visibility = View.VISIBLE
+                        trailingLoaderRecipe.visibility = View.GONE
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
                 Toast.makeText(
                     this@RecipeActivity,
-                    "An error has occurred:${data.throwable.message}",
+                    "An error has occurred:${e.message}",
                     Toast.LENGTH_SHORT
                 ).show()
                 startActivity(Intent(this@RecipeActivity, MainActivity::class.java))

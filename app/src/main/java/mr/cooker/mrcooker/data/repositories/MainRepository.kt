@@ -1,6 +1,7 @@
 package mr.cooker.mrcooker.data.repositories
 
 import android.net.Uri
+import mr.cooker.mrcooker.data.entities.FavoriteRecipe
 import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.data.firebase.FirebaseDB
 import javax.inject.Inject
@@ -31,4 +32,12 @@ class MainRepository @Inject constructor(
     suspend fun getSearchedRecipes(search: String) = firebaseDB.getSearchedRecipes(search)
 
     suspend fun getSearchedMyRecipes(search: String) = firebaseDB.getSearchedMyRecipes(search)
+
+    suspend fun addToFavoriteRecipes(favoriteRecipe: FavoriteRecipe) =
+        firebaseDB.addToFavoriteRecipes(favoriteRecipe)
+
+    suspend fun removeFavoriteRecipe(recipeID: String) = firebaseDB.removeFavoriteRecipe(recipeID)
+
+    suspend fun isItFavoriteRecipe(recipeID: String): Boolean =
+        firebaseDB.isItFavoriteRecipe(recipeID)
 }

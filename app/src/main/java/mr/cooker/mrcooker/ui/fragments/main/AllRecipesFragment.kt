@@ -91,11 +91,11 @@ class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
     private fun observe(it: Resource<MutableList<Recipe>>?) {
         when (it) {
             is Resource.Loading -> {
-                swipeRefreshLayout.isRefreshing = true
+                swipeRefreshLayout?.isRefreshing = true
             }
 
             is Resource.Success -> {
-                swipeRefreshLayout.isRefreshing = false
+                swipeRefreshLayout?.isRefreshing = false
                 recipeAdapter.submitList(it.data)
                 rvAllRecipes.smoothScrollToPosition(0)
             }
