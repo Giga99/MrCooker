@@ -1,10 +1,7 @@
 package mr.cooker.mrcooker.ui.activities
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -19,12 +16,10 @@ import kotlinx.coroutines.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.other.Constants.postID
-import mr.cooker.mrcooker.other.Converters
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.ui.viewmodels.AddingViewModel
 import mr.cooker.mrcooker.ui.viewmodels.AllRecipesViewModel
-import java.io.ByteArrayOutputStream
 import java.lang.Exception
 
 @ExperimentalCoroutinesApi

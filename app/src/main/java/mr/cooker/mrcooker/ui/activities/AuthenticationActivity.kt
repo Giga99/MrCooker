@@ -2,24 +2,20 @@ package mr.cooker.mrcooker.ui.activities
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.content.Intent
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import com.shreyaspatil.MaterialDialog.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_authentication.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.other.Constants
 import mr.cooker.mrcooker.other.NetworkUtils
 import mr.cooker.mrcooker.other.SharedPrefUtils.sharedPreferences
-import mr.cooker.mrcooker.ui.viewmodels.LoginViewModel
 
 @AndroidEntryPoint
 class AuthenticationActivity : AppCompatActivity() {
