@@ -47,9 +47,9 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-        myRecipesViewModel.myRecipes.observeForever {
+        myRecipesViewModel.myRecipes.observe(viewLifecycleOwner, {
             observe(it)
-        }
+        })
 
         var job: Job? = null
         etSearchMy.editText?.addTextChangedListener { editable ->

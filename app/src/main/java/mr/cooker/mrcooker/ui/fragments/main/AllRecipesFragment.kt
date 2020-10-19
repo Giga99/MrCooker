@@ -37,9 +37,9 @@ class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-        allRecipesViewModel.allRecipes.observeForever {
+        allRecipesViewModel.allRecipes.observe(viewLifecycleOwner, {
             observe(it)
-        }
+        })
 
         recipeAdapter.setOnItemClickListener { recipe, iv ->
             showRecipe(recipe, iv)
