@@ -279,4 +279,33 @@ class FirebaseDB {
 
         return !documentList.isEmpty
     }
+
+    suspend fun getFavoriteRecipes(): Resource<MutableList<Recipe>> {
+        val documentList = Firebase.firestore.collection(currentUser.uid).get().await()
+        val recipes = mutableListOf<Recipe>()
+
+        if (!documentList.isEmpty) {
+            for (document in documentList.documents) {
+                val response = getRecipeByID(document["recipeID"].toString())
+                if (response is Resource.Success && response.data.showToEveryone) recipes.add(
+                    response.data
+                )
+            }
+        }
+
+        return Resource.Success(recipes)
+    }
+
+    suspend fun getSearchedFavoriteRecipes(search: String): Resource<MutableList<Recipe>> {
+        val response = getFavoriteRecipes()
+        val recipes = mutableListOf<Recipe>()
+
+        if (response is Resource.Success) {
+            for (recipe in response.data) {
+                if (recipe.name.toLowerCase(Locale.ROOT).contains(search)) recipes.add(recipe)
+            }
+        }
+
+        return Resource.Success(recipes)
+    }
 }

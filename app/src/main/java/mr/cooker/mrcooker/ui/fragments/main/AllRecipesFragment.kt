@@ -37,9 +37,9 @@ class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-        allRecipesViewModel.allRecipes.observe(viewLifecycleOwner, {
+        allRecipesViewModel.allRecipes.observeForever {
             observe(it)
-        })
+        }
 
         recipeAdapter.setOnItemClickListener { recipe, iv ->
             showRecipe(recipe, iv)
@@ -97,7 +97,6 @@ class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
             is Resource.Success -> {
                 swipeRefreshLayout?.isRefreshing = false
                 recipeAdapter.submitList(it.data)
-                rvAllRecipes.smoothScrollToPosition(0)
             }
 
             is Resource.Failure -> {

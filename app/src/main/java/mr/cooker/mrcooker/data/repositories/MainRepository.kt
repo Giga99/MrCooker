@@ -4,6 +4,7 @@ import android.net.Uri
 import mr.cooker.mrcooker.data.entities.FavoriteRecipe
 import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.data.firebase.FirebaseDB
+import mr.cooker.mrcooker.other.Resource
 import javax.inject.Inject
 
 class MainRepository @Inject constructor(
@@ -40,4 +41,10 @@ class MainRepository @Inject constructor(
 
     suspend fun isItFavoriteRecipe(recipeID: String): Boolean =
         firebaseDB.isItFavoriteRecipe(recipeID)
+
+    suspend fun getFavoriteRecipes(): Resource<MutableList<Recipe>> =
+        firebaseDB.getFavoriteRecipes()
+
+    suspend fun getSearchedFavoriteRecipes(search: String): Resource<MutableList<Recipe>> =
+        firebaseDB.getSearchedFavoriteRecipes(search)
 }

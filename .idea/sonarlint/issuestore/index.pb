@@ -86,3 +86,9 @@ z
 Japp/src/main/java/mr/cooker/mrcooker/ui/fragments/main/SettingsFragment.kt,2\8\283d59c3040d135870c0241d78fa3ad62b37e805
 t
 Dapp/src/main/java/mr/cooker/mrcooker/ui/activities/SplashActivity.kt,3\6\36d938d0cd2c8ec683c16c4c49343a2e7c3b254e
+~
+Napp/src/main/java/mr/cooker/mrcooker/ui/viewmodels/FavoriteRecipesViewModel.kt,5\1\51aff91eea0043628ae69c870ef5ad821d7dbe44
+Å
+Qapp/src/main/java/mr/cooker/mrcooker/ui/fragments/main/FavoriteRecipesFragment.kt,a\0\a01914c055735dc3ff3ff5c2ab5df14b8233b348
+t
+Dapp/src/main/java/mr/cooker/mrcooker/data/entities/FavoriteRecipe.kt,f\b\fba7a76e95b0f8d02e44efbf6f7fbcd57c2a3f38

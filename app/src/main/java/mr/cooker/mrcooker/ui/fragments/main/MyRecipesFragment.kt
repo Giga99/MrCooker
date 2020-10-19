@@ -13,7 +13,6 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -48,9 +47,9 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-        myRecipesViewModel.myRecipes.observe(viewLifecycleOwner, Observer {
+        myRecipesViewModel.myRecipes.observeForever {
             observe(it)
-        })
+        }
 
         var job: Job? = null
         etSearchMy.editText?.addTextChangedListener { editable ->
@@ -158,13 +157,12 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
     private fun observe(it: Resource<MutableList<Recipe>>?) {
         when (it) {
             is Resource.Loading -> {
-                swipeRefreshLayout.isRefreshing = true
+                swipeRefreshLayout?.isRefreshing = true
             }
 
             is Resource.Success -> {
-                swipeRefreshLayout.isRefreshing = false
+                swipeRefreshLayout?.isRefreshing = false
                 recipeAdapter.submitList(it.data)
-                rvRecipes.smoothScrollToPosition(0)
             }
 
             is Resource.Failure -> {
