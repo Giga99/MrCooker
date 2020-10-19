@@ -54,7 +54,7 @@ class RecipeActivity : AppCompatActivity() {
         getRecipe(postId)
         isItFavoriteRecipe(postId)
 
-        icAddToFavorites.setOnClickListener {
+        ivAddToFavorites.setOnClickListener {
             recipeLayout.visibility = View.GONE
             trailingLoaderRecipe.visibility = View.VISIBLE
             trailingLoaderRecipe.animate()
@@ -69,7 +69,7 @@ class RecipeActivity : AppCompatActivity() {
             favoriteRecipesViewModel.addToFavoriteRecipes(FavoriteRecipe(recipe.id!!))
             if (favoriteRecipesViewModel.status.throwable) favoriteRecipesViewModel.status.throwException()
             withContext(Dispatchers.Main) {
-                icAddToFavorites.setImageDrawable(
+                ivAddToFavorites.setImageDrawable(
                     AppCompatResources.getDrawable(
                         this@RecipeActivity,
                         R.drawable.ic_favorite
@@ -95,7 +95,7 @@ class RecipeActivity : AppCompatActivity() {
             favoriteRecipesViewModel.removeFavoriteRecipe(postId)
             if (favoriteRecipesViewModel.status.throwable) favoriteRecipesViewModel.status.throwException()
             withContext(Dispatchers.Main) {
-                icAddToFavorites.setImageDrawable(
+                ivAddToFavorites.setImageDrawable(
                     AppCompatResources.getDrawable(
                         this@RecipeActivity,
                         R.drawable.ic_not_favorite
@@ -130,6 +130,8 @@ class RecipeActivity : AppCompatActivity() {
                     tvInstructions.text = recipe.instructions
                     Glide.with(this@RecipeActivity).load(recipe.imgUrl).into(ivHeader)
                     toolbar.menu.getItem(0).isVisible = recipe.ownerID.equals(currentUser.uid)
+                    if(recipe.ownerID.equals(currentUser.uid)) ivAddToFavorites.visibility = View.GONE
+                    else ivAddToFavorites.visibility = View.VISIBLE
                     counter++
                     if (counter == 2) {
                         recipeLayout.visibility = View.VISIBLE
@@ -156,7 +158,7 @@ class RecipeActivity : AppCompatActivity() {
         try {
             if (favoriteRecipesViewModel.isItFavoriteRecipe(postId)) {
                 withContext(Dispatchers.Main) {
-                    icAddToFavorites.setImageDrawable(
+                    ivAddToFavorites.setImageDrawable(
                         AppCompatResources.getDrawable(
                             this@RecipeActivity,
                             R.drawable.ic_favorite
