@@ -42,4 +42,5 @@
     <string name="confirm_new_password">Confirm new password</string>
     <string name="delete_recipe">Delete Recipe</string>
     <string name="show_to_everyone">Show to everyone:</string>
+    <string name="favorite_recipes">Favorite Recipes</string>
 </resources>

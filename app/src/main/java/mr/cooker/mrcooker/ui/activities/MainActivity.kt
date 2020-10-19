@@ -60,6 +60,26 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        ivFavorites.setOnClickListener {
+            when (navHostFragment.findNavController().currentDestination?.id) {
+                R.id.allRecipesFragment ->
+                    navHostFragment.findNavController()
+                        .navigate(R.id.action_allRecipesFragment_to_favoriteRecipesFragment)
+
+                R.id.myRecipesFragment ->
+                    navHostFragment.findNavController()
+                        .navigate(R.id.action_myRecipesFragment_to_favoriteRecipesFragment)
+
+                R.id.profileFragment ->
+                    navHostFragment.findNavController()
+                        .navigate(R.id.action_profileFragment_to_favoriteRecipesFragment)
+
+                R.id.settingsFragment ->
+                    navHostFragment.findNavController()
+                        .navigate(R.id.action_settingsFragment_to_favoriteRecipesFragment)
+            }
+        }
+
         checkNetworkConnectivity()
     }
 
