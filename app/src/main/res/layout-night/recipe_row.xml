@@ -23,7 +23,7 @@
         android:id="@+id/overlay_image"
         android:layout_width="0dp"
         android:layout_height="320dp"
-        android:background="#6F000000"
+        android:background="#33000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
