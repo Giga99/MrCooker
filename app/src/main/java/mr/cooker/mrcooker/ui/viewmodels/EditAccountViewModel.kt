@@ -40,6 +40,16 @@ class EditAccountViewModel @ViewModelInject constructor(
         }
     }
 
+    suspend fun deleteProfilePhoto() = viewModelScope.launch {
+        try {
+            authRepository.deleteProfilePhoto()
+            status.throwable = false
+        } catch (e: Exception) {
+            status.throwable = true
+            status.exception = e
+        }
+    }
+
     fun changePassword(email: String, oldPassword: String, newPassword: String) =
         viewModelScope.launch {
             try {

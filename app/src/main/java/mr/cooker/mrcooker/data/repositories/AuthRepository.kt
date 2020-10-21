@@ -22,6 +22,8 @@ class AuthRepository @Inject constructor(
 
     suspend fun uploadProfilePhoto(imageUri: Uri): Uri? = firebaseDB.uploadProfilePhoto(imageUri)
 
+    suspend fun deleteProfilePhoto() = firebaseDB.deleteProfilePhoto()
+
     suspend fun changePassword(email: String, oldPassword: String, newPassword: String) =
         firebaseDB.changePassword(email, oldPassword, newPassword)
 
