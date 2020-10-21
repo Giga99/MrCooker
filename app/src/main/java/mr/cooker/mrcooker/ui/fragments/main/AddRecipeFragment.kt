@@ -10,7 +10,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -20,7 +19,6 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_add_recipe.*
-import kotlinx.android.synthetic.main.fragment_edit_profile.*
 import kotlinx.coroutines.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.Recipe
@@ -28,7 +26,6 @@ import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.ui.viewmodels.AddingViewModel
 import java.lang.Exception
 import java.util.*
-import kotlin.collections.ArrayList
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -66,21 +63,19 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
         }
 
         etIngredients.editText?.addTextChangedListener {
-            if (it != null) {
-                if (it.length > lengthBefore) {
-                    if (etIngredients.editText?.text.toString().length == 1) {
-                        etIngredients.editText?.setText("• " + etIngredients.editText?.text.toString())
-                        etIngredients.editText?.setSelection(etIngredients.editText!!.text.length)
-                    }
-                    if (etIngredients.editText?.text.toString().endsWith("\n")) {
-                        etIngredients.editText?.setText(
-                            etIngredients.editText?.text.toString().replace("\n", "\n• ")
-                        )
-                        etIngredients.editText?.setText(
-                            etIngredients.editText?.text.toString().replace("• •", "•")
-                        )
-                        etIngredients.editText?.setSelection(etIngredients.editText!!.text.length)
-                    }
+            if (it != null && it.length > lengthBefore) {
+                if (etIngredients.editText?.text.toString().length == 1) {
+                    etIngredients.editText?.setText("• ${etIngredients.editText?.text.toString()}")
+                    etIngredients.editText?.setSelection(etIngredients.editText!!.text.length)
+                }
+                if (etIngredients.editText?.text.toString().endsWith("\n")) {
+                    etIngredients.editText?.setText(
+                        etIngredients.editText?.text.toString().replace("\n", "\n• ")
+                    )
+                    etIngredients.editText?.setText(
+                        etIngredients.editText?.text.toString().replace("• •", "•")
+                    )
+                    etIngredients.editText?.setSelection(etIngredients.editText!!.text.length)
                 }
 
                 lengthBefore = it.length
@@ -117,6 +112,7 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
                     time.toInt(),
                     ingredients,
                     instructions,
+                    numOfFavorites = 0,
                     showToEveryone,
                     Calendar.getInstance().timeInMillis,
                     currentUser.uid

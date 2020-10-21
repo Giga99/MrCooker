@@ -66,7 +66,7 @@ class RecipeActivity : AppCompatActivity() {
 
     private fun addToFavorites() = CoroutineScope(Dispatchers.IO).launch {
         try {
-            favoriteRecipesViewModel.addToFavoriteRecipes(FavoriteRecipe(recipe.id!!))
+            favoriteRecipesViewModel.addToFavoriteRecipes(FavoriteRecipe(recipe.id!!)).join()
             if (favoriteRecipesViewModel.status.throwable) favoriteRecipesViewModel.status.throwException()
             withContext(Dispatchers.Main) {
                 ivAddToFavorites.setImageDrawable(
@@ -92,7 +92,7 @@ class RecipeActivity : AppCompatActivity() {
 
     private fun removeFromFavorites(postId: String) = CoroutineScope(Dispatchers.IO).launch {
         try {
-            favoriteRecipesViewModel.removeFavoriteRecipe(postId)
+            favoriteRecipesViewModel.removeFavoriteRecipe(postId).join()
             if (favoriteRecipesViewModel.status.throwable) favoriteRecipesViewModel.status.throwException()
             withContext(Dispatchers.Main) {
                 ivAddToFavorites.setImageDrawable(

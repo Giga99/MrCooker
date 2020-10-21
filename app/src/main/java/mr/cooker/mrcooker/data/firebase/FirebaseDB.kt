@@ -18,7 +18,6 @@ import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
 import timber.log.Timber
 import java.util.*
-import javax.inject.Inject
 
 class FirebaseDB {
     companion object {
@@ -50,7 +49,8 @@ class FirebaseDB {
 
     suspend fun editAccount(name: String, imgUri: Uri?) {
         val userProfileChangeRequest =
-            if(imgUri == currentUser.photoUrl) UserProfileChangeRequest.Builder().setDisplayName(name).build()
+            if (imgUri == currentUser.photoUrl) UserProfileChangeRequest.Builder()
+                .setDisplayName(name).build()
             else UserProfileChangeRequest.Builder().setDisplayName(name).setPhotoUri(imgUri).build()
         currentUser.updateProfile(userProfileChangeRequest).await()
     }
@@ -244,27 +244,18 @@ class FirebaseDB {
         return Resource.Success(recipes)
     }
 
-    fun getRealtimeRecipes(): Resource<MutableList<Recipe>> {
-        val recipes = mutableListOf<Recipe>()
-
-        firestoreRecipes.orderBy("timePosted", Query.Direction.DESCENDING)
-            .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                firebaseFirestoreException?.let {
-                    return@addSnapshotListener
-                }
-                querySnapshot?.let {
-                    for (document in querySnapshot.documents) {
-                        val recipe = document.toObject<Recipe>()
-                        recipes.add(recipe!!)
-                    }
-                }
-            }
-
-        return Resource.Success(recipes)
-    }
-
     suspend fun addToFavoriteRecipes(favoriteRecipe: FavoriteRecipe) {
         Firebase.firestore.collection(currentUser.uid).add(favoriteRecipe).await()
+        val query = firestoreRecipes.whereEqualTo("id", favoriteRecipe.recipeID).get().await()
+        if (query.documents.isNotEmpty()) {
+            for (document in query.documents) {
+                var num = document["numOfFavorites"] as Long
+                num++
+                val map = mapOf<String, Any>("numOfFavorites" to num)
+                firestoreRecipes.document(favoriteRecipe.recipeID).set(map, SetOptions.merge())
+                    .await()
+            }
+        }
     }
 
     suspend fun removeFavoriteRecipe(recipeID: String) {
@@ -274,6 +265,18 @@ class FirebaseDB {
             for (document in recipeQuery) Firebase.firestore.collection(currentUser.uid)
                 .document(document.id).delete()
                 .await()
+        }
+
+        val query = firestoreRecipes.whereEqualTo("id", recipeID).get().await()
+        if (query.documents.isNotEmpty()) {
+            for (document in query.documents) {
+                var num = document["numOfFavorites"] as Long
+                Timber.e("num=$num")
+                num--
+                Timber.e("num=$num")
+                val map = mapOf<String, Any>("numOfFavorites" to num)
+                firestoreRecipes.document(recipeID).set(map, SetOptions.merge()).await()
+            }
         }
     }
 

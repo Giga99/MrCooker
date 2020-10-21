@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -26,7 +25,6 @@ import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.ui.activities.AuthenticationActivity
 import mr.cooker.mrcooker.ui.viewmodels.EditAccountViewModel
-import timber.log.Timber
 
 @AndroidEntryPoint
 class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
@@ -99,7 +97,7 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
     private fun editAccount() = CoroutineScope(Dispatchers.IO).launch {
         try {
             val name = etEditName.editText?.text.toString()
-            if(imgUri != currentUser.photoUrl) {
+            if (imgUri != currentUser.photoUrl) {
                 editAccountViewModel.deleteProfilePhoto()
                 if (editAccountViewModel.status.throwable) editAccountViewModel.status.throwException()
             }

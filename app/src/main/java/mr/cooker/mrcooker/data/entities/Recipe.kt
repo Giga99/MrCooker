@@ -8,6 +8,7 @@ data class Recipe(
     var timeToCook: Int = -1,
     var ingredients: String = "",
     var instructions: String = "",
+    var numOfFavorites: Int = -1,
     var showToEveryone: Boolean = true,
     var timePosted: Long = -1,
     var ownerID: String? = null,
