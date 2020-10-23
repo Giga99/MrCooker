@@ -36,6 +36,10 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        editProfileLayout.visibility = View.GONE
+        trailingLoaderEditProfile.visibility = View.VISIBLE
+        trailingLoaderEditProfile.animate()
+
         etEditName.editText?.setText(currentUser.displayName)
 
         btnSubmit.setOnClickListener {
@@ -59,6 +63,9 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
             imgUri = currentUser.photoUrl
             ivChangeProfileImage.state = AvatarImageView.SHOW_IMAGE
         }
+
+        editProfileLayout.visibility = View.VISIBLE
+        trailingLoaderEditProfile.visibility = View.GONE
 
         ivChangeProfileImage.setOnClickListener {
             ImagePicker.with(this)
@@ -90,6 +97,10 @@ class EditProfileFragment : Fragment(R.layout.fragment_edit_profile) {
     private fun editAccount() = CoroutineScope(Dispatchers.IO).launch {
         try {
             val name = etEditName.editText?.text.toString()
+            if (imgUri != currentUser.photoUrl) {
+                editAccountViewModel.deleteProfilePhoto()
+                if (editAccountViewModel.status.throwable) editAccountViewModel.status.throwException()
+            }
             val photoURL =
                 if (currentUser.photoUrl != imgUri) editAccountViewModel.uploadProfilePhoto(imgUri!!)
                 else currentUser.photoUrl

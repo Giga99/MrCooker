@@ -17,17 +17,17 @@ class AddingViewModel @ViewModelInject constructor(
     val status = EventFirebase(null)
 
     suspend fun uploadImage(imageUri: Uri): Uri? {
-        try {
+        return try {
             var downloadUrl: Uri? = null
             viewModelScope.launch {
                 downloadUrl = mainRepository.uploadImage(imageUri)
             }.join()
             status.throwable = false
-            return downloadUrl
+            downloadUrl
         } catch (e: Exception) {
             status.throwable = true
             status.exception = e
-            return null
+            null
         }
     }
 
