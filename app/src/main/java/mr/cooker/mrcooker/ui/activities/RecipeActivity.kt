@@ -132,7 +132,8 @@ class RecipeActivity : AppCompatActivity() {
                     Glide.with(this@RecipeActivity).load(recipe.imgUrl).into(ivHeader)
                     ivHeader.setColorFilter(Color.parseColor("#4D000000"))
                     toolbar.menu.getItem(0).isVisible = recipe.ownerID.equals(currentUser.uid)
-                    if(recipe.ownerID.equals(currentUser.uid)) ivAddToFavorites.visibility = View.GONE
+                    if (recipe.ownerID.equals(currentUser.uid)) ivAddToFavorites.visibility =
+                        View.GONE
                     else ivAddToFavorites.visibility = View.VISIBLE
                     counter++
                     if (counter == 2) {
