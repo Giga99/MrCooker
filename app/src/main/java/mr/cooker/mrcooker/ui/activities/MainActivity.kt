@@ -18,18 +18,24 @@ import androidx.navigation.ui.setupWithNavController
 import com.shreyaspatil.MaterialDialog.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.other.Constants.ANIMATION_DURATION
 import mr.cooker.mrcooker.other.NetworkUtils
 import mr.cooker.mrcooker.other.SharedPrefUtils.sharedPreferences
 import mr.cooker.mrcooker.other.getLastVersionRated
 import mr.cooker.mrcooker.ui.viewmodels.SignOutViewModel
+import mr.cooker.mrcooker.ui.viewmodels.SmartRatingViewModel
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val signOutViewModel: SignOutViewModel by viewModels()
+    private val smartRatingViewModel: SmartRatingViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,17 +93,26 @@ class MainActivity : AppCompatActivity() {
         smartRating()
     }
 
-    private fun smartRating() {
+    private fun smartRating() = CoroutineScope(Dispatchers.IO).launch {
         try {
             val version = packageManager.getPackageInfo(packageName, 0).versionName
             val lastRatedVersion = getLastVersionRated()
-            if(version == lastRatedVersion) return
+            if(version != lastRatedVersion) {
+                val smartRatingTracker = smartRatingViewModel.getSmartRatingTracker()
+                if(smartRatingViewModel.status.throwable) smartRatingViewModel.status.throwException()
 
+                if(smartRatingTracker!!.daysPassed == 10) showSmartRatingDialog()
+            }
 
-
-        } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
+            }
         }
+    }
+
+    private fun showSmartRatingDialog() {
+        // TODO
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -18,6 +18,7 @@ import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
 import timber.log.Timber
+import java.lang.Exception
 import java.util.*
 
 class FirebaseDB {
@@ -77,6 +78,17 @@ class FirebaseDB {
 
     fun signOut() {
         auth.signOut()
+    }
+
+    suspend fun getSmartRatingTracker(): SmartRatingTracker {
+        val documentQuery = firestoreUsers.whereEqualTo("userID", currentUser.uid).get().await()
+        if(!documentQuery.isEmpty) {
+            for (document in documentQuery.documents) {
+                val smartRatingTracker = document.toObject<SmartRatingTracker>()
+                return smartRatingTracker!!
+            }
+        }
+        throw Exception("Unknown error...")
     }
 
     suspend fun register(username: String, email: String, password: String) {

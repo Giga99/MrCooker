@@ -3,6 +3,7 @@ package mr.cooker.mrcooker.data.repositories
 import android.net.Uri
 import mr.cooker.mrcooker.data.entities.FavoriteRecipe
 import mr.cooker.mrcooker.data.entities.Recipe
+import mr.cooker.mrcooker.data.entities.SmartRatingTracker
 import mr.cooker.mrcooker.data.firebase.FirebaseDB
 import mr.cooker.mrcooker.other.Resource
 import javax.inject.Inject
@@ -47,4 +48,6 @@ class MainRepository @Inject constructor(
 
     suspend fun getSearchedFavoriteRecipes(search: String): Resource<MutableList<Recipe>> =
         firebaseDB.getSearchedFavoriteRecipes(search)
+
+    suspend fun getSmartRatingTracker(): SmartRatingTracker = firebaseDB.getSmartRatingTracker()
 }
