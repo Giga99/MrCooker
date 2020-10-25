@@ -118,7 +118,9 @@ class RecipeActivity : AppCompatActivity() {
     }
 
     private fun getRecipe(postId: String) = CoroutineScope(Dispatchers.IO).launch {
-        when (val data = allRecipesViewModel.getRecipeByID(postId)) {
+        val data = allRecipesViewModel.getRecipeByID(postId)
+        if(data == null) onBackPressed()
+        when (data) {
             is Resource.Loading -> { /* NO-OP */
             }
 
