@@ -118,7 +118,7 @@ class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
 
     // Transition to RecipeActivity
     private fun showRecipe(recipe: Recipe, imageView: ImageView) {
-        val intent = Intent(context, RecipeActivity::class.java)
+        val intent = Intent(requireContext(), RecipeActivity::class.java)
         intent.putExtra(Constants.postID, recipe.id)
 
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(

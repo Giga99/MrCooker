@@ -1,6 +1,7 @@
 package mr.cooker.mrcooker.ui.activities
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -117,7 +118,9 @@ class RecipeActivity : AppCompatActivity() {
     }
 
     private fun getRecipe(postId: String) = CoroutineScope(Dispatchers.IO).launch {
-        when (val data = allRecipesViewModel.getRecipeByID(postId)) {
+        val data = allRecipesViewModel.getRecipeByID(postId)
+        if(data == null) onBackPressed()
+        when (data) {
             is Resource.Loading -> { /* NO-OP */
             }
 
@@ -129,8 +132,10 @@ class RecipeActivity : AppCompatActivity() {
                     tvIngredients.text = recipe.ingredients
                     tvInstructions.text = recipe.instructions
                     Glide.with(this@RecipeActivity).load(recipe.imgUrl).into(ivHeader)
+                    ivHeader.setColorFilter(Color.parseColor("#4D000000"))
                     toolbar.menu.getItem(0).isVisible = recipe.ownerID.equals(currentUser.uid)
-                    if(recipe.ownerID.equals(currentUser.uid)) ivAddToFavorites.visibility = View.GONE
+                    if (recipe.ownerID.equals(currentUser.uid)) ivAddToFavorites.visibility =
+                        View.GONE
                     else ivAddToFavorites.visibility = View.VISIBLE
                     counter++
                     if (counter == 2) {

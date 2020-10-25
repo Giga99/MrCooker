@@ -1,5 +1,8 @@
 package mr.cooker.mrcooker.ui.adapters
 
+import android.graphics.Color
+import android.graphics.ColorFilter
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,6 +52,7 @@ class RecipeAdapter() : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
             tvTime.text = "${recipe.timeToCook}min"
             tvNumOfFavorites.text = "${recipe.numOfFavorites}"
             Glide.with(context).load(recipe.imgUrl).into(ivBackground)
+            ivBackground.setColorFilter(Color.parseColor("#4D000000"))
             setOnClickListener {
                 onItemClickListener?.let { it(recipe, ivBackground) }
             }

@@ -1,49 +1,67 @@
 package mr.cooker.mrcooker.ui.fragments.auth
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.agrawalsuneet.dotsloader.loaders.TrailingCircularDotsLoader
 import com.github.dhaval2404.form_validation.constant.PasswordPattern
-import com.github.dhaval2404.form_validation.rule.*
+import com.github.dhaval2404.form_validation.rule.EqualRule
+import com.github.dhaval2404.form_validation.rule.MinLengthRule
+import com.github.dhaval2404.form_validation.rule.NonEmptyRule
+import com.github.dhaval2404.form_validation.rule.PasswordRule
 import com.github.dhaval2404.form_validation.validation.FormValidator
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.UserProfileChangeRequest
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_register.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import mr.cooker.mrcooker.BaseApplication
 import mr.cooker.mrcooker.R
-import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.ui.viewmodels.RegisterViewModel
-import java.lang.Exception
+
 
 @AndroidEntryPoint
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
     private val registerViewModel: RegisterViewModel by viewModels()
 
+    private var termsAccepted = false
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         btnRegister.setOnClickListener {
-            if (isValidForm()) {
+            if (isValidForm() && termsAccepted) {
                 registerUser()
+            } else if (!termsAccepted) {
+                Toast.makeText(
+                    requireContext(),
+                    "You need to accept Terms and Conditions!",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
         tvLogin.setOnClickListener {
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+        }
+
+        checkboxTerms.setOnClickListener {
+            termsAccepted = !termsAccepted
+            checkboxTerms.isChecked = termsAccepted
+        }
+
+        tvTerms.setOnClickListener {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://mrcooker.flycricket.io/terms.html")
+                )
+            )
         }
     }
 
