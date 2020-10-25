@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity() {
                 val smartRatingTracker = smartRatingViewModel.getSmartRatingTracker()
                 if(smartRatingViewModel.status.throwable) smartRatingViewModel.status.throwException()
 
-                if(smartRatingTracker!!.daysPassed == 10) showSmartRatingDialog()
+                if(smartRatingTracker!!.daysPassed == 5) showSmartRatingDialog()
             }
 
         } catch (e: Exception) {
