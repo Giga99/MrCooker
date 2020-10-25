@@ -16,7 +16,7 @@ class AuthRepository @Inject constructor(
 
     suspend fun resetPassword(email: String) = firebaseDB.resetPassword(email)
 
-    fun checkPrevLogging(): Boolean = firebaseDB.checkPrevLogging()
+    suspend fun checkPrevLogging(): Boolean = firebaseDB.checkPrevLogging()
 
     suspend fun editAccount(name: String, imgUri: Uri?) = firebaseDB.editAccount(name, imgUri)
 

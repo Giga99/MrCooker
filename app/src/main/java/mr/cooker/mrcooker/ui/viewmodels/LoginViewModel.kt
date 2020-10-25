@@ -23,5 +23,5 @@ class LoginViewModel @ViewModelInject constructor(
         }
     }
 
-    fun checkPrevLogging(): Boolean = authRepository.checkPrevLogging()
+    suspend fun checkPrevLogging(): Boolean = authRepository.checkPrevLogging()
 }

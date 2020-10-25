@@ -18,3 +18,5 @@ object SharedPrefUtils {
 }
 
 fun getNightMode(): Int = SharedPrefUtils.sharedPreferences.getInt("mode", 0)
+
+fun getLastVersionRated():String? = SharedPrefUtils.sharedPreferences.getString("versionRated", null)
