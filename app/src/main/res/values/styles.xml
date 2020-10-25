@@ -4,9 +4,6 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-
         <item name="android:windowContentTransitions">true</item>
 
         <!-- specify shared element transitions -->
@@ -77,6 +74,10 @@
         <item name="android:textColor">@color/colorPrimaryText2</item>
         <item name="fontFamily">@font/berlin_sans_fb_regular</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <style name="AppTheme.Splash" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 
 </resources>
