@@ -3,7 +3,6 @@ package mr.cooker.mrcooker.ui.activities
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Menu
@@ -29,7 +28,6 @@ import mr.cooker.mrcooker.other.SharedPrefUtils.sharedPreferences
 import mr.cooker.mrcooker.other.getLastVersionRated
 import mr.cooker.mrcooker.ui.viewmodels.SignOutViewModel
 import mr.cooker.mrcooker.ui.viewmodels.SmartRatingViewModel
-
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

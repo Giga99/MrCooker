@@ -141,7 +141,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="50dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginEnd="10dp"
                     android:hint="@string/instructions"
                     android:textColorHint="@color/appBackgroundColor"
                     app:boxBackgroundMode="outline"

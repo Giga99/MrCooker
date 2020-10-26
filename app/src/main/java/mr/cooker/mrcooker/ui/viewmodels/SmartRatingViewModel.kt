@@ -1,6 +1,5 @@
 package mr.cooker.mrcooker.ui.viewmodels
 
-import android.net.Uri
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
