@@ -97,11 +97,11 @@ class MainActivity : AppCompatActivity() {
         try {
             val version = packageManager.getPackageInfo(packageName, 0).versionName
             val lastRatedVersion = getLastVersionRated()
-            if(version != lastRatedVersion) {
+            if (version != lastRatedVersion) {
                 val smartRatingTracker = smartRatingViewModel.getSmartRatingTracker()
-                if(smartRatingViewModel.status.throwable) smartRatingViewModel.status.throwException()
+                if (smartRatingViewModel.status.throwable) smartRatingViewModel.status.throwException()
 
-                if(smartRatingTracker!!.daysPassed == 5) showSmartRatingDialog(version)
+                if (smartRatingTracker!!.daysPassed == 5) showSmartRatingDialog(version)
             }
 
         } catch (e: Exception) {
@@ -112,25 +112,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     private suspend fun showSmartRatingDialog(appVersion: String) = withContext(Dispatchers.Main) {
-        val smartRatingDialog = SmartRatingDialog(this@MainActivity, appVersion)
-        smartRatingDialog.show()
+        try {
+            val smartRatingDialog = SmartRatingDialog(this@MainActivity, appVersion)
+            smartRatingDialog.show()
 
-        smartRatingDialog.rating.observe(this@MainActivity, {
-            when {
-                it.numOfStars == null -> {
-                    smartRatingViewModel.resetDaysPassed()
+            smartRatingDialog.rating.observe(this@MainActivity, {
+                when {
+                    it.numOfStars == null -> {
+                        smartRatingViewModel.resetDaysPassed()
+                    }
+                    it.numOfStars < 4 -> {
+                        smartRatingViewModel.setSmartRating(it)
+                        if (smartRatingViewModel.status.throwable) smartRatingViewModel.status.throwException()
+                        setLastVersionRated(appVersion)
+                    }
+                    else -> {
+                        // TODO redirect to PlayStore
+                        setLastVersionRated(appVersion)
+                    }
                 }
-                it.numOfStars < 4 -> {
-                    smartRatingViewModel.setSmartRating(it)
-                    setLastVersionRated(appVersion)
-                }
-                else -> {
-                    // TODO redirect to PlayStore
-                    // TODO test
-                    setLastVersionRated(appVersion)
-                }
-            }
-        })
+            })
+        } catch (e: Exception) {
+            Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

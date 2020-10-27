@@ -29,6 +29,6 @@ fun getLastVersionRated(): String? =
     SharedPrefUtils.sharedPreferences.getString("versionRated", null)
 
 fun setLastVersionRated(appVersion: String) = SharedPrefUtils.sharedPreferences.edit {
-    putString("appVersion", appVersion)
+    putString("versionRated", appVersion)
     commit()
 }
