@@ -4,6 +4,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import mr.cooker.mrcooker.data.entities.SmartRating
 import mr.cooker.mrcooker.data.entities.SmartRatingTracker
 import mr.cooker.mrcooker.data.repositories.MainRepository
 import mr.cooker.mrcooker.other.EventFirebase
@@ -27,6 +28,26 @@ class SmartRatingViewModel @ViewModelInject constructor(
             status.throwable = true
             status.exception = e
             null
+        }
+    }
+
+    fun resetDaysPassed() = viewModelScope.launch {
+        try {
+            mainRepository.resetDaysPassed()
+            status.throwable = false
+        } catch (e: Exception) {
+            status.throwable = true
+            status.exception = e
+        }
+    }
+
+    fun setSmartRating(smartRating: SmartRating) = viewModelScope.launch {
+        try {
+            mainRepository.setSmartRating(smartRating)
+            status.throwable = false
+        } catch (e: Exception) {
+            status.throwable = true
+            status.exception = e
         }
     }
 }

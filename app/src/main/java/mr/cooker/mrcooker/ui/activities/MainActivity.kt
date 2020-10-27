@@ -24,8 +24,10 @@ import kotlinx.coroutines.withContext
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.other.Constants.ANIMATION_DURATION
 import mr.cooker.mrcooker.other.NetworkUtils
-import mr.cooker.mrcooker.other.SharedPrefUtils.sharedPreferences
 import mr.cooker.mrcooker.other.getLastVersionRated
+import mr.cooker.mrcooker.other.setLastVersionRated
+import mr.cooker.mrcooker.other.setNightMode
+import mr.cooker.mrcooker.ui.dialogs.SmartRatingDialog
 import mr.cooker.mrcooker.ui.viewmodels.SignOutViewModel
 import mr.cooker.mrcooker.ui.viewmodels.SmartRatingViewModel
 
@@ -99,7 +101,7 @@ class MainActivity : AppCompatActivity() {
                 val smartRatingTracker = smartRatingViewModel.getSmartRatingTracker()
                 if(smartRatingViewModel.status.throwable) smartRatingViewModel.status.throwException()
 
-                if(smartRatingTracker!!.daysPassed == 5) showSmartRatingDialog()
+                if(smartRatingTracker!!.daysPassed == 5) showSmartRatingDialog(version)
             }
 
         } catch (e: Exception) {
@@ -109,8 +111,26 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun showSmartRatingDialog() {
-        // TODO
+    private suspend fun showSmartRatingDialog(appVersion: String) = withContext(Dispatchers.Main) {
+        val smartRatingDialog = SmartRatingDialog(this@MainActivity, appVersion)
+        smartRatingDialog.show()
+
+        smartRatingDialog.rating.observe(this@MainActivity, {
+            when {
+                it.numOfStars == null -> {
+                    smartRatingViewModel.resetDaysPassed()
+                }
+                it.numOfStars < 4 -> {
+                    smartRatingViewModel.setSmartRating(it)
+                    setLastVersionRated(appVersion)
+                }
+                else -> {
+                    // TODO redirect to PlayStore
+                    // TODO test
+                    setLastVersionRated(appVersion)
+                }
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -153,11 +173,7 @@ class MainActivity : AppCompatActivity() {
                         AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
                     }
 
-                val editor = sharedPreferences.edit()
-                editor.apply {
-                    putInt("mode", mode)
-                    apply()
-                }
+                setNightMode(mode)
 
                 // Change UI Mode
                 AppCompatDelegate.setDefaultNightMode(mode)

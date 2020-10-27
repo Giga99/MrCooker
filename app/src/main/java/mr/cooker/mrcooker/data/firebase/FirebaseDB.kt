@@ -15,6 +15,7 @@ import kotlinx.coroutines.tasks.await
 import mr.cooker.mrcooker.data.entities.FavoriteRecipe
 import mr.cooker.mrcooker.data.entities.SmartRatingTracker
 import mr.cooker.mrcooker.data.entities.Recipe
+import mr.cooker.mrcooker.data.entities.SmartRating
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
 import timber.log.Timber
@@ -27,6 +28,7 @@ class FirebaseDB {
         val firebaseStorage = Firebase.storage.reference
         val firestoreRecipes = Firebase.firestore.collection("recipes")
         val firestoreUsers = Firebase.firestore.collection("users")
+        val firestoreSmartRating = Firebase.firestore.collection("smartRating")
     }
 
     suspend fun login(email: String, password: String) {
@@ -49,7 +51,8 @@ class FirebaseDB {
             for (document in documentQuery.documents) {
                 val lastLogin = document.toObject<SmartRatingTracker>()
                 val lastLoginTime =
-                    GregorianCalendar.getInstance().also { it.timeInMillis = lastLogin!!.timeFirstLoginOfDay }
+                    GregorianCalendar.getInstance()
+                        .also { it.timeInMillis = lastLogin!!.timeFirstLoginOfDay }
                 val currTime = GregorianCalendar.getInstance()
                     .also { it.timeInMillis = System.currentTimeMillis() }
 
@@ -68,7 +71,7 @@ class FirebaseDB {
                     System.currentTimeMillis(),
                     lastLogin!!.daysPassed + 1
                 )
-                firestoreUsers.add(firstLogin)
+                firestoreUsers.document(document.id).set(firstLogin)
             }
         } else {
             val firstLogin = SmartRatingTracker(currentUser.uid, System.currentTimeMillis(), 1)
@@ -82,13 +85,29 @@ class FirebaseDB {
 
     suspend fun getSmartRatingTracker(): SmartRatingTracker {
         val documentQuery = firestoreUsers.whereEqualTo("userID", currentUser.uid).get().await()
-        if(!documentQuery.isEmpty) {
+        if (!documentQuery.isEmpty) {
             for (document in documentQuery.documents) {
                 val smartRatingTracker = document.toObject<SmartRatingTracker>()
                 return smartRatingTracker!!
             }
         }
         throw Exception("Unknown error...")
+    }
+
+    suspend fun resetDaysPassed() {
+        val documentQuery = firestoreUsers.whereEqualTo("userID", currentUser.uid).get().await()
+        if (!documentQuery.isEmpty) {
+            for (document in documentQuery.documents) {
+                val smartRatingTracker = document.toObject<SmartRatingTracker>()!!
+                firestoreUsers.document(document.id).set(
+                    SmartRatingTracker(
+                        smartRatingTracker.userID,
+                        smartRatingTracker.timeFirstLoginOfDay,
+                        1
+                    )
+                )
+            }
+        }
     }
 
     suspend fun register(username: String, email: String, password: String) {
@@ -364,5 +383,9 @@ class FirebaseDB {
         }
 
         return Resource.Success(recipes)
+    }
+
+    suspend fun setSmartRating(smartRating: SmartRating) {
+        firestoreSmartRating.document(currentUser.uid).set(smartRating).await()
     }
 }

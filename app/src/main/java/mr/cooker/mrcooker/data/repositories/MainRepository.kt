@@ -3,6 +3,7 @@ package mr.cooker.mrcooker.data.repositories
 import android.net.Uri
 import mr.cooker.mrcooker.data.entities.FavoriteRecipe
 import mr.cooker.mrcooker.data.entities.Recipe
+import mr.cooker.mrcooker.data.entities.SmartRating
 import mr.cooker.mrcooker.data.entities.SmartRatingTracker
 import mr.cooker.mrcooker.data.firebase.FirebaseDB
 import mr.cooker.mrcooker.other.Resource
@@ -50,4 +51,8 @@ class MainRepository @Inject constructor(
         firebaseDB.getSearchedFavoriteRecipes(search)
 
     suspend fun getSmartRatingTracker(): SmartRatingTracker = firebaseDB.getSmartRatingTracker()
+
+    suspend fun resetDaysPassed() = firebaseDB.resetDaysPassed()
+
+    suspend fun setSmartRating(smartRating: SmartRating) = firebaseDB.setSmartRating(smartRating)
 }
