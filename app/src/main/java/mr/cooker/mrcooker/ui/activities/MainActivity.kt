@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -22,6 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mr.cooker.mrcooker.R
+import mr.cooker.mrcooker.data.entities.SmartRating
 import mr.cooker.mrcooker.other.Constants.ANIMATION_DURATION
 import mr.cooker.mrcooker.other.NetworkUtils
 import mr.cooker.mrcooker.other.getLastVersionRated
@@ -98,6 +100,7 @@ class MainActivity : AppCompatActivity() {
             val version = packageManager.getPackageInfo(packageName, 0).versionName
             val lastRatedVersion = getLastVersionRated()
             if (version != lastRatedVersion) {
+                setCountDaysPassed(true)
                 val smartRatingTracker = smartRatingViewModel.getSmartRatingTracker()
                 if (smartRatingViewModel.status.throwable) smartRatingViewModel.status.throwException()
 
@@ -118,22 +121,54 @@ class MainActivity : AppCompatActivity() {
 
             smartRatingDialog.rating.observe(this@MainActivity, {
                 when {
-                    it.numOfStars == null -> {
-                        smartRatingViewModel.resetDaysPassed()
+                    it.numOfStars == null -> { /* NO-OP */
                     }
                     it.numOfStars < 4 -> {
-                        smartRatingViewModel.setSmartRating(it)
-                        if (smartRatingViewModel.status.throwable) smartRatingViewModel.status.throwException()
+                        setSmartRating(it)
+                        setCountDaysPassed(false)
                         setLastVersionRated(appVersion)
                     }
                     else -> {
-                        // TODO redirect to PlayStore
+                        setCountDaysPassed(false)
                         setLastVersionRated(appVersion)
+                        startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://play.google.com/store/apps/details?id=mr.cooker.mrcooker")
+                            )
+                        )
                     }
                 }
+
+                smartRatingViewModel.resetDaysPassed()
+                if (smartRatingViewModel.status.throwable) smartRatingViewModel.status.throwException()
             })
         } catch (e: Exception) {
             Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
+
+        }
+
+    }
+
+    private fun setSmartRating(rating: SmartRating) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            smartRatingViewModel.setSmartRating(rating)
+            if (smartRatingViewModel.status.throwable) smartRatingViewModel.status.throwException()
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun setCountDaysPassed(count: Boolean) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            smartRatingViewModel.countDaysPassed(count)
+            if (smartRatingViewModel.status.throwable) smartRatingViewModel.status.throwException()
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

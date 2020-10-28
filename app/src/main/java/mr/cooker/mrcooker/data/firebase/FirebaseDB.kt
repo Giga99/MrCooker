@@ -47,7 +47,7 @@ class FirebaseDB {
 
     private suspend fun setFirstLoginOfTheDay() {
         val documentQuery = firestoreUsers.whereEqualTo("userID", currentUser.uid).get().await()
-        if (!documentQuery.isEmpty) {
+        if (!documentQuery.isEmpty && getCountDaysPassed(currentUser.uid)) {
             for (document in documentQuery.documents) {
                 val lastLogin = document.toObject<SmartRatingTracker>()
                 val lastLoginTime =
@@ -69,14 +69,43 @@ class FirebaseDB {
                 val firstLogin = SmartRatingTracker(
                     currentUser.uid,
                     System.currentTimeMillis(),
-                    lastLogin!!.daysPassed + 1
+                    lastLogin!!.daysPassed + 1,
+                    true
                 )
                 firestoreUsers.document(document.id).set(firstLogin)
             }
-        } else {
-            val firstLogin = SmartRatingTracker(currentUser.uid, System.currentTimeMillis(), 1)
+        } else if(documentQuery.isEmpty) {
+            val firstLogin = SmartRatingTracker(currentUser.uid, System.currentTimeMillis(), 1, true)
             firestoreUsers.add(firstLogin)
         }
+    }
+
+    suspend fun countDaysPassed(count: Boolean) {
+        val documentQuery = firestoreUsers.whereEqualTo("userID", currentUser.uid).get().await()
+        if (!documentQuery.isEmpty) {
+            for (document in documentQuery.documents) {
+                val smartRatingTracker = document.toObject<SmartRatingTracker>()!!
+                firestoreUsers.document(document.id).set(
+                    SmartRatingTracker(
+                        smartRatingTracker.userID,
+                        smartRatingTracker.timeFirstLoginOfDay,
+                        smartRatingTracker.daysPassed,
+                        count
+                    )
+                )
+            }
+        }
+    }
+
+    private suspend fun getCountDaysPassed(uid: String): Boolean {
+        val documentQuery = firestoreUsers.whereEqualTo("userID", uid).get().await()
+        if (!documentQuery.isEmpty) {
+            for (document in documentQuery.documents) {
+                val smartRatingTracker = document.toObject<SmartRatingTracker>()!!
+                return smartRatingTracker.countDaysPassed
+            }
+        }
+        return true
     }
 
     fun signOut() {
@@ -103,7 +132,8 @@ class FirebaseDB {
                     SmartRatingTracker(
                         smartRatingTracker.userID,
                         smartRatingTracker.timeFirstLoginOfDay,
-                        1
+                        1,
+                        smartRatingTracker.countDaysPassed
                     )
                 )
             }

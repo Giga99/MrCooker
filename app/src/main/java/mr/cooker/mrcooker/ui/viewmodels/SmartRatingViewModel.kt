@@ -50,4 +50,14 @@ class SmartRatingViewModel @ViewModelInject constructor(
             status.exception = e
         }
     }
+
+    fun countDaysPassed(count: Boolean) = viewModelScope.launch {
+        try {
+            mainRepository.countDaysPassed(count)
+            status.throwable = false
+        } catch (e: Exception) {
+            status.throwable = true
+            status.exception = e
+        }
+    }
 }

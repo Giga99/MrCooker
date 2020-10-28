@@ -55,4 +55,6 @@ class MainRepository @Inject constructor(
     suspend fun resetDaysPassed() = firebaseDB.resetDaysPassed()
 
     suspend fun setSmartRating(smartRating: SmartRating) = firebaseDB.setSmartRating(smartRating)
+
+    suspend fun countDaysPassed(count: Boolean) = firebaseDB.countDaysPassed(count)
 }
