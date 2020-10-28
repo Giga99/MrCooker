@@ -4,30 +4,40 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.content.Intent
 import android.content.res.Configuration
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.shreyaspatil.MaterialDialog.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.fab
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import mr.cooker.mrcooker.R
+import mr.cooker.mrcooker.data.entities.SmartRating
 import mr.cooker.mrcooker.other.Constants.ANIMATION_DURATION
 import mr.cooker.mrcooker.other.NetworkUtils
-import mr.cooker.mrcooker.other.SharedPrefUtils.sharedPreferences
+import mr.cooker.mrcooker.other.getLastVersionRated
+import mr.cooker.mrcooker.other.setLastVersionRated
+import mr.cooker.mrcooker.other.setNightMode
+import mr.cooker.mrcooker.ui.dialogs.SmartRatingDialog
 import mr.cooker.mrcooker.ui.viewmodels.SignOutViewModel
+import mr.cooker.mrcooker.ui.viewmodels.SmartRatingViewModel
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val signOutViewModel: SignOutViewModel by viewModels()
+    private val smartRatingViewModel: SmartRatingViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,6 +91,85 @@ class MainActivity : AppCompatActivity() {
         }
 
         checkNetworkConnectivity()
+
+        smartRating()
+    }
+
+    private fun smartRating() = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val version = packageManager.getPackageInfo(packageName, 0).versionName
+            val lastRatedVersion = getLastVersionRated()
+            if (version != lastRatedVersion) {
+                setCountDaysPassed(true)
+                val smartRatingTracker = smartRatingViewModel.getSmartRatingTracker()
+                if (smartRatingViewModel.status.throwable) smartRatingViewModel.status.throwException()
+
+                if (smartRatingTracker!!.daysPassed == 5) showSmartRatingDialog(version)
+            }
+
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private suspend fun showSmartRatingDialog(appVersion: String) = withContext(Dispatchers.Main) {
+        try {
+            val smartRatingDialog = SmartRatingDialog(this@MainActivity, appVersion)
+            smartRatingDialog.show()
+
+            smartRatingDialog.rating.observe(this@MainActivity, {
+                when {
+                    it.numOfStars == null -> { /* NO-OP */
+                    }
+                    it.numOfStars < 4 -> {
+                        setSmartRating(it)
+                        setCountDaysPassed(false)
+                        setLastVersionRated(appVersion)
+                    }
+                    else -> {
+                        setCountDaysPassed(false)
+                        setLastVersionRated(appVersion)
+                        startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://play.google.com/store/apps/details?id=mr.cooker.mrcooker")
+                            )
+                        )
+                    }
+                }
+
+                smartRatingViewModel.resetDaysPassed()
+                if (smartRatingViewModel.status.throwable) smartRatingViewModel.status.throwException()
+            })
+        } catch (e: Exception) {
+            Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
+
+        }
+
+    }
+
+    private fun setSmartRating(rating: SmartRating) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            smartRatingViewModel.setSmartRating(rating)
+            if (smartRatingViewModel.status.throwable) smartRatingViewModel.status.throwException()
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun setCountDaysPassed(count: Boolean) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            smartRatingViewModel.countDaysPassed(count)
+            if (smartRatingViewModel.status.throwable) smartRatingViewModel.status.throwException()
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -123,11 +212,7 @@ class MainActivity : AppCompatActivity() {
                         AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
                     }
 
-                val editor = sharedPreferences.edit()
-                editor.apply {
-                    putInt("mode", mode)
-                    apply()
-                }
+                setNightMode(mode)
 
                 // Change UI Mode
                 AppCompatDelegate.setDefaultNightMode(mode)

@@ -13,10 +13,13 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
 import mr.cooker.mrcooker.data.entities.FavoriteRecipe
+import mr.cooker.mrcooker.data.entities.SmartRatingTracker
 import mr.cooker.mrcooker.data.entities.Recipe
+import mr.cooker.mrcooker.data.entities.SmartRating
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
 import timber.log.Timber
+import java.lang.Exception
 import java.util.*
 
 class FirebaseDB {
@@ -24,15 +27,117 @@ class FirebaseDB {
         val auth: FirebaseAuth = FirebaseAuth.getInstance()
         val firebaseStorage = Firebase.storage.reference
         val firestoreRecipes = Firebase.firestore.collection("recipes")
+        val firestoreUsers = Firebase.firestore.collection("users")
+        val firestoreSmartRating = Firebase.firestore.collection("smartRating")
     }
 
     suspend fun login(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password).await()
         currentUser = auth.currentUser!!
+        setFirstLoginOfTheDay()
+    }
+
+    suspend fun checkPrevLogging(): Boolean {
+        return if (auth.currentUser != null && auth.currentUser!!.isEmailVerified) {
+            currentUser = auth.currentUser!!
+            setFirstLoginOfTheDay()
+            true
+        } else false
+    }
+
+    private suspend fun setFirstLoginOfTheDay() {
+        val documentQuery = firestoreUsers.whereEqualTo("userID", currentUser.uid).get().await()
+        if (!documentQuery.isEmpty && getCountDaysPassed(currentUser.uid)) {
+            for (document in documentQuery.documents) {
+                val lastLogin = document.toObject<SmartRatingTracker>()
+                val lastLoginTime =
+                    GregorianCalendar.getInstance()
+                        .also { it.timeInMillis = lastLogin!!.timeFirstLoginOfDay }
+                val currTime = GregorianCalendar.getInstance()
+                    .also { it.timeInMillis = System.currentTimeMillis() }
+
+                val lastDay = lastLoginTime.get(Calendar.DAY_OF_MONTH)
+                val lastMonth = lastLoginTime.get(Calendar.MONTH)
+                val lastYear = lastLoginTime.get(Calendar.YEAR)
+
+                val currDay = currTime.get(Calendar.DAY_OF_MONTH)
+                val currMonth = currTime.get(Calendar.MONTH)
+                val currYear = currTime.get(Calendar.YEAR)
+
+                if (lastDay == currDay && lastMonth == currMonth && lastYear == currYear) continue
+
+                val firstLogin = SmartRatingTracker(
+                    currentUser.uid,
+                    System.currentTimeMillis(),
+                    lastLogin!!.daysPassed + 1,
+                    true
+                )
+                firestoreUsers.document(document.id).set(firstLogin)
+            }
+        } else if(documentQuery.isEmpty) {
+            val firstLogin = SmartRatingTracker(currentUser.uid, System.currentTimeMillis(), 1, true)
+            firestoreUsers.add(firstLogin)
+        }
+    }
+
+    suspend fun countDaysPassed(count: Boolean) {
+        val documentQuery = firestoreUsers.whereEqualTo("userID", currentUser.uid).get().await()
+        if (!documentQuery.isEmpty) {
+            for (document in documentQuery.documents) {
+                val smartRatingTracker = document.toObject<SmartRatingTracker>()!!
+                firestoreUsers.document(document.id).set(
+                    SmartRatingTracker(
+                        smartRatingTracker.userID,
+                        smartRatingTracker.timeFirstLoginOfDay,
+                        smartRatingTracker.daysPassed,
+                        count
+                    )
+                )
+            }
+        }
+    }
+
+    private suspend fun getCountDaysPassed(uid: String): Boolean {
+        val documentQuery = firestoreUsers.whereEqualTo("userID", uid).get().await()
+        if (!documentQuery.isEmpty) {
+            for (document in documentQuery.documents) {
+                val smartRatingTracker = document.toObject<SmartRatingTracker>()!!
+                return smartRatingTracker.countDaysPassed
+            }
+        }
+        return true
     }
 
     fun signOut() {
         auth.signOut()
+    }
+
+    suspend fun getSmartRatingTracker(): SmartRatingTracker {
+        val documentQuery = firestoreUsers.whereEqualTo("userID", currentUser.uid).get().await()
+        if (!documentQuery.isEmpty) {
+            for (document in documentQuery.documents) {
+                val smartRatingTracker = document.toObject<SmartRatingTracker>()
+                return smartRatingTracker!!
+            }
+        }
+        throw Exception("Unknown error...")
+    }
+
+    suspend fun resetDaysPassed() {
+        val documentQuery = firestoreUsers.whereEqualTo("userID", currentUser.uid).get().await()
+        if (!documentQuery.isEmpty) {
+            for (document in documentQuery.documents) {
+                val smartRatingTracker = document.toObject<SmartRatingTracker>()!!
+                firestoreUsers.document(document.id).set(
+                    SmartRatingTracker(
+                        smartRatingTracker.userID,
+                        smartRatingTracker.timeFirstLoginOfDay,
+                        1,
+                        smartRatingTracker.countDaysPassed
+                    )
+                )
+            }
+        }
     }
 
     suspend fun register(username: String, email: String, password: String) {
@@ -74,13 +179,6 @@ class FirebaseDB {
         }
 
         currentUser.delete().await()
-    }
-
-    fun checkPrevLogging(): Boolean {
-        return if (auth.currentUser != null && auth.currentUser!!.isEmailVerified) {
-            currentUser = auth.currentUser!!
-            true
-        } else false
     }
 
     suspend fun uploadProfilePhoto(imageUri: Uri): Uri? {
@@ -315,5 +413,9 @@ class FirebaseDB {
         }
 
         return Resource.Success(recipes)
+    }
+
+    suspend fun setSmartRating(smartRating: SmartRating) {
+        firestoreSmartRating.document(currentUser.uid).set(smartRating).await()
     }
 }
