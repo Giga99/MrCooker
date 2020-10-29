@@ -34,7 +34,7 @@ class FirebaseDB {
 
     suspend fun login(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password).await()
-        if (auth.currentUser!!.isEmailVerified) throw EmailNotVerifiedException()
+        if (!auth.currentUser!!.isEmailVerified) throw EmailNotVerifiedException()
         currentUser = auth.currentUser!!
         setFirstLoginOfTheDay()
     }
