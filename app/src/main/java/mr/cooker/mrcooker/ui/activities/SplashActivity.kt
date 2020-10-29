@@ -70,6 +70,8 @@ class SplashActivity : AppCompatActivity() {
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
                 Toast.makeText(this@SplashActivity, e.message, Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this@SplashActivity, AuthenticationActivity::class.java))
+                finish()
             }
         }
     }
