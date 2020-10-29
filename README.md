@@ -25,6 +25,6 @@ Using:
    - MVVM architecture
    
 # License and Copyright
-Copyright (C) Igor Stevanovic, 2020
+Copyright &copy; Igor Stevanovic, 2020
 
 Licensed under the [GPL-3.0 License](LICENSE)
