@@ -8,22 +8,20 @@
 
     <ImageView
         android:id="@+id/ivBackground"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:transitionName="photo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/text_background"
         android:padding="5dp"
@@ -39,23 +37,23 @@
         android:id="@+id/tvTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="30dp"
         android:layout_marginBottom="10dp"
+        android:background="@drawable/text_background"
         android:text="Time"
         android:textColor="?attr/colorControlNormal"
         android:textSize="20sp"
         android:textStyle="italic"
         app:drawableStartCompat="@drawable/ic_time"
         app:layout_constraintBottom_toTopOf="@+id/tvName"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="@drawable/text_background" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tvNumOfFavorites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="30dp"
         android:text="5"
         android:textColor="?attr/colorControlNormal"
         android:textSize="25sp"
