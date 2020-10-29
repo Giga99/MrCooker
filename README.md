@@ -24,4 +24,6 @@ Using:
    - Timber (https://github.com/JakeWharton/timber)
    - MVVM architecture
    
-# [License](LICENSE)
+# License and Copyright
+(C) Igor Stevanovic, 2020
+Licensed under the [GPL-3.0 License](LICENSE)
