@@ -18,6 +18,7 @@ import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.data.entities.SmartRating
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
+import mr.cooker.mrcooker.other.exceptions.EmailNotVerifiedException
 import timber.log.Timber
 import java.lang.Exception
 import java.util.*
@@ -33,6 +34,7 @@ class FirebaseDB {
 
     suspend fun login(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password).await()
+        if (auth.currentUser!!.isEmailVerified) throw EmailNotVerifiedException()
         currentUser = auth.currentUser!!
         setFirstLoginOfTheDay()
     }
