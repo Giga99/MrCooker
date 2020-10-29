@@ -24,4 +24,4 @@ Using:
    - Timber (https://github.com/JakeWharton/timber)
    - MVVM architecture
 
-# License(http://www.apache.org/licenses/)
+# License[http://www.apache.org/licenses/]
