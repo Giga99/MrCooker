@@ -26,4 +26,5 @@ Using:
    
 # License and Copyright
 (C) Igor Stevanovic, 2020
+
 Licensed under the [GPL-3.0 License](LICENSE)
