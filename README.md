@@ -23,3 +23,5 @@ Using:
    - CircularImageView (https://github.com/abdularis/CircularImageView)
    - Timber (https://github.com/JakeWharton/timber)
    - MVVM architecture
+
+# License(http://www.apache.org/licenses/)
