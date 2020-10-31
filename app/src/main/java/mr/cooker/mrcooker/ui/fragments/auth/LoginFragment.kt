@@ -9,8 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.form_validation.rule.NonEmptyRule
 import com.github.dhaval2404.form_validation.validation.FormValidator
-import com.google.firebase.auth.FirebaseAuthException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.coroutines.CoroutineScope
@@ -18,8 +16,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mr.cooker.mrcooker.R
-import mr.cooker.mrcooker.other.exceptions.EmailNotVerifiedException
-import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.ui.activities.MainActivity
 import mr.cooker.mrcooker.ui.viewmodels.LoginViewModel
 import java.lang.Exception
@@ -59,13 +55,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             try {
                 loginViewModel.login(email, password).join()
                 if (loginViewModel.status.throwable) loginViewModel.status.throwException()
-                if (currentUser.isEmailVerified) startActivity(
-                    Intent(
-                        requireContext(),
-                        MainActivity::class.java
-                    )
-                )
-                else throw EmailNotVerifiedException()
+                startActivity(Intent(requireContext(), MainActivity::class.java))
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     loginLayout.visibility = View.VISIBLE

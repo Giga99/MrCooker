@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_authentication.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.other.Constants
 import mr.cooker.mrcooker.other.NetworkUtils
-import mr.cooker.mrcooker.other.SharedPrefUtils.sharedPreferences
+import mr.cooker.mrcooker.other.setNightMode
 
 @AndroidEntryPoint
 class AuthenticationActivity : AppCompatActivity() {
@@ -46,11 +46,7 @@ class AuthenticationActivity : AppCompatActivity() {
                         AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
                     }
 
-                val editor = sharedPreferences.edit()
-                editor.apply {
-                    putInt("mode", mode)
-                    apply()
-                }
+                setNightMode(mode)
 
                 // Change UI Mode
                 AppCompatDelegate.setDefaultNightMode(mode)

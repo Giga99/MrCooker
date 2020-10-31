@@ -11,6 +11,10 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.content.res.AppCompatResources
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_splash.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.other.getNightMode
 import mr.cooker.mrcooker.ui.viewmodels.LoginViewModel
@@ -38,20 +42,37 @@ class SplashActivity : AppCompatActivity() {
             )
         )
 
+        checkPreviousLogin()
+    }
+
+    private fun checkPreviousLogin() = CoroutineScope(Dispatchers.IO).launch {
         try {
             if (loginViewModel.checkPrevLogging()) {
-                Handler(Looper.getMainLooper()).postDelayed({
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
-                }, 2000)
+                withContext(Dispatchers.Main) {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                        finish()
+                    }, 2000)
+                }
             } else {
-                Handler(Looper.getMainLooper()).postDelayed({
-                    startActivity(Intent(this, AuthenticationActivity::class.java))
-                    finish()
-                }, 2000)
+                withContext(Dispatchers.Main) {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        startActivity(
+                            Intent(
+                                this@SplashActivity,
+                                AuthenticationActivity::class.java
+                            )
+                        )
+                        finish()
+                    }, 2000)
+                }
             }
         } catch (e: Exception) {
-            Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+            withContext(Dispatchers.Main) {
+                Toast.makeText(this@SplashActivity, e.message, Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this@SplashActivity, AuthenticationActivity::class.java))
+                finish()
+            }
         }
     }
 }

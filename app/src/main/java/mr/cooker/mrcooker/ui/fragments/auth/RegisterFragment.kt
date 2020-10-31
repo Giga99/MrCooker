@@ -79,7 +79,11 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 registerViewModel.register(username, email, password).join()
                 if (registerViewModel.status.throwable) registerViewModel.status.throwException()
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(), "Successfully registered!", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        requireContext(),
+                        "Successfully registered, please verify your email!",
+                        Toast.LENGTH_LONG
+                    )
                         .show()
                 }
                 findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
