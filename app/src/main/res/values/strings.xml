@@ -46,4 +46,7 @@
     <string name="what_should_we_improve">What should we improve?</string>
     <string name="we_care_about_your_opinion">We care about your opinion!</string>
     <string name="would_you_like_to_rate_our_app">Would you like to rate our app?</string>
+    <string name="update">Update</string>
+    <string name="new_update_available">New update available!</string>
+    <string name="would_you_like_to_go_to_the_playstore_and_update_an_app">Would you like to go to the PlayStore and update an app?</string>
 </resources>
