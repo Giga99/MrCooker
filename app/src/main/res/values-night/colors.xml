@@ -12,4 +12,14 @@
     <color name="colorSecondaryText">#606060</color>
     <color name="colorBackgroundRow">#272727</color>
     <color name="colorSplashBackground">#393939</color>
+
+    <color name="android_app_upd_window_background_color">#272727</color>
+    <color name="android_app_upd_title_bar_color">#f0ad4b</color>
+    <color name="android_app_upd_info_txt_color">@android:color/white</color>
+
+    <color name="android_app_upd_restricter_dlg_btn_pressed_color">#ba7f19</color>
+    <color name="android_app_upd_restricter_dlg_btn_dark_state_color">@android:color/white</color>
+    <color name="android_app_upd_restricter_dlg_btn_light_state_color">@android:color/white</color>
+
+    <color name="android_app_upd_upd_dlg_btn_text_color">@android:color/white</color>
 </resources>
