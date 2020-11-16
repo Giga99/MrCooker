@@ -1,6 +1,7 @@
 package mr.cooker.mrcooker.data.repositories
 
 import android.net.Uri
+import com.mobapphome.androidappupdater.tools.ProgramInfo
 import mr.cooker.mrcooker.data.entities.FavoriteRecipe
 import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.data.entities.SmartRating
@@ -57,4 +58,6 @@ class MainRepository @Inject constructor(
     suspend fun setSmartRating(smartRating: SmartRating) = firebaseDB.setSmartRating(smartRating)
 
     suspend fun countDaysPassed(count: Boolean) = firebaseDB.countDaysPassed(count)
+
+    suspend fun getAppInfo(): ProgramInfo = firebaseDB.getAppInfo()
 }

@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.mobapphome.androidappupdater.tools.AAUpdaterController
 import com.shreyaspatil.MaterialDialog.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
@@ -24,12 +25,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.SmartRating
+import mr.cooker.mrcooker.other.*
 import mr.cooker.mrcooker.other.Constants.ANIMATION_DURATION
-import mr.cooker.mrcooker.other.NetworkUtils
-import mr.cooker.mrcooker.other.getLastVersionRated
-import mr.cooker.mrcooker.other.setLastVersionRated
-import mr.cooker.mrcooker.other.setNightMode
+import mr.cooker.mrcooker.other.Constants.PLAY_STORE_URI
 import mr.cooker.mrcooker.ui.dialogs.SmartRatingDialog
+import mr.cooker.mrcooker.ui.viewmodels.AppInfoViewModel
 import mr.cooker.mrcooker.ui.viewmodels.SignOutViewModel
 import mr.cooker.mrcooker.ui.viewmodels.SmartRatingViewModel
 
@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
 
     private val signOutViewModel: SignOutViewModel by viewModels()
     private val smartRatingViewModel: SmartRatingViewModel by viewModels()
+    private val appInfoViewModel: AppInfoViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,7 +93,19 @@ class MainActivity : AppCompatActivity() {
 
         checkNetworkConnectivity()
 
+        appUpdate()
+
         smartRating()
+    }
+
+    private fun appUpdate() = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            AAUpdaterController.init(this@MainActivity, null, appInfoViewModel, false)
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun smartRating() = CoroutineScope(Dispatchers.IO).launch {
@@ -134,7 +147,7 @@ class MainActivity : AppCompatActivity() {
                         startActivity(
                             Intent(
                                 Intent.ACTION_VIEW,
-                                Uri.parse("https://play.google.com/store/apps/details?id=mr.cooker.mrcooker")
+                                Uri.parse(PLAY_STORE_URI)
                             )
                         )
                     }
@@ -273,5 +286,10 @@ class MainActivity : AppCompatActivity() {
         } else {
             navHostFragment.findNavController().popBackStack()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        AAUpdaterController.end()
     }
 }

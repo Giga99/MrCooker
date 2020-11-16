@@ -28,7 +28,7 @@ class SmartRatingDialog(
         super.onCreate(savedInstanceState)
         setContentView(R.layout.smart_rating_dialog)
 
-        ratingBar.setOnRatingBarChangeListener { ratingBar, fl, _ ->
+        ratingBar.setOnRatingBarChangeListener { _, fl, _ ->
             numOfStars = fl
             if (numOfStars < 4) etReview.visibility = View.VISIBLE
         }

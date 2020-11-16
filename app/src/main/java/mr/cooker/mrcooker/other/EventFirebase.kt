@@ -2,12 +2,12 @@ package mr.cooker.mrcooker.other
 
 import java.lang.Exception
 
-class EventFirebase(private val content: Exception?) {
+class EventFirebase(content: Exception?) {
 
     var throwable = false
     var exception = content
 
     fun throwException() {
-        throw exception!!;
+        throw exception!!
     }
 }

@@ -100,3 +100,5 @@ q
 Aapp/src/main/java/mr/cooker/mrcooker/data/entities/SmartRating.kt,7\9\799b3ab9bbff3672629670059bf0163f0517ea40
 t
 Dapp/src/main/java/mr/cooker/mrcooker/ui/dialogs/SmartRatingDialog.kt,5\5\555049a1a213ca66f781d4e3718c0d97cddb7389
+r
+Bapp/src/main/java/mr/cooker/mrcooker/ui/dialogs/UpdateAppDialog.kt,a\b\ab4a806d309930fbfc32c18553fdf140e9ecd937

@@ -11,6 +11,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.mobapphome.androidappupdater.tools.ProgramInfo
 import kotlinx.coroutines.tasks.await
 import mr.cooker.mrcooker.data.entities.FavoriteRecipe
 import mr.cooker.mrcooker.data.entities.SmartRatingTracker
@@ -18,6 +19,7 @@ import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.data.entities.SmartRating
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
+import mr.cooker.mrcooker.other.exceptions.AppInfoNotAvailableException
 import mr.cooker.mrcooker.other.exceptions.EmailNotVerifiedException
 import timber.log.Timber
 import java.lang.Exception
@@ -30,6 +32,7 @@ class FirebaseDB {
         val firestoreRecipes = Firebase.firestore.collection("recipes")
         val firestoreUsers = Firebase.firestore.collection("users")
         val firestoreSmartRating = Firebase.firestore.collection("smartRating")
+        val firestoreAppInfo = Firebase.firestore.collection("application")
     }
 
     suspend fun login(email: String, password: String) {
@@ -419,5 +422,16 @@ class FirebaseDB {
 
     suspend fun setSmartRating(smartRating: SmartRating) {
         firestoreSmartRating.document(currentUser.uid).set(smartRating).await()
+    }
+
+    suspend fun getAppInfo(): ProgramInfo {
+        val querySnapshot = firestoreAppInfo.get().await()
+        if(!querySnapshot.isEmpty) {
+            for(document in querySnapshot.documents) {
+                return document.toObject<ProgramInfo>()!!
+            }
+        }
+
+        throw AppInfoNotAvailableException()
     }
 }
