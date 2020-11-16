@@ -15,13 +15,12 @@
     <color name="colorBackgroundRow">#FFFFFF</color>
     <color name="colorSplashBackground">#388581</color>
 
+    <!-- App Updater dialog colors-->
     <color name="android_app_upd_window_background_color">#FBFBFB</color>
     <color name="android_app_upd_title_bar_color">#388581</color>
     <color name="android_app_upd_info_txt_color">#494949</color>
-
     <color name="android_app_upd_restricter_dlg_btn_pressed_color">#ba7f19</color>
     <color name="android_app_upd_restricter_dlg_btn_dark_state_color">@android:color/white</color>
     <color name="android_app_upd_restricter_dlg_btn_light_state_color">@android:color/white</color>
-
     <color name="android_app_upd_upd_dlg_btn_text_color">#f0ad4b</color>
 </resources>

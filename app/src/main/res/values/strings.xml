@@ -49,4 +49,12 @@
     <string name="update">Update</string>
     <string name="new_update_available">New update available!</string>
     <string name="would_you_like_to_go_to_the_playstore_and_update_an_app">Would you like to go to the PlayStore and update an app?</string>
+
+    <!-- App Updater dialog strings-->
+    <string name="android_app_upd_updater_info_install">The application has moved to a new address. Please install a newer version.</string>
+    <string name="android_app_upd_updater_info_update">A new version is available. Please update the application.</string>
+    <string name="android_app_upd_restricter_info_install">This is an old version and does not operate. An application has moved to a new address. \nPlease install a newer version.</string>
+    <string name="android_app_upd_restricter_info_update">This is an old version and does not operate. Please update the application.</string>
+    <string name="android_app_upd_restricter_info_open_new_version">This is an old version and does not operate. Please open the new version.</string>
+
 </resources>
