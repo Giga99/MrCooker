@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.mobapphome.androidappupdater.AAUpdaterDlg
+import com.mobapphome.androidappupdater.tools.AAUpdaterController
 import com.shreyaspatil.MaterialDialog.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
@@ -25,6 +27,7 @@ import kotlinx.coroutines.withContext
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.SmartRating
 import mr.cooker.mrcooker.other.Constants.ANIMATION_DURATION
+import mr.cooker.mrcooker.other.Constants.PLAY_STORE_URI
 import mr.cooker.mrcooker.other.NetworkUtils
 import mr.cooker.mrcooker.other.getLastVersionRated
 import mr.cooker.mrcooker.other.setLastVersionRated
@@ -92,7 +95,20 @@ class MainActivity : AppCompatActivity() {
 
         checkNetworkConnectivity()
 
+        appUpdate()
+
         smartRating()
+    }
+
+    private fun appUpdate() = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val currentVersion = packageManager.getPackageInfo(packageName, 0).versionName
+            AAUpdaterController.init(this@MainActivity, "https://api.npoint.io/1e85d0ba5598791d6544")
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun smartRating() = CoroutineScope(Dispatchers.IO).launch {
@@ -134,7 +150,7 @@ class MainActivity : AppCompatActivity() {
                         startActivity(
                             Intent(
                                 Intent.ACTION_VIEW,
-                                Uri.parse("https://play.google.com/store/apps/details?id=mr.cooker.mrcooker")
+                                Uri.parse(PLAY_STORE_URI)
                             )
                         )
                     }
@@ -273,5 +289,10 @@ class MainActivity : AppCompatActivity() {
         } else {
             navHostFragment.findNavController().popBackStack()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        AAUpdaterController.end()
     }
 }
