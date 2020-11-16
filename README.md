@@ -20,6 +20,7 @@ Using:
    - Material Dialog (https://github.com/PatilShreyas/MaterialDialog-Android)
    - Custom ProgressBar (https://github.com/agrawalsuneet/DotLoadersPack-Android)
    - Form Validation (https://github.com/Dhaval2404/android-form-validation)
+   - App Updater (https://github.com/hummatli/AndroidAppUpdater)
    - CircularImageView (https://github.com/abdularis/CircularImageView)
    - Timber (https://github.com/JakeWharton/timber)
    - MVVM architecture
