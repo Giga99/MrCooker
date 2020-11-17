@@ -28,8 +28,8 @@ android {
         applicationId "mr.cooker.mrcooker"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 2
-        versionName "1.0.1c1"
+        versionCode 3
+        versionName "1.0.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
