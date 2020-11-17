@@ -1,3 +1,15 @@
+/*
+ * Created by Igor Stevanovic on 11/17/20 12:17 AM
+ * Copyright (c) 2020 MrCooker. All rights reserved.
+ * Last modified 11/17/20 12:15 AM
+ * Licensed under the GPL-3.0 License;
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * https://www.gnu.org/licenses/gpl-3.0.en.html
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -17,7 +29,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 2
-        versionName "1.0.1"
+        versionName "1.0.1c1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -127,4 +139,9 @@ dependencies {
 
     // CircularImageView
     implementation "com.github.abdularis:circularimageview:1.5"
+
+    //The android-app-updater library
+    implementation 'com.mobapphome.library:android-app-updater:1.3.3'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'org.jsoup:jsoup:1.10.2'
 }

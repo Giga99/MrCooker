@@ -10,10 +10,6 @@
  * limitations under the License.
  */
 
-package mr.cooker.mrcooker.data.entities
+package mr.cooker.mrcooker.other.exceptions
 
-data class SmartRating(
-    val numOfStars: Float?,
-    val review: String?,
-    val appVersion: String?
-)
+class AppInfoNotAvailableException : Exception("App info is not available!")

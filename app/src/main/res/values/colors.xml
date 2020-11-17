@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by Igor Stevanovic on 11/17/20 12:17 AM
+  ~ Copyright (c) 2020 MrCooker. All rights reserved.
+  ~ Last modified 11/17/20 12:15 AM
+  ~ Licensed under the GPL-3.0 License;
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~ https://www.gnu.org/licenses/gpl-3.0.en.html
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
 <resources>
     <color name="colorPrimary">#f0ad4b</color>
     <color name="colorLightPrimary">#ffe07b</color>
@@ -14,4 +26,13 @@
     <color name="colorSecondaryText">#606060</color>
     <color name="colorBackgroundRow">#FFFFFF</color>
     <color name="colorSplashBackground">#388581</color>
+
+    <!-- App Updater dialog colors-->
+    <color name="android_app_upd_window_background_color">#FBFBFB</color>
+    <color name="android_app_upd_title_bar_color">#388581</color>
+    <color name="android_app_upd_info_txt_color">#494949</color>
+    <color name="android_app_upd_restricter_dlg_btn_pressed_color">#ba7f19</color>
+    <color name="android_app_upd_restricter_dlg_btn_dark_state_color">@android:color/white</color>
+    <color name="android_app_upd_restricter_dlg_btn_light_state_color">@android:color/white</color>
+    <color name="android_app_upd_upd_dlg_btn_text_color">#f0ad4b</color>
 </resources>

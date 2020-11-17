@@ -1,3 +1,15 @@
+/*
+ * Created by Igor Stevanovic on 11/17/20 12:17 AM
+ * Copyright (c) 2020 MrCooker. All rights reserved.
+ * Last modified 11/17/20 12:15 AM
+ * Licensed under the GPL-3.0 License;
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * https://www.gnu.org/licenses/gpl-3.0.en.html
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package mr.cooker.mrcooker.data.firebase
 
 import android.net.Uri
@@ -11,6 +23,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.mobapphome.androidappupdater.tools.ProgramInfo
 import kotlinx.coroutines.tasks.await
 import mr.cooker.mrcooker.data.entities.FavoriteRecipe
 import mr.cooker.mrcooker.data.entities.SmartRatingTracker
@@ -18,6 +31,7 @@ import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.data.entities.SmartRating
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
+import mr.cooker.mrcooker.other.exceptions.AppInfoNotAvailableException
 import mr.cooker.mrcooker.other.exceptions.EmailNotVerifiedException
 import timber.log.Timber
 import java.lang.Exception
@@ -30,6 +44,7 @@ class FirebaseDB {
         val firestoreRecipes = Firebase.firestore.collection("recipes")
         val firestoreUsers = Firebase.firestore.collection("users")
         val firestoreSmartRating = Firebase.firestore.collection("smartRating")
+        val firestoreAppInfo = Firebase.firestore.collection("application")
     }
 
     suspend fun login(email: String, password: String) {
@@ -419,5 +434,16 @@ class FirebaseDB {
 
     suspend fun setSmartRating(smartRating: SmartRating) {
         firestoreSmartRating.document(currentUser.uid).set(smartRating).await()
+    }
+
+    suspend fun getAppInfo(): ProgramInfo {
+        val querySnapshot = firestoreAppInfo.get().await()
+        if(!querySnapshot.isEmpty) {
+            for(document in querySnapshot.documents) {
+                return document.toObject<ProgramInfo>()!!
+            }
+        }
+
+        throw AppInfoNotAvailableException()
     }
 }
