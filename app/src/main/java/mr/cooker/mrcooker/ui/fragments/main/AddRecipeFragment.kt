@@ -44,8 +44,8 @@ import java.util.*
 class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
     private val addingViewModel: AddingViewModel by viewModels()
     private var imgBitmap: Bitmap? = null
-    private var imgUri: Uri? = null
-    private var downloadUrl: Uri? = null
+    private var imgUri: Uri? = null // list
+    private var downloadUrl: Uri? = null // list
 
     private var lengthBefore = 0
     private var showToEveryone = true
