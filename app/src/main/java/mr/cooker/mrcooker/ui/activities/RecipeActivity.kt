@@ -143,7 +143,7 @@ class RecipeActivity : AppCompatActivity() {
                     tvTime.text = "${recipe.timeToCook}min"
                     tvIngredients.text = recipe.ingredients
                     tvInstructions.text = recipe.instructions
-                    Glide.with(this@RecipeActivity).load(recipe.imgUrl).into(ivHeader)
+                    Glide.with(this@RecipeActivity).load(recipe.imgUrls.first()).into(ivHeader)
                     ivHeader.setColorFilter(Color.parseColor("#4D000000"))
                     toolbar.menu.getItem(0).isVisible = recipe.ownerID.equals(currentUser.uid)
                     if (recipe.ownerID.equals(currentUser.uid)) ivAddToFavorites.visibility =

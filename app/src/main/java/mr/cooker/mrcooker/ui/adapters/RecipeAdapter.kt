@@ -60,7 +60,7 @@ class RecipeAdapter : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
             tvName.text = recipe.name
             tvTime.text = "${recipe.timeToCook}min"
             tvNumOfFavorites.text = "${recipe.numOfFavorites}"
-            Glide.with(context).load(recipe.imgUrl).into(ivBackground)
+            Glide.with(context).load(recipe.imgUrls.first()).into(ivBackground)
             ivBackground.setColorFilter(Color.parseColor("#4D000000"))
             setOnClickListener {
                 onItemClickListener?.let { it(recipe, ivBackground) }

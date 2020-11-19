@@ -73,7 +73,7 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
 
                 upload(name, time, ingredients, instructions)
 
-            } else if (imgUris.size > 1) {
+            } else if (imgUris.size == 1) {
                 Toast.makeText(context, "Please select at least one image!", Toast.LENGTH_SHORT)
                     .show()
             } else {

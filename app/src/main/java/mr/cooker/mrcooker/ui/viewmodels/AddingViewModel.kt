@@ -53,9 +53,9 @@ class AddingViewModel @ViewModelInject constructor(
         }
     }
 
-    fun uploadAgain(recipe: Recipe, uri: Uri) = viewModelScope.launch {
+    fun uploadAgain(recipe: Recipe, uris: List<Uri>) = viewModelScope.launch {
         try {
-            mainRepository.uploadAgain(recipe, uri)
+            mainRepository.uploadAgain(recipe, uris)
             status.throwable = false
         } catch (e: Exception) {
             status.throwable = true
