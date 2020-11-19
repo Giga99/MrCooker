@@ -27,19 +27,16 @@ import kotlinx.android.synthetic.main.recipe_row.view.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.Recipe
 
-class RecipeAdapter() : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
+class RecipeAdapter : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
 
     inner class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     private val diffCallback = object : DiffUtil.ItemCallback<Recipe>() {
-        override fun areItemsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
-            return oldItem.id == newItem.id
-        }
+        override fun areItemsTheSame(oldItem: Recipe, newItem: Recipe): Boolean =
+            oldItem.id == newItem.id
 
-        override fun areContentsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
-            return oldItem.hashCode() == newItem.hashCode()
-        }
-
+        override fun areContentsTheSame(oldItem: Recipe, newItem: Recipe): Boolean =
+            oldItem.hashCode() == newItem.hashCode()
     }
 
     val differ = AsyncListDiffer(this, diffCallback)
