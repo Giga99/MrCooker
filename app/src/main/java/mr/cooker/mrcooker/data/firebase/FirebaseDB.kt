@@ -240,33 +240,6 @@ class FirebaseDB {
         }
     }
 
-    suspend fun uploadAgain(recipe: Recipe, uris: List<Uri>) {
-        firestoreRecipes.document(recipe.id!!).set(recipe).await()
-        val downloadUrls = mutableListOf<Uri>()
-        for(uri in uris) downloadUrls.add(uploadImage(uri)!!)
-
-        val recipeQuery = firestoreRecipes
-            .whereEqualTo("id", recipe.id)
-            .whereEqualTo("name", recipe.name)
-            .whereEqualTo("timeToCook", recipe.timeToCook)
-            .whereEqualTo("ingredients", recipe.ingredients)
-            .whereEqualTo("instructions", recipe.instructions)
-            .whereEqualTo("showToEveryone", recipe.showToEveryone)
-            .whereEqualTo("timePosted", recipe.timePosted)
-            .whereEqualTo("ownerID", recipe.ownerID)
-            .get().await()
-
-        val map = mutableMapOf<String, Any>()
-
-        if (recipeQuery.documents.isNotEmpty()) {
-            for (document in recipeQuery) {
-                map["imgUrl"] = downloadUrls.first().toString()
-                map["imgUrls"] = downloadUrls
-                firestoreRecipes.document(document.id).set(map, SetOptions.merge()).await()
-            }
-        }
-    }
-
     suspend fun deleteRecipe(recipe: Recipe) {
         for(imgUrl in recipe.imgUrls) {Timber.e("imgURL=$imgUrl"); deleteImage(imgUrl)}
         val recipeQuery = firestoreRecipes.whereEqualTo("id", recipe.id).get().await()

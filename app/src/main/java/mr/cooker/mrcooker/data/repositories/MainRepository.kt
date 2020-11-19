@@ -29,8 +29,6 @@ class MainRepository @Inject constructor(
 
     suspend fun uploadRecipe(recipe: Recipe) = firebaseDB.uploadRecipe(recipe)
 
-    suspend fun uploadAgain(recipe: Recipe, uris: List<Uri>) = firebaseDB.uploadAgain(recipe, uris)
-
     suspend fun deleteRecipe(recipe: Recipe) = firebaseDB.deleteRecipe(recipe)
 
     suspend fun getBytes(imgUrl: String) = firebaseDB.getBytes(imgUrl)
