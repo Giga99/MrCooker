@@ -32,7 +32,6 @@ class AppInfoViewModel @ViewModelInject constructor(
             programInfo = mainRepository.getAppInfo().copy(isRunMode = true)
         }.join()
 
-        Timber.e(programInfo.toString())
         programInfo!!
     }
 }

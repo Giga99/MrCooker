@@ -24,7 +24,8 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.github.dhaval2404.form_validation.rule.NonEmptyRule
 import com.github.dhaval2404.form_validation.validation.FormValidator
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -35,7 +36,9 @@ import kotlinx.coroutines.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
+import mr.cooker.mrcooker.ui.adapters.ImageAdapter
 import mr.cooker.mrcooker.ui.viewmodels.AddingViewModel
+import timber.log.Timber
 import java.lang.Exception
 import java.util.*
 
@@ -43,18 +46,22 @@ import java.util.*
 @AndroidEntryPoint
 class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
     private val addingViewModel: AddingViewModel by viewModels()
-    private var imgBitmap: Bitmap? = null
-    private var imgUri: Uri? = null // list
-    private var downloadUrl: Uri? = null // list
+    private var imgUris = mutableListOf<Uri?>()
+    private var imgBitmaps = mutableListOf<Bitmap?>()
+    private var downloadUrls = mutableListOf<String>()
 
-    private var lengthBefore = 0
+    private lateinit var imageAdapter: ImageAdapter
+
     private var showToEveryone = true
+    private var lengthBefore = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupRecyclerView()
+
         tvAdd.setOnClickListener {
-            if (isValidForm() && imgBitmap != null) {
+            if (isValidForm() && imgUris.size > 1) {
                 addRecipeLayout.visibility = View.GONE
                 trailingLoaderAddRecipe.visibility = View.VISIBLE
                 trailingLoaderAddRecipe.animate()
@@ -66,8 +73,9 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
 
                 upload(name, time, ingredients, instructions)
 
-            } else if (imgBitmap == null) {
-                Toast.makeText(context, "Please select the image!", Toast.LENGTH_SHORT).show()
+            } else if (imgUris.size > 1) {
+                Toast.makeText(context, "Please select at least one image!", Toast.LENGTH_SHORT)
+                    .show()
             } else {
                 Toast.makeText(context, "Please enter all the information!", Toast.LENGTH_SHORT)
                     .show()
@@ -95,7 +103,7 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
         }
 
         // ImagePicker
-        ivAddImage.setOnClickListener {
+        imageAdapter.setOnItemClickListener {
             ImagePicker.with(this)
                 .cropSquare()
                 .compress(1024)
@@ -113,13 +121,29 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
         }
     }
 
+    private fun setupRecyclerView() = rvImages.apply {
+        imageAdapter = ImageAdapter()
+        adapter = imageAdapter
+        val manager = LinearLayoutManager(requireContext())
+        manager.orientation = RecyclerView.HORIZONTAL
+        layoutManager = manager
+
+        imgUris.add(null)
+        imgBitmaps.add(null)
+        imageAdapter.submitList(imgBitmaps)
+    }
+
     private fun upload(name: String, time: String, ingredients: String, instructions: String) =
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                downloadUrl = addingViewModel.uploadImage(imgUri!!)
-                if (addingViewModel.status.throwable) addingViewModel.status.throwException()
+                for (imgUri in imgUris) {
+                    if (imgUri == null) continue
+                    val downloadUrl = addingViewModel.uploadImage(imgUri)
+                    if (addingViewModel.status.throwable) addingViewModel.status.throwException()
+                    downloadUrls.add(downloadUrl.toString())
+                }
                 val recipe = Recipe(
-                    downloadUrl.toString(),
+                    downloadUrls.first(),
                     name,
                     time.toInt(),
                     ingredients,
@@ -127,7 +151,8 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
                     numOfFavorites = 0,
                     showToEveryone,
                     Calendar.getInstance().timeInMillis,
-                    currentUser.uid
+                    currentUser.uid,
+                    downloadUrls
                 )
 
                 addingViewModel.uploadRecipe(recipe).join()
@@ -158,9 +183,11 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
 
         when (resultCode) {
             Activity.RESULT_OK -> {
-                imgUri = data?.data
-                imgBitmap = BitmapFactory.decodeFile(ImagePicker.getFilePath(data)!!)
-                Glide.with(this).load(imgBitmap).into(ivAddImage)
+                imgUris.add(data?.data)
+                imgBitmaps.add(BitmapFactory.decodeFile(ImagePicker.getFilePath(data)!!))
+                imageAdapter.submitList(imgBitmaps)
+                imageAdapter.notifyDataSetChanged()
+                for(bitmap in imgBitmaps) Timber.e("Bitmap=$bitmap")
             }
 
             ImagePicker.RESULT_ERROR -> Toast.makeText(

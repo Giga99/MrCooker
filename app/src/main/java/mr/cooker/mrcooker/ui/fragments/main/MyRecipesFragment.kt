@@ -175,6 +175,7 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
             is Resource.Success -> {
                 swipeRefreshLayout?.isRefreshing = false
                 recipeAdapter.submitList(it.data)
+                recipeAdapter.notifyDataSetChanged()
             }
 
             is Resource.Failure -> {

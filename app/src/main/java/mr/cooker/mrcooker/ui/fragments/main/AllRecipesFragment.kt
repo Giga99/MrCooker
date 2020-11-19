@@ -109,6 +109,7 @@ class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
             is Resource.Success -> {
                 swipeRefreshLayout?.isRefreshing = false
                 recipeAdapter.submitList(it.data)
+                recipeAdapter.notifyDataSetChanged()
             }
 
             is Resource.Failure -> {

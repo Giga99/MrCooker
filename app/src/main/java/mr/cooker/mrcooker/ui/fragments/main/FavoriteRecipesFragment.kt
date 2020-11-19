@@ -108,6 +108,7 @@ class FavoriteRecipesFragment : Fragment(R.layout.fragment_favorite_recipes) {
             is Resource.Success -> {
                 swipeRefreshLayout?.isRefreshing = false
                 recipeAdapter.submitList(it.data)
+                recipeAdapter.notifyDataSetChanged()
             }
 
             is Resource.Failure -> {
