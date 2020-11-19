@@ -104,11 +104,9 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
 
         // ImagePicker
         imageAdapter.setOnItemClickListener {
-            ImagePicker.with(this)
-                .cropSquare()
-                .compress(1024)
-                .maxResultSize(1080, 1080)
-                .start()
+            if (imgUris.size < 7) ImagePicker.with(this)
+                .cropSquare().compress(1024)
+                .maxResultSize(1080, 1080).start()
         }
 
         show.setOnClickListener {
@@ -187,7 +185,7 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
                 imgBitmaps.add(BitmapFactory.decodeFile(ImagePicker.getFilePath(data)!!))
                 imageAdapter.submitList(imgBitmaps)
                 imageAdapter.notifyDataSetChanged()
-                for(bitmap in imgBitmaps) Timber.e("Bitmap=$bitmap")
+                for (bitmap in imgBitmaps) Timber.e("Bitmap=$bitmap")
             }
 
             ImagePicker.RESULT_ERROR -> Toast.makeText(
