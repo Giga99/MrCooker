@@ -13,7 +13,6 @@
 package mr.cooker.mrcooker.ui.fragments.main
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.view.View
@@ -88,6 +87,7 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                swipeRefreshLayout?.isRefreshing = true
                 deleteRecipe(viewHolder)
             }
         }
