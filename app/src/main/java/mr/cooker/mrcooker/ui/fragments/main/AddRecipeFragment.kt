@@ -38,7 +38,6 @@ import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.ui.adapters.ImageAdapter
 import mr.cooker.mrcooker.ui.viewmodels.AddingViewModel
-import timber.log.Timber
 import java.lang.Exception
 import java.util.*
 
@@ -104,9 +103,14 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
 
         // ImagePicker
         imageAdapter.setOnItemClickListener {
-            if (imgUris.size < 7) ImagePicker.with(this)
+            if (imgUris.size < 6) ImagePicker.with(this)
                 .cropSquare().compress(1024)
                 .maxResultSize(1080, 1080).start()
+            else Toast.makeText(
+                context,
+                "You reached your maximum of 5 images!",
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         show.setOnClickListener {
@@ -185,7 +189,6 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
                 imgBitmaps.add(BitmapFactory.decodeFile(ImagePicker.getFilePath(data)!!))
                 imageAdapter.submitList(imgBitmaps)
                 imageAdapter.notifyDataSetChanged()
-                for (bitmap in imgBitmaps) Timber.e("Bitmap=$bitmap")
             }
 
             ImagePicker.RESULT_ERROR -> Toast.makeText(

@@ -20,7 +20,6 @@ import com.mobapphome.androidappupdater.tools.ProgramInfo
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import mr.cooker.mrcooker.data.repositories.MainRepository
-import timber.log.Timber
 
 class AppInfoViewModel @ViewModelInject constructor(
     private val mainRepository: MainRepository

@@ -33,7 +33,6 @@ import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.other.exceptions.AppInfoNotAvailableException
 import mr.cooker.mrcooker.other.exceptions.EmailNotVerifiedException
-import timber.log.Timber
 import java.lang.Exception
 import java.util.*
 
@@ -241,7 +240,7 @@ class FirebaseDB {
     }
 
     suspend fun deleteRecipe(recipe: Recipe) {
-        for(imgUrl in recipe.imgUrls) {Timber.e("imgURL=$imgUrl"); deleteImage(imgUrl)}
+        for(imgUrl in recipe.imgUrls) deleteImage(imgUrl)
         val recipeQuery = firestoreRecipes.whereEqualTo("id", recipe.id).get().await()
         if (recipeQuery.documents.isNotEmpty()) {
             for (document in recipeQuery) firestoreRecipes.document(document.id).delete().await()
@@ -361,9 +360,7 @@ class FirebaseDB {
         if (query.documents.isNotEmpty()) {
             for (document in query.documents) {
                 var num = document["numOfFavorites"] as Long
-                Timber.e("num=$num")
                 num--
-                Timber.e("num=$num")
                 val map = mapOf<String, Any>("numOfFavorites" to num)
                 firestoreRecipes.document(recipeID).set(map, SetOptions.merge()).await()
             }

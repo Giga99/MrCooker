@@ -31,7 +31,6 @@ import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.other.Constants.postID
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
-import mr.cooker.mrcooker.ui.adapters.ImageAdapter
 import mr.cooker.mrcooker.ui.adapters.RecipeImagesAdapter
 import mr.cooker.mrcooker.ui.viewmodels.AddingViewModel
 import mr.cooker.mrcooker.ui.viewmodels.AllRecipesViewModel
@@ -263,8 +262,7 @@ class RecipeActivity : AppCompatActivity() {
                     this@RecipeActivity,
                     "Successfully deleted recipe!",
                     Toast.LENGTH_SHORT
-                )
-                    .show()
+                ).show()
                 startActivity(Intent(this@RecipeActivity, MainActivity::class.java))
                 finish()
             }

@@ -34,7 +34,6 @@ import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.ui.activities.RecipeActivity
 import mr.cooker.mrcooker.ui.adapters.RecipeAdapter
 import mr.cooker.mrcooker.ui.viewmodels.FavoriteRecipesViewModel
-import timber.log.Timber
 import java.util.*
 
 @ExperimentalCoroutinesApi
@@ -112,7 +111,6 @@ class FavoriteRecipesFragment : Fragment(R.layout.fragment_favorite_recipes) {
             }
 
             is Resource.Failure -> {
-                Timber.e(it.throwable)
                 Toast.makeText(
                     requireContext(),
                     "An error has occurred:${it.throwable.message}",
