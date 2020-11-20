@@ -12,6 +12,7 @@
 
 package mr.cooker.mrcooker.ui.adapters
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,6 +50,7 @@ class RecipeImagesAdapter : RecyclerView.Adapter<RecipeImagesAdapter.ImageViewHo
 
         holder.itemView.apply {
             Glide.with(context).load(imageUrl).into(imageViewPager)
+            imageViewPager.setColorFilter(Color.parseColor("#4D000000"))
         }
     }
 
