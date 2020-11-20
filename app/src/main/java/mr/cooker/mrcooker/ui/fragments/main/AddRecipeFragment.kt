@@ -30,12 +30,14 @@ import com.github.dhaval2404.form_validation.rule.NonEmptyRule
 import com.github.dhaval2404.form_validation.validation.FormValidator
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
+import com.shreyaspatil.MaterialDialog.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_add_recipe.*
 import kotlinx.coroutines.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
+import mr.cooker.mrcooker.ui.activities.AuthenticationActivity
 import mr.cooker.mrcooker.ui.adapters.ImageAdapter
 import mr.cooker.mrcooker.ui.viewmodels.AddingViewModel
 import java.lang.Exception
@@ -103,14 +105,16 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
 
         // ImagePicker
         imageAdapter.setOnItemClickListener {
-            if (imgUris.size < 6) ImagePicker.with(this)
-                .cropSquare().compress(1024)
-                .maxResultSize(1080, 1080).start()
-            else Toast.makeText(
-                context,
-                "You reached your maximum of 5 images!",
-                Toast.LENGTH_SHORT
-            ).show()
+            if(it == 0) {
+                if (imgUris.size < 6) ImagePicker.with(this)
+                    .cropSquare().compress(1024)
+                    .maxResultSize(1080, 1080).start()
+                else Toast.makeText(
+                    context,
+                    "You reached your maximum of 5 images!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else dialogDeleteImage(it)
         }
 
         show.setOnClickListener {
@@ -121,6 +125,24 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
         tvCancel.setOnClickListener {
             findNavController().popBackStack()
         }
+    }
+
+    private fun dialogDeleteImage(position: Int) {
+        MaterialDialog.Builder(requireActivity())
+            .setTitle(getString(R.string.delete_image_dialog))
+            .setMessage(getString(R.string.delete_image_dialog_message))
+            .setPositiveButton(getString(R.string.option_yes)) { dialogInterface, _ ->
+                imgUris.removeAt(position)
+                imgBitmaps.removeAt(position)
+                imageAdapter.submitList(imgBitmaps)
+                imageAdapter.notifyDataSetChanged()
+                dialogInterface.dismiss()
+            }
+            .setNegativeButton(getString(R.string.option_no)) { dialogInterface, _ ->
+                dialogInterface.dismiss()
+            }
+            .build()
+            .show()
     }
 
     private fun setupRecyclerView() = rvImages.apply {

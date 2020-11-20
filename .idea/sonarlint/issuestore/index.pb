@@ -100,3 +100,9 @@ q
 Aapp/src/main/java/mr/cooker/mrcooker/data/entities/SmartRating.kt,7\9\799b3ab9bbff3672629670059bf0163f0517ea40
 t
 Dapp/src/main/java/mr/cooker/mrcooker/ui/dialogs/SmartRatingDialog.kt,5\5\555049a1a213ca66f781d4e3718c0d97cddb7389
+p
+@app/src/main/java/mr/cooker/mrcooker/ui/adapters/ImageAdapter.kt,7\f\7f5d16af72b0f9aee59143690ab7f8fa91c3df91
+w
+Gapp/src/main/java/mr/cooker/mrcooker/ui/adapters/RecipeImagesAdapter.kt,4\f\4f3d8e2f90e3a24811cd5d28632d809f031e7eee
+v
+Fapp/src/main/java/mr/cooker/mrcooker/ui/viewmodels/AppInfoViewModel.kt,d\f\dfd22464e5e5b447e1916d7ffc7ec7f8cb6bf319

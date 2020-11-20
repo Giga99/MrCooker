@@ -53,16 +53,16 @@ class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
             else Glide.with(context).load(imageBitmap).into(image)
 
             setOnClickListener {
-                onItemClickListener?.let { it(Unit) }
+                onItemClickListener?.let { it(position) }
             }
         }
     }
 
     override fun getItemCount(): Int = differ.currentList.size
 
-    private var onItemClickListener: ((Unit) -> Unit)? = null
+    private var onItemClickListener: ((Int) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: (Unit) -> Unit) {
+    fun setOnItemClickListener(listener: (Int) -> Unit) {
         onItemClickListener = listener
     }
 }
