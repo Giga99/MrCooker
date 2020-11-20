@@ -33,6 +33,7 @@ import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.other.Constants.postID
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
+import mr.cooker.mrcooker.ui.adapters.RecipeImagesViewPagerAdapter
 import mr.cooker.mrcooker.ui.viewmodels.AddingViewModel
 import mr.cooker.mrcooker.ui.viewmodels.AllRecipesViewModel
 import mr.cooker.mrcooker.ui.viewmodels.FavoriteRecipesViewModel
@@ -47,6 +48,8 @@ class RecipeActivity : AppCompatActivity() {
     private val favoriteRecipesViewModel: FavoriteRecipesViewModel by viewModels()
     private lateinit var recipe: Recipe
     private var favorite = false
+
+    private lateinit var recipeImagesViewPagerAdapter: RecipeImagesViewPagerAdapter
 
     private var counter = 0
 
@@ -131,7 +134,7 @@ class RecipeActivity : AppCompatActivity() {
 
     private fun getRecipe(postId: String) = CoroutineScope(Dispatchers.IO).launch {
         val data = allRecipesViewModel.getRecipeByID(postId)
-        if(data == null) onBackPressed()
+        if (data == null) onBackPressed()
         when (data) {
             is Resource.Loading -> { /* NO-OP */
             }
@@ -143,8 +146,9 @@ class RecipeActivity : AppCompatActivity() {
                     tvTime.text = "${recipe.timeToCook}min"
                     tvIngredients.text = recipe.ingredients
                     tvInstructions.text = recipe.instructions
-                    Glide.with(this@RecipeActivity).load(recipe.imgUrls.first()).into(ivHeader)
-                    ivHeader.setColorFilter(Color.parseColor("#4D000000"))
+                    recipeImagesViewPagerAdapter =
+                        RecipeImagesViewPagerAdapter(this@RecipeActivity, recipe.imgUrls)
+                    vpImages.adapter = recipeImagesViewPagerAdapter
                     toolbar.menu.getItem(0).isVisible = recipe.ownerID.equals(currentUser.uid)
                     if (recipe.ownerID.equals(currentUser.uid)) ivAddToFavorites.visibility =
                         View.GONE
