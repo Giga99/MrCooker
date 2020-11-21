@@ -33,7 +33,6 @@ import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.other.exceptions.AppInfoNotAvailableException
 import mr.cooker.mrcooker.other.exceptions.EmailNotVerifiedException
-import timber.log.Timber
 import java.lang.Exception
 import java.util.*
 
@@ -240,33 +239,8 @@ class FirebaseDB {
         }
     }
 
-    suspend fun uploadAgain(recipe: Recipe, uri: Uri) {
-        firestoreRecipes.document(recipe.id!!).set(recipe).await()
-        val downloadUrl = uploadImage(uri)
-
-        val recipeQuery = firestoreRecipes
-            .whereEqualTo("id", recipe.id)
-            .whereEqualTo("name", recipe.name)
-            .whereEqualTo("timeToCook", recipe.timeToCook)
-            .whereEqualTo("ingredients", recipe.ingredients)
-            .whereEqualTo("instructions", recipe.instructions)
-            .whereEqualTo("showToEveryone", recipe.showToEveryone)
-            .whereEqualTo("timePosted", recipe.timePosted)
-            .whereEqualTo("ownerID", recipe.ownerID)
-            .get().await()
-
-        val map = mutableMapOf<String, Any>()
-
-        if (recipeQuery.documents.isNotEmpty()) {
-            for (document in recipeQuery) {
-                map["imgUrl"] = downloadUrl.toString()
-                firestoreRecipes.document(document.id).set(map, SetOptions.merge()).await()
-            }
-        }
-    }
-
     suspend fun deleteRecipe(recipe: Recipe) {
-        deleteImage(recipe.imgUrl)
+        for(imgUrl in recipe.imgUrls) deleteImage(imgUrl)
         val recipeQuery = firestoreRecipes.whereEqualTo("id", recipe.id).get().await()
         if (recipeQuery.documents.isNotEmpty()) {
             for (document in recipeQuery) firestoreRecipes.document(document.id).delete().await()
@@ -386,9 +360,7 @@ class FirebaseDB {
         if (query.documents.isNotEmpty()) {
             for (document in query.documents) {
                 var num = document["numOfFavorites"] as Long
-                Timber.e("num=$num")
                 num--
-                Timber.e("num=$num")
                 val map = mapOf<String, Any>("numOfFavorites" to num)
                 firestoreRecipes.document(recipeID).set(map, SetOptions.merge()).await()
             }

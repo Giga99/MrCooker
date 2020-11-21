@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import dagger.hilt.android.HiltAndroidApp
 import mr.cooker.mrcooker.other.SharedPrefUtils
 import mr.cooker.mrcooker.other.getNightMode
-import mr.cooker.mrcooker.other.isNight
 import timber.log.Timber
 
 @HiltAndroidApp

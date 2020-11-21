@@ -13,7 +13,6 @@
 package mr.cooker.mrcooker.ui.activities
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -22,7 +21,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import com.bumptech.glide.Glide
 import com.shreyaspatil.MaterialDialog.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_recipe.*
@@ -33,6 +31,7 @@ import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.other.Constants.postID
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
+import mr.cooker.mrcooker.ui.adapters.RecipeImagesAdapter
 import mr.cooker.mrcooker.ui.viewmodels.AddingViewModel
 import mr.cooker.mrcooker.ui.viewmodels.AllRecipesViewModel
 import mr.cooker.mrcooker.ui.viewmodels.FavoriteRecipesViewModel
@@ -47,6 +46,8 @@ class RecipeActivity : AppCompatActivity() {
     private val favoriteRecipesViewModel: FavoriteRecipesViewModel by viewModels()
     private lateinit var recipe: Recipe
     private var favorite = false
+
+    private lateinit var recipeImagesAdapter: RecipeImagesAdapter
 
     private var counter = 0
 
@@ -131,7 +132,7 @@ class RecipeActivity : AppCompatActivity() {
 
     private fun getRecipe(postId: String) = CoroutineScope(Dispatchers.IO).launch {
         val data = allRecipesViewModel.getRecipeByID(postId)
-        if(data == null) onBackPressed()
+        if (data == null) onBackPressed()
         when (data) {
             is Resource.Loading -> { /* NO-OP */
             }
@@ -143,8 +144,9 @@ class RecipeActivity : AppCompatActivity() {
                     tvTime.text = "${recipe.timeToCook}min"
                     tvIngredients.text = recipe.ingredients
                     tvInstructions.text = recipe.instructions
-                    Glide.with(this@RecipeActivity).load(recipe.imgUrl).into(ivHeader)
-                    ivHeader.setColorFilter(Color.parseColor("#4D000000"))
+                    recipeImagesAdapter = RecipeImagesAdapter()
+                    vpImages.adapter = recipeImagesAdapter
+                    recipeImagesAdapter.submitList(recipe.imgUrls)
                     toolbar.menu.getItem(0).isVisible = recipe.ownerID.equals(currentUser.uid)
                     if (recipe.ownerID.equals(currentUser.uid)) ivAddToFavorites.visibility =
                         View.GONE
@@ -260,8 +262,7 @@ class RecipeActivity : AppCompatActivity() {
                     this@RecipeActivity,
                     "Successfully deleted recipe!",
                     Toast.LENGTH_SHORT
-                )
-                    .show()
+                ).show()
                 startActivity(Intent(this@RecipeActivity, MainActivity::class.java))
                 finish()
             }

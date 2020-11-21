@@ -15,7 +15,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -124,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginEnd="10dp"
                     android:hint="@string/ingredients"
                     android:textColorHint="@color/appBackgroundColor"
                     app:boxBackgroundMode="outline"
@@ -133,7 +134,7 @@
                     app:endIconMode="clear_text"
                     app:endIconTint="@color/colorPrimary"
                     app:hintTextColor="@color/colorPrimary"
-                    app:layout_constraintEnd_toStartOf="@+id/ivAddImage"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/etName">
 
@@ -152,7 +153,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="10dp"
                     android:hint="@string/instructions"
                     android:textColorHint="@color/appBackgroundColor"
@@ -176,15 +177,19 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <ImageView
-                    android:id="@+id/ivAddImage"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvImages"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="10dp"
-                    android:src="@drawable/ic_add_photo"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/etTime" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView8"
+                    tools:listitem="@layout/image_row" />
 
                 <TextView
                     android:id="@+id/textView4"
@@ -197,6 +202,17 @@
                     app:layout_constraintHorizontal_bias="0.2"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/etInstructions" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="@string/add_maximum_5_images"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/show" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:id="@+id/show"
@@ -212,27 +228,27 @@
                     android:id="@+id/tvCancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="30dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="150dp"
                     android:text="@string/cancel"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/tvAdd"
-                    app:layout_constraintTop_toBottomOf="@+id/show" />
+                    app:layout_constraintTop_toBottomOf="@+id/rvImages" />
 
                 <TextView
                     android:id="@+id/tvAdd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="30dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="150dp"
                     android:text="@string/add"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/show" />
+                    app:layout_constraintTop_toBottomOf="@+id/rvImages" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

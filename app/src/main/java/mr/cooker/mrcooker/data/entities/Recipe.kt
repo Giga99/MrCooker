@@ -24,5 +24,6 @@ data class Recipe(
     var showToEveryone: Boolean = true,
     var timePosted: Long = -1,
     var ownerID: String? = null,
+    var imgUrls: List<String> = emptyList(),
     var id: String? = null
 ) : Serializable
