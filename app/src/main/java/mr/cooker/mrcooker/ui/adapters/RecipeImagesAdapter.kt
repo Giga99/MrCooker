@@ -24,9 +24,9 @@ import kotlinx.android.synthetic.main.recipe_image_view_pager_item.view.*
 import mr.cooker.mrcooker.R
 
 
-class RecipeImagesAdapter : RecyclerView.Adapter<RecipeImagesAdapter.ImageViewHolder>() {
+class RecipeImagesAdapter : RecyclerView.Adapter<RecipeImagesAdapter.RecipeImagesViewHolder>() {
 
-    inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    inner class RecipeImagesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     private val diffCallback = object : DiffUtil.ItemCallback<String>() {
         override fun areItemsTheSame(oldItem: String, newItem: String): Boolean = oldItem == newItem
@@ -39,13 +39,13 @@ class RecipeImagesAdapter : RecyclerView.Adapter<RecipeImagesAdapter.ImageViewHo
 
     fun submitList(list: List<String>) = differ.submitList(list)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder =
-        ImageViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeImagesViewHolder =
+        RecipeImagesViewHolder(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.recipe_image_view_pager_item, parent, false)
         )
 
-    override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecipeImagesViewHolder, position: Int) {
         val imageUrl = differ.currentList[position]
 
         holder.itemView.apply {
