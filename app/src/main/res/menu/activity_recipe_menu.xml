@@ -14,6 +14,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item android:id="@+id/editRecipe"
+        android:title="@string/edit_recipe"
+        app:showAsAction="always"
+        android:visible="false"
+        android:icon="@drawable/ic_edit_recipe"/>
+
     <item android:id="@+id/deleteRecipe"
         android:title="@string/delete_recipe"
         app:showAsAction="always"
