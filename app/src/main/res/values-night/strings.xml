@@ -71,5 +71,7 @@
     <string name="android_app_upd_restricter_info_update">This is an old version and does not operate. Please update the application.</string>
     <string name="android_app_upd_restricter_info_open_new_version">This is an old version and does not operate. Please open the new version.</string>
     <string name="add_maximum_5_images">Add maximum 5 images:</string>
+    <string name="edit_recipe">Edit Recipe</string>
+    <string name="edit">EDIT</string>
 
 </resources>

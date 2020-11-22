@@ -21,9 +21,17 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.widget.addTextChangedListener
+import com.github.dhaval2404.form_validation.rule.NonEmptyRule
+import com.github.dhaval2404.form_validation.validation.FormValidator
 import com.shreyaspatil.MaterialDialog.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_recipe.*
+import kotlinx.android.synthetic.main.activity_recipe.etIngredients
+import kotlinx.android.synthetic.main.activity_recipe.etInstructions
+import kotlinx.android.synthetic.main.activity_recipe.etName
+import kotlinx.android.synthetic.main.activity_recipe.etTime
+import kotlinx.android.synthetic.main.activity_recipe.show
 import kotlinx.coroutines.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.FavoriteRecipe
@@ -51,6 +59,11 @@ class RecipeActivity : AppCompatActivity() {
 
     private var counter = 0
 
+    private var editRecipe = false
+    private var lengthBefore = 0
+
+    private var showEveryone = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe)
@@ -75,6 +88,49 @@ class RecipeActivity : AppCompatActivity() {
 
             if (favorite) removeFromFavorites(postId)
             else addToFavorites()
+        }
+
+        btnCancel.setOnClickListener {
+            editRecipe = false
+            recipeLayout.visibility = View.VISIBLE
+            editRecipeLayout.visibility = View.GONE
+        }
+
+        btnEdit.setOnClickListener {
+            if(isValidForm()) {
+                toolbar.menu.getItem(0).isVisible = false
+                toolbar.menu.getItem(1).isVisible = false
+                supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                editRecipeLayout.visibility = View.GONE
+                trailingLoaderRecipe.visibility = View.VISIBLE
+                trailingLoaderRecipe.animate()
+                editRecipe()
+            }
+        }
+
+        show.setOnClickListener {
+            show.isChecked = !showEveryone
+            showEveryone = !showEveryone
+        }
+
+        etIngredients.addTextChangedListener {
+            if (it != null && it.length > lengthBefore) {
+                if (etIngredients.text.toString().length == 1) {
+                    etIngredients.setText("• ${etIngredients.text}")
+                    etIngredients.setSelection(etIngredients.text.length)
+                }
+                if (etIngredients.text.toString().endsWith("\n")) {
+                    etIngredients.setText(
+                        etIngredients.text.toString().replace("\n", "\n• ")
+                    )
+                    etIngredients.setText(
+                        etIngredients.text.toString().replace("• •", "•")
+                    )
+                    etIngredients.setSelection(etIngredients.text.length)
+                }
+
+                lengthBefore = it.length
+            }
         }
     }
 
@@ -140,21 +196,35 @@ class RecipeActivity : AppCompatActivity() {
             is Resource.Success -> {
                 recipe = data.data
                 withContext(Dispatchers.Main) {
-                    tvName.text = recipe.name
-                    tvTime.text = "${recipe.timeToCook}min"
-                    tvIngredients.text = recipe.ingredients
-                    tvInstructions.text = recipe.instructions
-                    recipeImagesAdapter = RecipeImagesAdapter()
-                    vpImages.adapter = recipeImagesAdapter
-                    recipeImagesAdapter.submitList(recipe.imgUrls)
-                    toolbar.menu.getItem(0).isVisible = recipe.ownerID.equals(currentUser.uid)
-                    if (recipe.ownerID.equals(currentUser.uid)) ivAddToFavorites.visibility =
-                        View.GONE
-                    else ivAddToFavorites.visibility = View.VISIBLE
-                    counter++
-                    if (counter == 2) {
-                        recipeLayout.visibility = View.VISIBLE
-                        trailingLoaderRecipe.visibility = View.GONE
+                    with(recipe) {
+                        tvName.text = name
+                        tvTime.text = "${timeToCook}min"
+                        tvIngredients.text = ingredients
+                        tvInstructions.text = instructions
+                        recipeImagesAdapter = RecipeImagesAdapter()
+                        vpImages.adapter = recipeImagesAdapter
+                        recipeImagesAdapter.submitList(imgUrls)
+                        if (ownerID.equals(currentUser.uid)) {
+                            toolbar.menu.getItem(0).isVisible = true
+                            toolbar.menu.getItem(1).isVisible = true
+                            ivAddToFavorites.visibility = View.GONE
+                            etName.setText(recipe.name)
+                            etTime.setText("" + recipe.timeToCook)
+                            etIngredients.setText(recipe.ingredients)
+                            etInstructions.setText(recipe.instructions)
+                            show.isChecked = recipe.showToEveryone
+                            showEveryone = recipe.showToEveryone
+                        } else {
+                            toolbar.menu.getItem(0).isVisible = false
+                            toolbar.menu.getItem(1).isVisible = false
+                            ivAddToFavorites.visibility = View.VISIBLE
+                        }
+
+                        counter++
+                        if (counter == 2) {
+                            recipeLayout.visibility = View.VISIBLE
+                            trailingLoaderRecipe.visibility = View.GONE
+                        }
                     }
                 }
             }
@@ -222,8 +292,29 @@ class RecipeActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                supportFinishAfterTransition()
-                return true
+                if (!editRecipe) supportFinishAfterTransition()
+                else {
+                    MaterialDialog.Builder(this)
+                        .setTitle("Editing recipe")
+                        .setMessage("Are you sure you want to exit editing mode?")
+                        .setPositiveButton(getString(R.string.option_yes)) { dialogInterface, _ ->
+                            dialogInterface.dismiss()
+                            supportFinishAfterTransition()
+                        }
+                        .setNegativeButton(getString(R.string.option_no)) { dialogInterface, _ ->
+                            dialogInterface.dismiss()
+                        }
+                        .build()
+                        .show()
+                }
+                true
+            }
+
+            R.id.editRecipe -> {
+                editRecipe = true
+                recipeLayout.visibility = View.GONE
+                editRecipeLayout.visibility = View.VISIBLE
+                true
             }
 
             R.id.deleteRecipe -> {
@@ -233,6 +324,7 @@ class RecipeActivity : AppCompatActivity() {
                     .setPositiveButton(getString(R.string.option_yes)) { dialogInterface, _ ->
                         dialogInterface.dismiss()
                         toolbar.menu.getItem(0).isVisible = false
+                        toolbar.menu.getItem(1).isVisible = false
                         supportActionBar?.setDisplayHomeAsUpEnabled(false)
                         recipeLayout.visibility = View.GONE
                         trailingLoaderRecipe.visibility = View.VISIBLE
@@ -269,11 +361,67 @@ class RecipeActivity : AppCompatActivity() {
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
                 toolbar.menu.getItem(0).isVisible = true
+                toolbar.menu.getItem(1).isVisible = true
                 supportActionBar?.setDisplayHomeAsUpEnabled(true)
                 recipeLayout.visibility = View.VISIBLE
                 trailingLoaderRecipe.visibility = View.GONE
                 Toast.makeText(this@RecipeActivity, e.message, Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun editRecipe() = CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val name = etName.text.toString()
+            val time = etTime.text.toString()
+            val ingredients = etIngredients.text.toString()
+            val instructions = etInstructions.text.toString()
+            addingViewModel.editRecipe(
+                recipe.id!!,
+                name,
+                time,
+                ingredients,
+                instructions,
+                showEveryone
+            ).join()
+            if (addingViewModel.status.throwable) addingViewModel.status.throwException()
+
+            withContext(Dispatchers.Main) {
+                Toast.makeText(
+                    this@RecipeActivity,
+                    "Successfully edited recipe!",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                tvName.text = name
+                tvTime.text = "${time}min"
+                tvIngredients.text = ingredients
+                tvInstructions.text = instructions
+
+                toolbar.menu.getItem(0).isVisible = true
+                toolbar.menu.getItem(1).isVisible = true
+                supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                editRecipe = false
+                recipeLayout.visibility = View.VISIBLE
+                trailingLoaderRecipe.visibility = View.GONE
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                toolbar.menu.getItem(1).isVisible = true
+                supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                recipeLayout.visibility = View.VISIBLE
+                trailingLoaderRecipe.visibility = View.GONE
+                Toast.makeText(this@RecipeActivity, e.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun isValidForm(): Boolean {
+        return FormValidator.getInstance()
+            .addField(etName, NonEmptyRule("Please, enter a recipe name!"))
+            .addField(etTime, NonEmptyRule("Please, enter a time to cook!"))
+            .addField(etIngredients, NonEmptyRule("Please, enter ingredients!"))
+            .addField(etInstructions, NonEmptyRule("Please, enter instructions!"))
+            .validate()
     }
 }

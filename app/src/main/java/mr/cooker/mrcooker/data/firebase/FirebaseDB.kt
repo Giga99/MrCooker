@@ -90,8 +90,9 @@ class FirebaseDB {
                 )
                 firestoreUsers.document(document.id).set(firstLogin)
             }
-        } else if(documentQuery.isEmpty) {
-            val firstLogin = SmartRatingTracker(currentUser.uid, System.currentTimeMillis(), 1, true)
+        } else if (documentQuery.isEmpty) {
+            val firstLogin =
+                SmartRatingTracker(currentUser.uid, System.currentTimeMillis(), 1, true)
             firestoreUsers.add(firstLogin)
         }
     }
@@ -239,8 +240,26 @@ class FirebaseDB {
         }
     }
 
+    suspend fun editRecipe(
+        id: String,
+        name: String,
+        time: String,
+        ingredients: String,
+        instructions: String,
+        showToEveryone: Boolean
+    ) {
+        val map = mapOf<String, Any>(
+            "name" to name,
+            "time" to time,
+            "ingredients" to ingredients,
+            "instructions" to instructions,
+            "showToEveryone" to showToEveryone
+        )
+        firestoreRecipes.document(id).set(map, SetOptions.merge()).await()
+    }
+
     suspend fun deleteRecipe(recipe: Recipe) {
-        for(imgUrl in recipe.imgUrls) deleteImage(imgUrl)
+        for (imgUrl in recipe.imgUrls) deleteImage(imgUrl)
         val recipeQuery = firestoreRecipes.whereEqualTo("id", recipe.id).get().await()
         if (recipeQuery.documents.isNotEmpty()) {
             for (document in recipeQuery) firestoreRecipes.document(document.id).delete().await()
@@ -410,8 +429,8 @@ class FirebaseDB {
 
     suspend fun getAppInfo(): ProgramInfo {
         val querySnapshot = firestoreAppInfo.get().await()
-        if(!querySnapshot.isEmpty) {
-            for(document in querySnapshot.documents) {
+        if (!querySnapshot.isEmpty) {
+            for (document in querySnapshot.documents) {
                 return document.toObject<ProgramInfo>()!!
             }
         }

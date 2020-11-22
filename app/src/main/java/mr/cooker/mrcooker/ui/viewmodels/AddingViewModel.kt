@@ -53,6 +53,23 @@ class AddingViewModel @ViewModelInject constructor(
         }
     }
 
+    fun editRecipe(
+        id: String,
+        name: String,
+        time: String,
+        ingredients: String,
+        instructions: String,
+        showToEveryone: Boolean
+    ) = viewModelScope.launch {
+        try {
+            mainRepository.editRecipe(id, name, time, ingredients, instructions, showToEveryone)
+            status.throwable = false
+        } catch (e: Exception) {
+            status.throwable = true
+            status.exception = e
+        }
+    }
+
     fun deleteRecipe(recipe: Recipe) = viewModelScope.launch {
         try {
             mainRepository.deleteRecipe(recipe)
