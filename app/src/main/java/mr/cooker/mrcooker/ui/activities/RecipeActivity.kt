@@ -51,6 +51,8 @@ class RecipeActivity : AppCompatActivity() {
 
     private var counter = 0
 
+    private var editProfile = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recipe)
@@ -75,6 +77,16 @@ class RecipeActivity : AppCompatActivity() {
 
             if (favorite) removeFromFavorites(postId)
             else addToFavorites()
+        }
+
+        btnCancel.setOnClickListener {
+            editProfile = false
+            recipeLayout.visibility = View.VISIBLE
+            editRecipeLayout.visibility = View.GONE
+        }
+
+        btnEdit.setOnClickListener {
+            // TODO
         }
     }
 
@@ -140,21 +152,29 @@ class RecipeActivity : AppCompatActivity() {
             is Resource.Success -> {
                 recipe = data.data
                 withContext(Dispatchers.Main) {
-                    tvName.text = recipe.name
-                    tvTime.text = "${recipe.timeToCook}min"
-                    tvIngredients.text = recipe.ingredients
-                    tvInstructions.text = recipe.instructions
-                    recipeImagesAdapter = RecipeImagesAdapter()
-                    vpImages.adapter = recipeImagesAdapter
-                    recipeImagesAdapter.submitList(recipe.imgUrls)
-                    toolbar.menu.getItem(0).isVisible = recipe.ownerID.equals(currentUser.uid)
-                    if (recipe.ownerID.equals(currentUser.uid)) ivAddToFavorites.visibility =
-                        View.GONE
-                    else ivAddToFavorites.visibility = View.VISIBLE
-                    counter++
-                    if (counter == 2) {
-                        recipeLayout.visibility = View.VISIBLE
-                        trailingLoaderRecipe.visibility = View.GONE
+                    with(recipe) {
+                        tvName.text = name
+                        tvTime.text = "${timeToCook}min"
+                        tvIngredients.text = ingredients
+                        tvInstructions.text = instructions
+                        recipeImagesAdapter = RecipeImagesAdapter()
+                        vpImages.adapter = recipeImagesAdapter
+                        recipeImagesAdapter.submitList(imgUrls)
+                        toolbar.menu.getItem(0).isVisible = ownerID.equals(currentUser.uid)
+                        if (ownerID.equals(currentUser.uid)) ivAddToFavorites.visibility =
+                            View.GONE
+                        else ivAddToFavorites.visibility = View.VISIBLE
+
+                        etName.setText(name)
+                        etTime.setText(timeToCook)
+                        etIngredients.setText(ingredients)
+                        etInstructions.setText(instructions)
+
+                        counter++
+                        if (counter == 2) {
+                            recipeLayout.visibility = View.VISIBLE
+                            trailingLoaderRecipe.visibility = View.GONE
+                        }
                     }
                 }
             }
@@ -223,7 +243,14 @@ class RecipeActivity : AppCompatActivity() {
         return when (item.itemId) {
             android.R.id.home -> {
                 supportFinishAfterTransition()
-                return true
+                true
+            }
+
+            R.id.editRecipe -> {
+                editProfile = true
+                recipeLayout.visibility = View.GONE
+                editRecipeLayout.visibility = View.VISIBLE
+                true
             }
 
             R.id.deleteRecipe -> {
