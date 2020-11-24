@@ -13,8 +13,6 @@ d
 4app/src/main/java/mr/cooker/mrcooker/di/AppModule.kt,b\8\b8e6149a4d5ab4d52a926819ed819ce25e4e8b9e
 g
 7app/src/main/java/mr/cooker/mrcooker/BaseApplication.kt,8\7\8744f0482a7f644b9ea0b3c67a15b4a046aa9b9c
-h
-8app/src/main/java/mr/cooker/mrcooker/other/Converters.kt,f\c\fce5ce28fc3dfd095954ccf2a2e017716715e44e
 q
 Aapp/src/main/java/mr/cooker/mrcooker/ui/adapters/RecipeAdapter.kt,7\d\7d80da06ecd38c93d383867f601c28906533100d
 c

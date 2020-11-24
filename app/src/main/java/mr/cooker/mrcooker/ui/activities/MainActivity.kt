@@ -80,6 +80,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.settingsFragment ->
                     navHostFragment.findNavController()
                         .navigate(R.id.action_settingsFragment_to_addRecipeFragment)
+                R.id.favoriteRecipesFragment ->
+                    navHostFragment.findNavController()
+                        .navigate(R.id.action_favoriteRecipesFragment_to_addRecipeFragment)
             }
         }
 

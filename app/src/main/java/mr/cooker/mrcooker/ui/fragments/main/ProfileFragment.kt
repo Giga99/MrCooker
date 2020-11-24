@@ -17,6 +17,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.github.abdularis.civ.AvatarImageView
 import dagger.hilt.android.AndroidEntryPoint
@@ -66,5 +67,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }
             }
         })
+
+        btnShowRecipes.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_myRecipesFragment) }
     }
 }
