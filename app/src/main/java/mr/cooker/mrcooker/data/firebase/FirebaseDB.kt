@@ -25,10 +25,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.mobapphome.androidappupdater.tools.ProgramInfo
 import kotlinx.coroutines.tasks.await
-import mr.cooker.mrcooker.data.entities.FavoriteRecipe
-import mr.cooker.mrcooker.data.entities.SmartRatingTracker
-import mr.cooker.mrcooker.data.entities.Recipe
-import mr.cooker.mrcooker.data.entities.SmartRating
+import mr.cooker.mrcooker.data.entities.*
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.other.exceptions.AppInfoNotAvailableException
@@ -44,6 +41,7 @@ class FirebaseDB {
         val firestoreUsers = Firebase.firestore.collection("users")
         val firestoreSmartRating = Firebase.firestore.collection("smartRating")
         val firestoreAppInfo = Firebase.firestore.collection("application")
+        val firestoreConversations = Firebase.firestore.collection("conversations")
     }
 
     suspend fun login(email: String, password: String) {
@@ -436,5 +434,67 @@ class FirebaseDB {
         }
 
         throw AppInfoNotAvailableException()
+    }
+
+    suspend fun startConversation(conversation: Conversation) {
+        firestoreConversations.add(conversation).await()
+        val conversationsQuery = firestoreConversations
+            .whereEqualTo("firstUserId", conversation.firstUserId)
+            .whereEqualTo("secondUserId", conversation.secondUserId)
+            .get().await()
+
+        val map = mutableMapOf<String, Any>()
+
+        if (conversationsQuery.documents.isNotEmpty()) {
+            for (document in conversationsQuery) {
+                map["conversationId"] = document.id
+                firestoreConversations.document(document.id).set(map, SetOptions.merge()).await()
+            }
+        }
+    }
+
+    suspend fun sendMessage(messages: List<Message>, conversationId: String) {
+        val conversationsQuery = firestoreConversations
+            .whereEqualTo("conversationId", conversationId)
+            .get().await()
+
+        val map = mutableMapOf<String, Any>("messages" to messages)
+
+        if (!conversationsQuery.isEmpty) {
+            for (document in conversationsQuery)
+                firestoreConversations.document(conversationId).set(map, SetOptions.merge()).await()
+        }
+    }
+
+    suspend fun getConversation(conversationId: String): Resource<Conversation> {
+        val document = firestoreConversations.document(conversationId).get().await()
+        val conversation = document.toObject<Conversation>()
+
+        return Resource.Success(conversation!!)
+    }
+
+    suspend fun getConversationList(): Resource<List<Conversation>> {
+        val conversationQuery1 =
+            firestoreConversations.whereEqualTo("firstUserId", currentUser.uid).get().await()
+        val conversationQuery2 =
+            firestoreConversations.whereEqualTo("secondUserId", currentUser.uid).get().await()
+
+        val conversations = mutableListOf<Conversation>()
+
+        if(!conversationQuery1.isEmpty) {
+            for(document in conversationQuery1.documents) {
+                val conversation = document.toObject<Conversation>()
+                conversations.add(conversation!!)
+            }
+        }
+
+        if(!conversationQuery2.isEmpty) {
+            for(document in conversationQuery2.documents) {
+                val conversation = document.toObject<Conversation>()
+                conversations.add(conversation!!)
+            }
+        }
+
+        return Resource.Success(conversations)
     }
 }

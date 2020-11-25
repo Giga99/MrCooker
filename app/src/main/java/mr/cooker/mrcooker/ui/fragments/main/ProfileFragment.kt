@@ -39,6 +39,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         trailingLoaderProfile.visibility = View.VISIBLE
         trailingLoaderProfile.animate()
 
+        // passing id here??
+
         myRecipesViewModel.myRecipes.observe(viewLifecycleOwner, {
             when (it) {
                 is Resource.Loading -> { /* NO-OP */

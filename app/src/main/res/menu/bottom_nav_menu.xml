@@ -17,7 +17,7 @@
         android:title="@string/all_recipes"
         android:icon="@drawable/ic_home"/>
 
-    <item android:id="@+id/myRecipesFragment"
+    <item android:id="@+id/ecipesFragment"
         android:title="@string/my_recipes"
         android:icon="@drawable/ic_my_recipes"/>
 

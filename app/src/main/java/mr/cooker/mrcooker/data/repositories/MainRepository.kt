@@ -14,10 +14,7 @@ package mr.cooker.mrcooker.data.repositories
 
 import android.net.Uri
 import com.mobapphome.androidappupdater.tools.ProgramInfo
-import mr.cooker.mrcooker.data.entities.FavoriteRecipe
-import mr.cooker.mrcooker.data.entities.Recipe
-import mr.cooker.mrcooker.data.entities.SmartRating
-import mr.cooker.mrcooker.data.entities.SmartRatingTracker
+import mr.cooker.mrcooker.data.entities.*
 import mr.cooker.mrcooker.data.firebase.FirebaseDB
 import mr.cooker.mrcooker.other.Resource
 import javax.inject.Inject
@@ -79,4 +76,16 @@ class MainRepository @Inject constructor(
     suspend fun countDaysPassed(count: Boolean) = firebaseDB.countDaysPassed(count)
 
     suspend fun getAppInfo(): ProgramInfo = firebaseDB.getAppInfo()
+
+    suspend fun startConversation(conversation: Conversation) =
+        firebaseDB.startConversation(conversation)
+
+    suspend fun sendMessage(messages: List<Message>, conversationId: String) =
+        firebaseDB.sendMessage(messages, conversationId)
+
+    suspend fun getConversation(conversationId: String): Resource<Conversation> =
+        firebaseDB.getConversation(conversationId)
+
+    suspend fun getConversationList(): Resource<List<Conversation>> =
+        firebaseDB.getConversationList()
 }

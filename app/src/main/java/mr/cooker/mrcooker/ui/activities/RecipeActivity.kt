@@ -75,18 +75,18 @@ class RecipeActivity : AppCompatActivity() {
         trailingLoaderRecipe.visibility = View.VISIBLE
         trailingLoaderRecipe.animate()
 
-        val postId = intent.extras?.getString(postID)
+        val recipeId = intent.extras?.getString(postID)
             ?: throw IllegalArgumentException("`postID` must be non-null")
 
-        getRecipe(postId)
-        isItFavoriteRecipe(postId)
+        getRecipe(recipeId)
+        isItFavoriteRecipe(recipeId)
 
         ivAddToFavorites.setOnClickListener {
             recipeLayout.visibility = View.GONE
             trailingLoaderRecipe.visibility = View.VISIBLE
             trailingLoaderRecipe.animate()
 
-            if (favorite) removeFromFavorites(postId)
+            if (favorite) removeFromFavorites(recipeId)
             else addToFavorites()
         }
 
