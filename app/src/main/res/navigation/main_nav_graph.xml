@@ -53,10 +53,10 @@
         <action
             android:id="@+id/action_myRecipesFragment_to_addRecipeFragment"
             app:destination="@id/addRecipeFragment"
-            app:enterAnim="@anim/slide_in_bottom_right"
-            app:exitAnim="@anim/slide_out_bottom_left"
-            app:popEnterAnim="@anim/slide_in_bottom_left"
-            app:popExitAnim="@anim/slide_out_bottom_right" />
+            app:enterAnim="@anim/slide_in_bottom_left"
+            app:exitAnim="@anim/slide_out_bottom_right"
+            app:popEnterAnim="@anim/slide_in_bottom_right"
+            app:popExitAnim="@anim/slide_out_bottom_left" />
         <action
             android:id="@+id/action_myRecipesFragment_to_favoriteRecipesFragment"
             app:destination="@id/favoriteRecipesFragment"
@@ -166,5 +166,24 @@
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/conversationsFragment"
+        android:name="mr.cooker.mrcooker.ui.fragments.main.ConversationsFragment"
+        android:label="ConversationsFragment" >
+        <action
+            android:id="@+id/action_conversationsFragment_to_favoriteRecipesFragment"
+            app:destination="@id/favoriteRecipesFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_conversationsFragment_to_addRecipeFragment"
+            app:destination="@id/addRecipeFragment"
+            app:enterAnim="@anim/slide_in_bottom_right"
+            app:exitAnim="@anim/slide_out_bottom_left"
+            app:popEnterAnim="@anim/slide_in_bottom_left"
+            app:popExitAnim="@anim/slide_out_bottom_right"/>
     </fragment>
 </navigation>

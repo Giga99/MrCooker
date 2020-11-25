@@ -69,6 +69,10 @@ class MainActivity : AppCompatActivity() {
                     navHostFragment.findNavController()
                         .navigate(R.id.action_allRecipesFragment_to_addRecipeFragment)
 
+                R.id.conversationsFragment ->
+                    navHostFragment.findNavController()
+                        .navigate(R.id.action_conversationsFragment_to_addRecipeFragment)
+
                 R.id.myRecipesFragment ->
                     navHostFragment.findNavController()
                         .navigate(R.id.action_myRecipesFragment_to_addRecipeFragment)
@@ -91,6 +95,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.allRecipesFragment ->
                     navHostFragment.findNavController()
                         .navigate(R.id.action_allRecipesFragment_to_favoriteRecipesFragment)
+
+                R.id.conversationsFragment ->
+                    navHostFragment.findNavController()
+                        .navigate(R.id.action_conversationsFragment_to_favoriteRecipesFragment)
 
                 R.id.myRecipesFragment ->
                     navHostFragment.findNavController()

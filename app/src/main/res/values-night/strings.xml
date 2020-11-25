@@ -34,7 +34,7 @@
     <string name="enter_your_username">Enter your Username</string>
     <string name="confirm_your_password">Confirm your password</string>
     <string name="all_recipes">All Recipes</string>
-    <string name="my_recipes">My Recipes</string>
+    <string name="conversations">Conversations</string>
     <string name="profile">Profile</string>
     <string name="sign_out">Sign Out</string>
     <string name="night_mode">Night Mode</string>
@@ -73,5 +73,6 @@
     <string name="add_maximum_5_images">Add maximum 5 images:</string>
     <string name="edit_recipe">Edit Recipe</string>
     <string name="edit">EDIT</string>
+    <string name="messages">Messages</string>
 
 </resources>
