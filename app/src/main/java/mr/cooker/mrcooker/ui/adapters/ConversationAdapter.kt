@@ -15,18 +15,14 @@ package mr.cooker.mrcooker.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.github.abdularis.civ.AvatarImageView
 import kotlinx.android.synthetic.main.conversation_row.view.*
-import kotlinx.android.synthetic.main.recipe_row.view.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.Conversation
-import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
-import java.sql.Time
 import java.util.concurrent.TimeUnit
 
 class ConversationAdapter() : RecyclerView.Adapter<ConversationAdapter.ConversationViewHolder>() {
@@ -41,7 +37,7 @@ class ConversationAdapter() : RecyclerView.Adapter<ConversationAdapter.Conversat
             oldItem.hashCode() == newItem.hashCode()
     }
 
-    val differ = AsyncListDiffer(this, diffCallback)
+    private val differ = AsyncListDiffer(this, diffCallback)
 
     fun submitList(list: List<Conversation>) = differ.submitList(list)
 

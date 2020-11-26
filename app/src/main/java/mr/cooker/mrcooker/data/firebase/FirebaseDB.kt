@@ -42,6 +42,7 @@ class FirebaseDB {
         val firestoreSmartRating = Firebase.firestore.collection("smartRating")
         val firestoreAppInfo = Firebase.firestore.collection("application")
         val firestoreConversations = Firebase.firestore.collection("conversations")
+        val firestoreUsersInfo = Firebase.firestore.collection("usersInfo")
     }
 
     suspend fun login(email: String, password: String) {
@@ -49,6 +50,7 @@ class FirebaseDB {
         if (!auth.currentUser!!.isEmailVerified) throw EmailNotVerifiedException()
         currentUser = auth.currentUser!!
         setFirstLoginOfTheDay()
+        saveUser()
     }
 
     suspend fun checkPrevLogging(): Boolean {
@@ -161,6 +163,12 @@ class FirebaseDB {
             UserProfileChangeRequest.Builder().setDisplayName(username).build()
         )
         auth.currentUser!!.sendEmailVerification().await()
+        saveUser()
+    }
+
+    private suspend fun saveUser() {
+        val user = User(currentUser.displayName!!, currentUser.email!!, currentUser.photoUrl, currentUser.uid)
+        firestoreUsersInfo.add(user).await()
     }
 
     suspend fun resetPassword(email: String) {
