@@ -15,6 +15,7 @@ package mr.cooker.mrcooker.ui.viewmodels
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import mr.cooker.mrcooker.data.entities.Conversation
 import mr.cooker.mrcooker.data.repositories.MainRepository
@@ -23,7 +24,7 @@ import java.lang.Exception
 
 class ConversationsViewModel @ViewModelInject constructor(
     private val mainRepository: MainRepository
-) {
+) : ViewModel() {
 
     private val _conversationId = MutableLiveData<String>()
     val conversationId: LiveData<String> get() = _conversationId
