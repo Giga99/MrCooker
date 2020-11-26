@@ -14,14 +14,88 @@ package mr.cooker.mrcooker.ui.fragments.main
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_conversations.*
+import kotlinx.android.synthetic.main.fragment_conversations.swipeRefreshLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import mr.cooker.mrcooker.R
+import mr.cooker.mrcooker.data.entities.Conversation
+import mr.cooker.mrcooker.other.Resource
+import mr.cooker.mrcooker.ui.adapters.ConversationAdapter
+import mr.cooker.mrcooker.ui.viewmodels.ConversationsViewModel
 
 @AndroidEntryPoint
 class ConversationsFragment : Fragment(R.layout.fragment_conversations) {
 
+    private val conversationsViewModel: ConversationsViewModel by viewModels()
+    private lateinit var conversationAdapter: ConversationAdapter
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setupRecyclerView()
+        conversationsViewModel.allConversations.observe(viewLifecycleOwner, {
+            observe(it)
+        })
+
+        conversationAdapter.setOnItemClickListener {
+            showConversation(it)
+        }
+
+        swipeRefreshLayout.setOnRefreshListener {
+            realtimeUpdate()
+        }
+    }
+
+    private fun showConversation(conversation: Conversation) {
+        TODO("Not yet implemented")
+    }
+
+    private fun realtimeUpdate() = CoroutineScope(Dispatchers.IO).launch {
+        val data = conversationsViewModel.getRealtimeConversations()
+        withContext(Dispatchers.Main) {
+            observe(data)
+        }
+    }
+
+    private fun observe(it: Resource<List<Conversation>>) {
+        when (it) {
+            is Resource.Loading -> {
+                swipeRefreshLayout?.isRefreshing = true
+            }
+
+            is Resource.Success -> {
+                swipeRefreshLayout?.isRefreshing = false
+                conversationAdapter.submitList(it.data)
+                conversationAdapter.notifyDataSetChanged()
+            }
+
+            is Resource.Failure -> {
+                Toast.makeText(
+                    requireContext(),
+                    "An error has occurred:${it.throwable.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    private fun setupRecyclerView() = rvConversations.apply {
+        conversationAdapter = ConversationAdapter()
+        adapter = conversationAdapter
+        layoutManager = LinearLayoutManager(requireContext())
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        realtimeUpdate()
     }
 }

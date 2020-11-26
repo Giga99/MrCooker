@@ -104,3 +104,9 @@ w
 Gapp/src/main/java/mr/cooker/mrcooker/ui/adapters/RecipeImagesAdapter.kt,4\f\4f3d8e2f90e3a24811cd5d28632d809f031e7eee
 v
 Fapp/src/main/java/mr/cooker/mrcooker/ui/viewmodels/AppInfoViewModel.kt,d\f\dfd22464e5e5b447e1916d7ffc7ec7f8cb6bf319
+r
+Bapp/src/main/java/mr/cooker/mrcooker/data/entities/Conversation.kt,2\c\2ca2089ac06fc2f327fdd7de1593ef2a30fc4e7e
+m
+=app/src/main/java/mr/cooker/mrcooker/data/entities/Message.kt,d\3\d3454f450d5c3e9a3deae429d18f4b976e0de2a5
+
+Oapp/src/main/java/mr/cooker/mrcooker/ui/fragments/main/ConversationsFragment.kt,7\2\725d1d016153ffb3997da30a2e9a07f11e555c2e
