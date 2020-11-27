@@ -88,4 +88,6 @@ class MainRepository @Inject constructor(
 
     suspend fun getConversationList(): Resource<List<Conversation>> =
         firebaseDB.getConversationList()
+
+    suspend fun getUserInfo(userId: String): User = firebaseDB.getUserInfo(userId)
 }

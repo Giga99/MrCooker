@@ -30,6 +30,7 @@ import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.other.exceptions.AppInfoNotAvailableException
 import mr.cooker.mrcooker.other.exceptions.EmailNotVerifiedException
+import mr.cooker.mrcooker.other.exceptions.UserNotExistException
 import java.lang.Exception
 import java.util.*
 
@@ -167,8 +168,25 @@ class FirebaseDB {
     }
 
     private suspend fun saveUser() {
-        val user = User(currentUser.displayName!!, currentUser.email!!, currentUser.photoUrl, currentUser.uid)
+        val user = User(
+            currentUser.displayName!!,
+            currentUser.email!!,
+            currentUser.photoUrl,
+            currentUser.uid
+        )
         firestoreUsersInfo.add(user).await()
+    }
+
+    suspend fun getUserInfo(userId: String): User {
+        val usersQuery = firestoreUsersInfo.whereEqualTo("userId", userId).get().await()
+        if(!usersQuery.isEmpty) {
+            for(document in usersQuery.documents) {
+                val user = document.toObject<User>()
+                return user!!
+            }
+        }
+
+        throw UserNotExistException()
     }
 
     suspend fun resetPassword(email: String) {
@@ -489,15 +507,15 @@ class FirebaseDB {
 
         val conversations = mutableListOf<Conversation>()
 
-        if(!conversationQuery1.isEmpty) {
-            for(document in conversationQuery1.documents) {
+        if (!conversationQuery1.isEmpty) {
+            for (document in conversationQuery1.documents) {
                 val conversation = document.toObject<Conversation>()
                 conversations.add(conversation!!)
             }
         }
 
-        if(!conversationQuery2.isEmpty) {
-            for(document in conversationQuery2.documents) {
+        if (!conversationQuery2.isEmpty) {
+            for (document in conversationQuery2.documents) {
                 val conversation = document.toObject<Conversation>()
                 conversations.add(conversation!!)
             }
