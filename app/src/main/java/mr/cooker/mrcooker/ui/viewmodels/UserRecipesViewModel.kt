@@ -27,7 +27,7 @@ class UserRecipesViewModel @ViewModelInject constructor(
     private var myRecipesBoolean: Boolean = false
     private var userID: String = ""
 
-    val myRecipes = liveData<Resource<MutableList<Recipe>>>(Dispatchers.IO) {
+    val userRecipes = liveData<Resource<MutableList<Recipe>>>(Dispatchers.IO) {
         emit(Resource.Loading())
         try {
             val recipes =

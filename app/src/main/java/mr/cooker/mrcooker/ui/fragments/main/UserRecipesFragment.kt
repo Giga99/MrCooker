@@ -54,7 +54,7 @@ class UserRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-        userRecipesViewModel.myRecipes.observe(viewLifecycleOwner, {
+        userRecipesViewModel.userRecipes.observe(viewLifecycleOwner, {
             observe(it)
         })
 
@@ -74,7 +74,7 @@ class UserRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
             showRecipe(recipe, iv)
         }
 
-        // Deleting on swipe left or right and undo if change mind
+        // Deleting on swipe left or right and undo if change mind, only if currentUser is owner of recipes
         if(userRecipesViewModel.getMyRecipesBoolean()) {
             val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
                 ItemTouchHelper.UP or ItemTouchHelper.DOWN,

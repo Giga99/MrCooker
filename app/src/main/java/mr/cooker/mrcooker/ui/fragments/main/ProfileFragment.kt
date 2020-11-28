@@ -41,7 +41,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         userRecipesViewModel.setMyRecipesBoolean(true)
 
-        userRecipesViewModel.myRecipes.observe(viewLifecycleOwner, {
+        userRecipesViewModel.userRecipes.observe(viewLifecycleOwner, {
             when (it) {
                 is Resource.Loading -> { /* NO-OP */
                 }

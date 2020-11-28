@@ -33,7 +33,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mr.cooker.mrcooker.R
-import mr.cooker.mrcooker.other.FirebaseUtils
 import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.ui.viewmodels.UserRecipesViewModel
 import mr.cooker.mrcooker.ui.viewmodels.UserViewModel
@@ -67,7 +66,7 @@ class OtherProfileFragment : Fragment(R.layout.fragment_other_profile) {
             val user = userViewModel.getUserInfo()
             if(userViewModel.status.throwable || user == null) userViewModel.status.throwException()
 
-            userRecipesViewModel.myRecipes.observe(viewLifecycleOwner, {
+            userRecipesViewModel.userRecipes.observe(viewLifecycleOwner, {
                 when (it) {
                     is Resource.Loading -> { /* NO-OP */
                     }
