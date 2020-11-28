@@ -63,6 +63,18 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigationView.setupWithNavController(navHostFragment.findNavController())
 
+        when (navHostFragment.findNavController().currentDestination?.id) {
+            R.id.messagingFragment -> {
+                bottomNavigationView.visibility = View.GONE
+                fab.visibility = View.GONE
+            }
+
+            else -> {
+                bottomNavigationView.visibility = View.VISIBLE
+                fab.visibility = View.VISIBLE
+            }
+        }
+
         fab.setOnClickListener {
             when (navHostFragment.findNavController().currentDestination?.id) {
                 R.id.allRecipesFragment ->
@@ -323,10 +335,5 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         AAUpdaterController.end()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        bottomAppBar.visibility = View.VISIBLE
     }
 }

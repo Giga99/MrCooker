@@ -40,7 +40,6 @@ import mr.cooker.mrcooker.ui.activities.RecipeActivity
 import mr.cooker.mrcooker.ui.adapters.RecipeAdapter
 import mr.cooker.mrcooker.ui.viewmodels.AllRecipesViewModel
 import mr.cooker.mrcooker.ui.viewmodels.UserViewModel
-import timber.log.Timber
 import java.util.*
 
 @AndroidEntryPoint

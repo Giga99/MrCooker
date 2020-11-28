@@ -199,6 +199,13 @@
             app:exitAnim="@anim/slide_out_bottom_left"
             app:popEnterAnim="@anim/slide_in_bottom_left"
             app:popExitAnim="@anim/slide_out_bottom_right" />
+        <action
+            android:id="@+id/action_conversationsFragment_to_messagingFragment"
+            app:destination="@id/messagingFragment"
+            app:enterAnim="@anim/slide_in_up"
+            app:exitAnim="@anim/slide_out_down"
+            app:popEnterAnim="@anim/slide_in_down"
+            app:popExitAnim="@anim/slide_out_up"/>
     </fragment>
     <fragment
         android:id="@+id/otherProfileFragment"
@@ -225,5 +232,21 @@
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/messagingFragment"
+        android:name="mr.cooker.mrcooker.ui.fragments.main.MessagingFragment"
+        android:label="MessagingFragment" >
+        <action
+            android:id="@+id/action_messagingFragment_to_conversationsFragment"
+            app:destination="@id/conversationsFragment"
+            app:enterAnim="@anim/slide_in_down"
+            app:exitAnim="@anim/slide_out_up"
+            app:popEnterAnim="@anim/slide_in_up"
+            app:popExitAnim="@anim/slide_out_down"
+            app:popUpTo="@id/conversationsFragment" />
+        <argument
+            android:name="conversationID"
+            app:argType="string" />
     </fragment>
 </navigation>

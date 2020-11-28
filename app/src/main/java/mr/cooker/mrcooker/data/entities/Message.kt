@@ -17,5 +17,6 @@ import java.io.Serializable
 data class Message(
     var senderId: String = "",
     var timestamp: Long = 0L,
-    var text: String = ""
+    var text: String = "",
+    var seen: Boolean = false
 ) : Serializable

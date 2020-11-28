@@ -18,6 +18,8 @@ object Constants {
 
     const val ownerID = "ownerID"
 
+    const val conversationId = "conversationID"
+
     const val ownerIDCode = 1
 
     const val ANIMATION_DURATION = 1000L

@@ -26,9 +26,6 @@ class ConversationsViewModel @ViewModelInject constructor(
     private val mainRepository: MainRepository
 ) : ViewModel() {
 
-    private val _conversationId = MutableLiveData<String>()
-    val conversationId: LiveData<String> get() = _conversationId
-
     val allConversations = liveData<Resource<List<Conversation>>> {
         emit(Resource.Loading())
         try {
@@ -39,6 +36,4 @@ class ConversationsViewModel @ViewModelInject constructor(
     }
 
     suspend fun getRealtimeConversations() = mainRepository.getConversationList()
-
-    suspend fun getConversation(conversationId: String) = mainRepository.getConversation(conversationId)
 }

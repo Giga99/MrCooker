@@ -16,7 +16,9 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_conversations.*
@@ -27,14 +29,17 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.Conversation
+import mr.cooker.mrcooker.other.Constants.conversationId
 import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.ui.adapters.ConversationAdapter
 import mr.cooker.mrcooker.ui.viewmodels.ConversationsViewModel
+import mr.cooker.mrcooker.ui.viewmodels.MessagingViewModel
 
 @AndroidEntryPoint
 class ConversationsFragment : Fragment(R.layout.fragment_conversations) {
 
     private val conversationsViewModel: ConversationsViewModel by viewModels()
+    private val messagingViewModel: MessagingViewModel by activityViewModels()
     private lateinit var conversationAdapter: ConversationAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,7 +60,8 @@ class ConversationsFragment : Fragment(R.layout.fragment_conversations) {
     }
 
     private fun showConversation(conversation: Conversation) {
-        TODO("Not yet implemented")
+        messagingViewModel.setConversation(conversation)
+        findNavController().navigate(R.id.action_conversationsFragment_to_messagingFragment)
     }
 
     private fun realtimeUpdate() = CoroutineScope(Dispatchers.IO).launch {
