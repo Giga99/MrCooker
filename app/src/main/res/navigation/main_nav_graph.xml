@@ -47,26 +47,33 @@
             app:popExitAnim="@anim/slide_out_left" />
     </fragment>
     <fragment
-        android:id="@+id/myRecipesFragment"
-        android:name="mr.cooker.mrcooker.ui.fragments.main.MyRecipesFragment"
-        android:label="MyRecipesFragment">
+        android:id="@+id/userRecipesFragment"
+        android:name="mr.cooker.mrcooker.ui.fragments.main.UserRecipesFragment"
+        android:label="UserRecipesFragment">
         <action
-            android:id="@+id/action_myRecipesFragment_to_addRecipeFragment"
+            android:id="@+id/action_userRecipesFragment_to_addRecipeFragment"
             app:destination="@id/addRecipeFragment"
             app:enterAnim="@anim/slide_in_bottom_left"
             app:exitAnim="@anim/slide_out_bottom_right"
             app:popEnterAnim="@anim/slide_in_bottom_right"
             app:popExitAnim="@anim/slide_out_bottom_left" />
         <action
-            android:id="@+id/action_myRecipesFragment_to_favoriteRecipesFragment"
+            android:id="@+id/action_userRecipesFragment_to_favoriteRecipesFragment"
             app:destination="@id/favoriteRecipesFragment"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left" />
         <action
-            android:id="@+id/action_myRecipesFragment_to_profileFragment"
+            android:id="@+id/action_userRecipesFragment_to_profileFragment"
             app:destination="@id/profileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_userRecipesFragment_to_otherProfileFragment"
+            app:destination="@id/otherProfileFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -146,8 +153,8 @@
         android:name="mr.cooker.mrcooker.ui.fragments.main.ProfileFragment"
         android:label="ProfileFragment">
         <action
-            android:id="@+id/action_profileFragment_to_myRecipesFragment"
-            app:destination="@id/myRecipesFragment"
+            android:id="@+id/action_profileFragment_to_userRecipesFragment"
+            app:destination="@id/userRecipesFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -170,20 +177,46 @@
     <fragment
         android:id="@+id/conversationsFragment"
         android:name="mr.cooker.mrcooker.ui.fragments.main.ConversationsFragment"
-        android:label="ConversationsFragment" >
+        android:label="ConversationsFragment">
         <action
             android:id="@+id/action_conversationsFragment_to_favoriteRecipesFragment"
             app:destination="@id/favoriteRecipesFragment"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_left"/>
+            app:popExitAnim="@anim/slide_out_left" />
         <action
             android:id="@+id/action_conversationsFragment_to_addRecipeFragment"
             app:destination="@id/addRecipeFragment"
             app:enterAnim="@anim/slide_in_bottom_right"
             app:exitAnim="@anim/slide_out_bottom_left"
             app:popEnterAnim="@anim/slide_in_bottom_left"
-            app:popExitAnim="@anim/slide_out_bottom_right"/>
+            app:popExitAnim="@anim/slide_out_bottom_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/otherProfileFragment"
+        android:name="mr.cooker.mrcooker.ui.fragments.main.OtherProfileFragment"
+        android:label="OtherProfileFragment">
+        <action
+            android:id="@+id/action_otherProfileFragment_to_userRecipesFragment"
+            app:destination="@id/userRecipesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_otherProfileFragment_to_addRecipeFragment"
+            app:destination="@id/addRecipeFragment"
+            app:enterAnim="@anim/slide_in_bottom_left"
+            app:exitAnim="@anim/slide_out_bottom_right"
+            app:popEnterAnim="@anim/slide_in_bottom_right"
+            app:popExitAnim="@anim/slide_out_bottom_left" />
+        <action
+            android:id="@+id/action_otherProfileFragment_to_favoriteRecipesFragment"
+            app:destination="@id/favoriteRecipesFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
     </fragment>
 </navigation>

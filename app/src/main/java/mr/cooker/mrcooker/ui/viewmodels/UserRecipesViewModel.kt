@@ -13,36 +13,54 @@
 package mr.cooker.mrcooker.ui.viewmodels
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.data.repositories.MainRepository
+import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
 
-class MyRecipesViewModel @ViewModelInject constructor(
+class UserRecipesViewModel @ViewModelInject constructor(
     private val mainRepository: MainRepository
 ) : ViewModel() {
+    private var myRecipesBoolean: Boolean = false
+    private var userID: String = ""
+
     val myRecipes = liveData<Resource<MutableList<Recipe>>>(Dispatchers.IO) {
         emit(Resource.Loading())
         try {
-            val recipes = mainRepository.getMyRecipes()
+            val recipes =
+                if (myRecipesBoolean) mainRepository.getUserRecipes(currentUser.uid)
+                else mainRepository.getUserRecipes(userID)
             emit(recipes)
         } catch (e: Exception) {
             emit(Resource.Failure(e.cause!!))
         }
     }
 
-    suspend fun getSearchedMyRecipes(search: String): Resource<MutableList<Recipe>> {
+    suspend fun getSearchedUserRecipes(search: String): Resource<MutableList<Recipe>> {
         var recipes: Resource<MutableList<Recipe>>? = null
         viewModelScope.launch {
-            recipes = mainRepository.getSearchedMyRecipes(search)
+            recipes =
+                if (myRecipesBoolean) mainRepository.getSearchedMyRecipes(search, currentUser.uid)
+                else mainRepository.getSearchedMyRecipes(search, userID)
         }.join()
 
         return recipes!!
     }
 
-    suspend fun getRealtimeMyRecipes() = mainRepository.getRealtimeMyRecipes()
+    suspend fun getRealtimeUserRecipes() =
+        if (myRecipesBoolean) mainRepository.getRealtimeUserRecipes(currentUser.uid)
+        else mainRepository.getRealtimeUserRecipes(userID)
+
+    fun setMyRecipesBoolean(areMyRecipes: Boolean) {
+        myRecipesBoolean = areMyRecipes
+    }
+
+    fun getMyRecipesBoolean() = myRecipesBoolean
+
+    fun setUserID(id: String) {
+        userID = id
+    }
 }

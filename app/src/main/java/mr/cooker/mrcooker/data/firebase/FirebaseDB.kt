@@ -323,10 +323,10 @@ class FirebaseDB {
         return Resource.Success(recipes)
     }
 
-    suspend fun getMyRecipes(): Resource<MutableList<Recipe>> {
+    suspend fun getUserRecipes(userId: String): Resource<MutableList<Recipe>> {
         val recipes = mutableListOf<Recipe>()
         val documentsList =
-            firestoreRecipes.whereEqualTo("ownerID", currentUser.uid)
+            firestoreRecipes.whereEqualTo("ownerID", userId)
                 .orderBy("timePosted", Query.Direction.DESCENDING).get().await()
 
         if (!documentsList.isEmpty) {
@@ -362,9 +362,9 @@ class FirebaseDB {
         return Resource.Success(recipes)
     }
 
-    suspend fun getSearchedMyRecipes(search: String): Resource<MutableList<Recipe>> {
+    suspend fun getSearchedUserRecipes(search: String, userId: String): Resource<MutableList<Recipe>> {
         val recipes = mutableListOf<Recipe>()
-        val documentList = firestoreRecipes.whereEqualTo("ownerID", currentUser.uid).get().await()
+        val documentList = firestoreRecipes.whereEqualTo("ownerID", userId).get().await()
 
         if (!documentList.isEmpty) {
             for (document in documentList.documents) {

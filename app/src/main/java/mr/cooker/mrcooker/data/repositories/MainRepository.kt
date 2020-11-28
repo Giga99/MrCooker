@@ -43,15 +43,15 @@ class MainRepository @Inject constructor(
 
     suspend fun getRealtimeRecipes() = firebaseDB.getAllRecipes()
 
-    suspend fun getRealtimeMyRecipes() = firebaseDB.getMyRecipes()
+    suspend fun getRealtimeUserRecipes(userId: String) = firebaseDB.getUserRecipes(userId)
 
-    suspend fun getMyRecipes() = firebaseDB.getMyRecipes()
+    suspend fun getUserRecipes(userId: String) = firebaseDB.getUserRecipes(userId)
 
     suspend fun getRecipeByID(id: String) = firebaseDB.getRecipeByID(id)
 
     suspend fun getSearchedRecipes(search: String) = firebaseDB.getSearchedRecipes(search)
 
-    suspend fun getSearchedMyRecipes(search: String) = firebaseDB.getSearchedMyRecipes(search)
+    suspend fun getSearchedMyRecipes(search: String, userId: String) = firebaseDB.getSearchedUserRecipes(search, userId)
 
     suspend fun addToFavoriteRecipes(favoriteRecipe: FavoriteRecipe) =
         firebaseDB.addToFavoriteRecipes(favoriteRecipe)
