@@ -21,6 +21,7 @@ import kotlinx.coroutines.launch
 import mr.cooker.mrcooker.data.entities.User
 import mr.cooker.mrcooker.data.repositories.MainRepository
 import mr.cooker.mrcooker.other.EventFirebase
+import timber.log.Timber
 import java.lang.Exception
 
 class UserViewModel @ViewModelInject constructor(
@@ -41,8 +42,11 @@ class UserViewModel @ViewModelInject constructor(
             status.throwable = false
             user
         } catch (e: Exception) {
+            Timber.e(e)
             status.throwable = true
             status.exception = e
             null
         }
+
+    fun setUserID(userId: String) = _userID.postValue(userId)
 }

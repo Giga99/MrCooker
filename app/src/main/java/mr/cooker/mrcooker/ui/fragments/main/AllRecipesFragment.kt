@@ -21,9 +21,12 @@ import android.widget.Toast
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_all_recipes.*
 import kotlinx.android.synthetic.main.fragment_all_recipes.swipeRefreshLayout
 import kotlinx.coroutines.*
@@ -31,10 +34,13 @@ import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.other.Constants
 import mr.cooker.mrcooker.other.Constants.SEARCH_RECIPES_TIME_DELAY
+import mr.cooker.mrcooker.other.Constants.ownerIDCode
 import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.ui.activities.RecipeActivity
 import mr.cooker.mrcooker.ui.adapters.RecipeAdapter
 import mr.cooker.mrcooker.ui.viewmodels.AllRecipesViewModel
+import mr.cooker.mrcooker.ui.viewmodels.UserViewModel
+import timber.log.Timber
 import java.util.*
 
 @AndroidEntryPoint
@@ -42,6 +48,7 @@ import java.util.*
 class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
 
     private val allRecipesViewModel: AllRecipesViewModel by viewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
     private lateinit var recipeAdapter: RecipeAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -138,7 +145,20 @@ class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
             imageView.transitionName
         )
 
-        startActivity(intent, options.toBundle())
+        startActivityForResult(intent, ownerIDCode, options.toBundle())
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode == ownerIDCode) {
+            val ownerID = data?.getStringExtra(Constants.ownerID)
+            if (ownerID != null) {
+                userViewModel.setUserID(ownerID)
+                navHostFragment.findNavController()
+                    .navigate(R.id.action_allRecipesFragment_to_otherProfileFragment)
+            }
+        }
     }
 
     override fun onResume() {

@@ -12,12 +12,11 @@
 
 package mr.cooker.mrcooker.data.entities
 
-import android.net.Uri
 import java.io.Serializable
 
 data class User(
     val username: String = "",
     val email: String = "",
-    val profileImage: Uri? = null,
+    val profileImage: String? = null,
     val userId: String = ""
 ) : Serializable

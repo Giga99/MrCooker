@@ -17,11 +17,11 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.github.abdularis.civ.AvatarImageView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_other_profile.btnShowRecipes
 import kotlinx.android.synthetic.main.fragment_other_profile.ivProfileImage
 import kotlinx.android.synthetic.main.fragment_other_profile.profileLayout
@@ -42,7 +42,7 @@ import java.lang.Exception
 class OtherProfileFragment : Fragment(R.layout.fragment_other_profile) {
 
     private val userRecipesViewModel: UserRecipesViewModel by activityViewModels()
-    private val userViewModel: UserViewModel by viewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -64,39 +64,41 @@ class OtherProfileFragment : Fragment(R.layout.fragment_other_profile) {
     private fun getUserInfo() = CoroutineScope(Dispatchers.IO).launch {
         try {
             val user = userViewModel.getUserInfo()
-            if(userViewModel.status.throwable || user == null) userViewModel.status.throwException()
+            if (userViewModel.status.throwable) userViewModel.status.throwException()
 
-            userRecipesViewModel.userRecipes.observe(viewLifecycleOwner, {
-                when (it) {
-                    is Resource.Loading -> { /* NO-OP */
-                    }
-
-                    is Resource.Success -> {
-                        tvUsername.text = user!!.username
-                        tvNumOfRecipes.text = "${it.data.size}"
-                        if (user.profileImage == null) {
-                            ivProfileImage.text = user.username.substring(0, 1)
-                            ivProfileImage.state = AvatarImageView.SHOW_INITIAL
-                        } else {
-                            Glide.with(this@OtherProfileFragment)
-                                .load(user.profileImage)
-                                .into(ivProfileImage)
-                            ivProfileImage.state = AvatarImageView.SHOW_IMAGE
+            withContext(Dispatchers.Main) {
+                userRecipesViewModel.userRecipes.observe(viewLifecycleOwner, {
+                    when (it) {
+                        is Resource.Loading -> { /* NO-OP */
                         }
 
-                        profileLayout.visibility = View.VISIBLE
-                        trailingLoaderProfile.visibility = View.GONE
-                    }
+                        is Resource.Success -> {
+                            tvUsername.text = user!!.username
+                            tvNumOfRecipes.text = "${it.data.size}"
+                            if (user.profileImage == null) {
+                                ivProfileImage.text = user.username.substring(0, 1)
+                                ivProfileImage.state = AvatarImageView.SHOW_INITIAL
+                            } else {
+                                Glide.with(this@OtherProfileFragment)
+                                    .load(user.profileImage)
+                                    .into(ivProfileImage)
+                                ivProfileImage.state = AvatarImageView.SHOW_IMAGE
+                            }
 
-                    is Resource.Failure -> {
-                        Toast.makeText(
-                            requireContext(),
-                            "An error has occurred:${it.throwable.message}",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                            profileLayout.visibility = View.VISIBLE
+                            trailingLoaderProfile.visibility = View.GONE
+                        }
+
+                        is Resource.Failure -> {
+                            Toast.makeText(
+                                requireContext(),
+                                "An error has occurred:${it.throwable.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
-                }
-            })
+                })
+            }
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
                 Toast.makeText(

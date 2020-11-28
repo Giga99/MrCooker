@@ -87,6 +87,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.favoriteRecipesFragment ->
                     navHostFragment.findNavController()
                         .navigate(R.id.action_favoriteRecipesFragment_to_addRecipeFragment)
+
+                R.id.otherProfileFragment ->
+                    navHostFragment.findNavController()
+                        .navigate(R.id.action_otherProfileFragment_to_addRecipeFragment)
             }
         }
 
@@ -111,6 +115,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.settingsFragment ->
                     navHostFragment.findNavController()
                         .navigate(R.id.action_settingsFragment_to_favoriteRecipesFragment)
+
+                R.id.otherProfileFragment ->
+                    navHostFragment.findNavController()
+                        .navigate(R.id.action_otherProfileFragment_to_favoriteRecipesFragment)
             }
         }
 
@@ -123,7 +131,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun appUpdate() = CoroutineScope(Dispatchers.IO).launch {
         try {
-            AAUpdaterController.init(this@MainActivity, null, appInfoViewModel, false)
+            if(!this@MainActivity.isFinishing)
+                AAUpdaterController.init(this@MainActivity, null, appInfoViewModel, false)
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
                 Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
@@ -314,5 +323,10 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         AAUpdaterController.end()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        bottomAppBar.visibility = View.VISIBLE
     }
 }

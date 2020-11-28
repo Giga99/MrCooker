@@ -31,6 +31,7 @@ import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.other.exceptions.AppInfoNotAvailableException
 import mr.cooker.mrcooker.other.exceptions.EmailNotVerifiedException
 import mr.cooker.mrcooker.other.exceptions.UserNotExistException
+import timber.log.Timber
 import java.lang.Exception
 import java.util.*
 
@@ -58,6 +59,7 @@ class FirebaseDB {
         return if (auth.currentUser != null && auth.currentUser!!.isEmailVerified) {
             currentUser = auth.currentUser!!
             setFirstLoginOfTheDay()
+            saveUser()
             true
         } else false
     }
@@ -168,13 +170,16 @@ class FirebaseDB {
     }
 
     private suspend fun saveUser() {
-        val user = User(
-            currentUser.displayName!!,
-            currentUser.email!!,
-            currentUser.photoUrl,
-            currentUser.uid
-        )
-        firestoreUsersInfo.add(user).await()
+        val usersQuery = firestoreUsersInfo.whereEqualTo("userId", currentUser.uid).get().await()
+        if(usersQuery.isEmpty) {
+            val user = User(
+                currentUser.displayName!!,
+                currentUser.email!!,
+                currentUser.photoUrl.toString(),
+                currentUser.uid
+            )
+            firestoreUsersInfo.add(user).await()
+        }
     }
 
     suspend fun getUserInfo(userId: String): User {

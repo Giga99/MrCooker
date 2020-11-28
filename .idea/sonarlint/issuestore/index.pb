@@ -27,8 +27,6 @@ t
 Dapp/src/main/java/mr/cooker/mrcooker/ui/activities/RecipeActivity.kt,6\d\6d2cd0cf643f44a2e6322b602d6012ac3340dc6e
 y
 Iapp/src/main/java/mr/cooker/mrcooker/ui/viewmodels/AllRecipesViewModel.kt,f\d\fd784e1f7b13e76f24ec4a2cf242fad3fe0a465e
-x
-Happ/src/main/java/mr/cooker/mrcooker/ui/viewmodels/MyRecipesViewModel.kt,e\e\ee5a5aa79b2ed89ab9e361518c93ef21fe36a866
 |
 Lapp/src/main/java/mr/cooker/mrcooker/ui/fragments/main/AllRecipesFragment.kt,b\6\b6896ea5984d59981b7013c5ff10f135fd1a4101
 :
@@ -36,8 +34,6 @@ Lapp/src/main/java/mr/cooker/mrcooker/ui/fragments/main/AllRecipesFragment.kt,b
 .gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
 {
 Kapp/src/main/java/mr/cooker/mrcooker/ui/fragments/main/AddRecipeFragment.kt,5\e\5e4ea3595cc3e198d0e6fefd31fb8ad7808cfb02
-{
-Kapp/src/main/java/mr/cooker/mrcooker/ui/fragments/main/MyRecipesFragment.kt,c\c\cc3c147938ff1355603491afa84fc70d09bb5dfb
 |
 Lapp/src/main/java/mr/cooker/mrcooker/ui/activities/AuthenticationActivity.kt,e\8\e8b490410c2bd044e01e7e39cae9ab492fed62fd
 y
@@ -110,3 +106,15 @@ m
 =app/src/main/java/mr/cooker/mrcooker/data/entities/Message.kt,d\3\d3454f450d5c3e9a3deae429d18f4b976e0de2a5
 
 Oapp/src/main/java/mr/cooker/mrcooker/ui/fragments/main/ConversationsFragment.kt,7\2\725d1d016153ffb3997da30a2e9a07f11e555c2e
+|
+Lapp/src/main/java/mr/cooker/mrcooker/ui/viewmodels/ConversationsViewModel.kt,2\d\2d5c88000069ea67c0328c70533863a082831cc2
+z
+Japp/src/main/java/mr/cooker/mrcooker/ui/viewmodels/UserRecipesViewModel.kt,1\e\1e69842643a424110abaf4ecfb16916888c64dd1
+j
+:app/src/main/java/mr/cooker/mrcooker/data/entities/User.kt,5\0\50d7f4eb2f0a7a38a4b39582b151ff77a23a2eb7
+s
+Capp/src/main/java/mr/cooker/mrcooker/ui/viewmodels/UserViewModel.kt,1\2\12c382cb29dbf2c14b15962fa01140f296a2f800
+}
+Mapp/src/main/java/mr/cooker/mrcooker/ui/fragments/main/UserRecipesFragment.kt,1\e\1ec136cf4ca9a10cc7360e76937b4dff8f833b1e
+~
+Napp/src/main/java/mr/cooker/mrcooker/ui/fragments/main/OtherProfileFragment.kt,9\1\917631b3ea8a9d997797d90d69f5422d823b3fa9
