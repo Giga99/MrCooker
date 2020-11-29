@@ -46,7 +46,6 @@ import mr.cooker.mrcooker.ui.viewmodels.AddingViewModel
 import mr.cooker.mrcooker.ui.viewmodels.AllRecipesViewModel
 import mr.cooker.mrcooker.ui.viewmodels.FavoriteRecipesViewModel
 import mr.cooker.mrcooker.ui.viewmodels.UserViewModel
-import timber.log.Timber
 import java.lang.Exception
 
 @ExperimentalCoroutinesApi

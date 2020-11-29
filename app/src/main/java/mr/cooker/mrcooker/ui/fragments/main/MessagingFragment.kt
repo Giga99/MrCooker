@@ -15,11 +15,12 @@ package mr.cooker.mrcooker.ui.fragments.main
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSmoothScroller
 import com.github.dhaval2404.form_validation.rule.NonEmptyRule
 import com.github.dhaval2404.form_validation.validation.FormValidator
 import com.google.android.material.bottomappbar.BottomAppBar
@@ -38,6 +39,7 @@ import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.ui.adapters.MessageAdapter
 import mr.cooker.mrcooker.ui.viewmodels.MessagingViewModel
+import timber.log.Timber
 import java.lang.Exception
 import java.util.*
 
@@ -65,9 +67,14 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.GONE
-        activity?.findViewById<BottomAppBar>(R.id.bottomAppBar)?.visibility = View.GONE
-        activity?.findViewById<FloatingActionButton>(R.id.fab)?.visibility = View.GONE
+        with(requireActivity()) {
+            (this as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+            findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility = View.GONE
+            findViewById<BottomAppBar>(R.id.bottomAppBar).visibility = View.GONE
+            findViewById<FloatingActionButton>(R.id.fab).visibility = View.GONE
+            findViewById<ImageView>(R.id.ivFavorites).visibility = View.GONE
+        }
 
         messagingLayout.visibility = View.GONE
         trailingLoaderMessaging.visibility = View.VISIBLE

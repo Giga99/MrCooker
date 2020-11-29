@@ -25,7 +25,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.mobapphome.androidappupdater.tools.AAUpdaterController
@@ -43,7 +42,6 @@ import mr.cooker.mrcooker.other.Constants.ANIMATION_DURATION
 import mr.cooker.mrcooker.other.Constants.PLAY_STORE_URI
 import mr.cooker.mrcooker.ui.dialogs.SmartRatingDialog
 import mr.cooker.mrcooker.ui.viewmodels.AppInfoViewModel
-import mr.cooker.mrcooker.ui.viewmodels.ConversationsViewModel
 import mr.cooker.mrcooker.ui.viewmodels.SignOutViewModel
 import mr.cooker.mrcooker.ui.viewmodels.SmartRatingViewModel
 import timber.log.Timber
@@ -227,6 +225,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            android.R.id.home -> {
+                Timber.e("back")
+                navHostFragment.findNavController().popBackStack()
+                true
+            }
+
             R.id.signOut -> {
                 MaterialDialog.Builder(this)
                     .setTitle(getString(R.string.exit_dialog_title))
