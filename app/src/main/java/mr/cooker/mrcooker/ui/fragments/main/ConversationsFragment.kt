@@ -29,11 +29,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.Conversation
-import mr.cooker.mrcooker.other.Constants.conversationId
 import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.ui.adapters.ConversationAdapter
 import mr.cooker.mrcooker.ui.viewmodels.ConversationsViewModel
 import mr.cooker.mrcooker.ui.viewmodels.MessagingViewModel
+import timber.log.Timber
 
 @AndroidEntryPoint
 class ConversationsFragment : Fragment(R.layout.fragment_conversations) {

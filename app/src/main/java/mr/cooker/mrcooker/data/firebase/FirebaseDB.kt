@@ -17,8 +17,7 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -31,7 +30,6 @@ import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.other.exceptions.AppInfoNotAvailableException
 import mr.cooker.mrcooker.other.exceptions.EmailNotVerifiedException
 import mr.cooker.mrcooker.other.exceptions.UserNotExistException
-import timber.log.Timber
 import java.lang.Exception
 import java.util.*
 
@@ -470,8 +468,8 @@ class FirebaseDB {
     suspend fun startConversation(conversation: Conversation) {
         firestoreConversations.add(conversation).await()
         val conversationsQuery = firestoreConversations
-            .whereEqualTo("firstUserId", conversation.firstUserId)
-            .whereEqualTo("secondUserId", conversation.secondUserId)
+            .whereEqualTo("firstUser.userId", conversation.firstUser!!.userId)
+            .whereEqualTo("secondUser.userId", conversation.secondUser!!.userId)
             .get().await()
 
         val map = mutableMapOf<String, Any>()
@@ -484,7 +482,7 @@ class FirebaseDB {
         }
     }
 
-    suspend fun sendMessage(messages: List<Message>, conversationId: String) {
+    suspend fun updateMessages(messages: List<Message>, conversationId: String) {
         val conversationsQuery = firestoreConversations
             .whereEqualTo("conversationId", conversationId)
             .get().await()
@@ -497,18 +495,22 @@ class FirebaseDB {
         }
     }
 
-    suspend fun getConversation(conversationId: String): Resource<Conversation> {
-        val document = firestoreConversations.document(conversationId).get().await()
-        val conversation = document.toObject<Conversation>()
-
-        return Resource.Success(conversation!!)
-    }
+    fun refreshConversation(conversationId: String): ListenerRegistration =
+        firestoreConversations.document(conversationId).addSnapshotListener { snapshot, error ->
+            if(snapshot != null && snapshot.exists()) {
+                return@addSnapshotListener
+            } else if(error != null) {
+                Resource.Failure<FirebaseFirestoreException>(error)
+                return@addSnapshotListener
+            }
+        }
 
     suspend fun getConversationList(): Resource<List<Conversation>> {
+        FieldPath.documentId()
         val conversationQuery1 =
-            firestoreConversations.whereEqualTo("firstUserId", currentUser.uid).get().await()
+            firestoreConversations.whereEqualTo("firstUser.userId", currentUser.uid).get().await()
         val conversationQuery2 =
-            firestoreConversations.whereEqualTo("secondUserId", currentUser.uid).get().await()
+            firestoreConversations.whereEqualTo("secondUser.userId", currentUser.uid).get().await()
 
         val conversations = mutableListOf<Conversation>()
 

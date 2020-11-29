@@ -18,14 +18,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.github.abdularis.civ.AvatarImageView
 import kotlinx.android.synthetic.main.conversation_row.view.*
+import kotlinx.android.synthetic.main.fragment_profile.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.Conversation
+import mr.cooker.mrcooker.data.entities.User
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import java.util.concurrent.TimeUnit
 
-class ConversationAdapter() : RecyclerView.Adapter<ConversationAdapter.ConversationViewHolder>() {
+class ConversationAdapter : RecyclerView.Adapter<ConversationAdapter.ConversationViewHolder>() {
 
     inner class ConversationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -50,23 +53,35 @@ class ConversationAdapter() : RecyclerView.Adapter<ConversationAdapter.Conversat
         val conversation = differ.currentList[position]
 
         holder.itemView.apply {
-            if (conversation.firstUserId == currentUser.uid) {
-                tvConvUsername.text = conversation.secondUserId
-                ivConvProfileImage.text = conversation.secondUserId.substring(0, 1)
-                ivConvProfileImage.state = AvatarImageView.SHOW_INITIAL
-            } else {
-                tvConvUsername.text = conversation.firstUserId
-                ivConvProfileImage.text = conversation.firstUserId.substring(0, 1)
-                ivConvProfileImage.state = AvatarImageView.SHOW_INITIAL
-            }
+            with(conversation) {
+                if (firstUser!!.userId == currentUser.uid) {
+                    tvConvUsername.text = secondUser!!.username
+                    if (secondUser!!.profileImage == null) {
+                        ivConvProfileImage.text = secondUser!!.username.substring(0, 1)
+                        ivConvProfileImage.state = AvatarImageView.SHOW_INITIAL
+                    } else {
+                        Glide.with(context).load(secondUser!!.profileImage).into(ivConvProfileImage)
+                        ivConvProfileImage.state = AvatarImageView.SHOW_IMAGE
+                    }
+                } else {
+                    tvConvUsername.text = firstUser!!.username
+                    if (firstUser!!.profileImage == null) {
+                        ivConvProfileImage.text = firstUser!!.username.substring(0, 1)
+                        ivConvProfileImage.state = AvatarImageView.SHOW_INITIAL
+                    } else {
+                        Glide.with(context).load(firstUser!!.profileImage).into(ivConvProfileImage)
+                        ivConvProfileImage.state = AvatarImageView.SHOW_IMAGE
+                    }
+                }
 
-            val lastMessage = conversation.messages.last()
-            tvConvLastMessage.text = lastMessage.text
-            val timePassed = System.currentTimeMillis() - lastMessage.timestamp
-            tvConvTimeOfLastMessage.text = calculateTime(timePassed)
+                //val lastMessage = messages.last()
+                tvConvLastMessage.text = "Message" //lastMessage.text
+                val timePassed = System.currentTimeMillis() - 1425744000000 //lastMessage.timestamp
+                tvConvTimeOfLastMessage.text = calculateTime(timePassed)
 
-            setOnClickListener {
-                onItemClickListener?.let { it(conversation) }
+                setOnClickListener {
+                    onItemClickListener?.let { it(this) }
+                }
             }
         }
     }

@@ -14,19 +14,117 @@ package mr.cooker.mrcooker.ui.fragments.main
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.dhaval2404.form_validation.rule.NonEmptyRule
+import com.github.dhaval2404.form_validation.validation.FormValidator
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_messaging.*
 import mr.cooker.mrcooker.R
+import mr.cooker.mrcooker.data.entities.Conversation
+import mr.cooker.mrcooker.data.entities.Message
+import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
+import mr.cooker.mrcooker.ui.adapters.MessageAdapter
 import mr.cooker.mrcooker.ui.viewmodels.MessagingViewModel
+import timber.log.Timber
+import java.lang.Exception
 
 @AndroidEntryPoint
 class MessagingFragment : Fragment(R.layout.fragment_messaging) {
 
     private val messagingViewModel: MessagingViewModel by activityViewModels()
+    private lateinit var messageAdapter: MessageAdapter
+
+    private lateinit var conversation: Conversation
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        messagingLayout.visibility = View.GONE
+        trailingLoaderMessaging.visibility = View.VISIBLE
+        trailingLoaderMessaging.animate()
+
+        setupRecyclerView()
+
+        seeMessages()
+
+        ivSend.setOnClickListener {
+            if (isValidForm()) {
+                try {
+                    val text = etMessage.text.toString()
+                    val message = Message(currentUser.uid, System.currentTimeMillis(), text, false)
+                    conversation.messages.add(message)
+                    messageAdapter.notifyDataSetChanged()
+                    messagingViewModel.updateMessages(
+                        conversation.messages,
+                        conversation.conversationId
+                    )
+                    if (messagingViewModel.status.throwable) messagingViewModel.status.throwException()
+                } catch (e: Exception) {
+                    Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+                    conversation.messages.removeAt(conversation.messages.size - 1)
+                    messageAdapter.notifyDataSetChanged()
+                }
+            }
+        }
+
+        try {
+            Firebase.firestore.collection("conversations").document(conversation.conversationId)
+                .addSnapshotListener { value, error ->
+                    if (error != null) throw error
+                    else if (value != null) {
+                        val newConversation = value.toObject<Conversation>()
+                        if (newConversation != null) {
+                            conversation = newConversation
+                            messageAdapter.submitList(conversation.messages)
+                            messageAdapter.notifyDataSetChanged()
+                        }
+                    }
+                }
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+        }
     }
+
+    private fun seeMessages() {
+        for (message in conversation.messages.reversed()) {
+            if (message.senderId == currentUser.uid) break
+            message.seen = true
+            try {
+                messagingViewModel.updateMessages(
+                    conversation.messages,
+                    conversation.conversationId
+                )
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun setupRecyclerView() = rvMessages.apply {
+        conversation = messagingViewModel.getConversation()!!
+        Timber.e("$conversation")
+        messageAdapter = MessageAdapter(conversation.firstUser!!, conversation.secondUser!!)
+        adapter = messageAdapter
+        layoutManager = LinearLayoutManager(requireContext()).apply {
+            reverseLayout = true
+            stackFromEnd = true
+        }
+
+        messageAdapter.submitList(conversation.messages)
+        messageAdapter.notifyDataSetChanged()
+
+        messagingLayout.visibility = View.VISIBLE
+        trailingLoaderMessaging.visibility = View.GONE
+    }
+
+    private fun isValidForm(): Boolean =
+        FormValidator.getInstance()
+            .addField(etMessage, NonEmptyRule("Please, enter your message!"))
+            .validate()
 }

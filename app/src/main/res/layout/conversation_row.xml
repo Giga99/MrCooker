@@ -38,7 +38,7 @@
         android:text="Username"
         android:textColor="@color/colorPrimaryText"
         android:textSize="17sp"
-        app:layout_constraintStart_toEndOf="@+id/ivConvProfile"
+        app:layout_constraintStart_toEndOf="@+id/ivConvProfileImage"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -50,7 +50,7 @@
         android:text="Last message"
         android:textColor="#787878"
         android:textSize="17sp"
-        app:layout_constraintStart_toEndOf="@+id/ivConvProfile"
+        app:layout_constraintStart_toEndOf="@+id/ivConvProfileImage"
         app:layout_constraintTop_toBottomOf="@+id/tvConvUsername" />
 
     <TextView

@@ -14,18 +14,48 @@ package mr.cooker.mrcooker.ui.viewmodels
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import mr.cooker.mrcooker.data.entities.Conversation
+import mr.cooker.mrcooker.data.entities.Message
+import mr.cooker.mrcooker.data.entities.User
 import mr.cooker.mrcooker.data.repositories.MainRepository
+import mr.cooker.mrcooker.other.EventFirebase
+import java.lang.Exception
 
 class MessagingViewModel @ViewModelInject constructor(
     private val mainRepository: MainRepository
 ) : ViewModel() {
 
+    val status = EventFirebase(null)
+
     private var conversation: Conversation? = null
 
-    suspend fun getConversation(conversationId: String) = mainRepository.getConversation(conversationId)
+    fun refreshConversation(conversationId: String) = mainRepository.refreshConversation(conversationId)
+
+    fun startConversation(user1: User, user2: User) = viewModelScope.launch {
+        try {
+            mainRepository.startConversation(Conversation(user1, user2))
+            status.throwable = false
+        } catch (e: Exception) {
+            status.throwable = true
+            status.exception = e
+        }
+    }
+
+    fun updateMessages(messages: List<Message>, conversationId: String) = viewModelScope.launch {
+        try {
+            mainRepository.updateMessages(messages, conversationId)
+            status.throwable = false
+        } catch (e: Exception) {
+            status.throwable = true
+            status.exception = e
+        }
+    }
 
     fun setConversation(convrs: Conversation) {
         conversation = convrs
     }
+
+    fun getConversation() = conversation
 }

@@ -19,11 +19,13 @@
     android:layout_height="wrap_content"
     android:padding="10dp">
 
-    <ImageView
+    <com.github.abdularis.civ.AvatarImageView
         android:id="@+id/ivMessageProfile"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@drawable/ic_profile"
+        app:avatarBackgroundColor="@color/colorPrimary"
+        app:text="A"
+        app:textSize="22sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

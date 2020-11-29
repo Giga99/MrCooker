@@ -15,8 +15,8 @@ package mr.cooker.mrcooker.data.entities
 import java.io.Serializable
 
 data class Conversation(
-    var firstUserId: String = "",
-    var secondUserId: String = "",
-    var messages: List<Message> = emptyList(),
+    var firstUser: User? = null,
+    var secondUser: User? = null,
+    var messages: MutableList<Message> = mutableListOf(),
     var conversationId: String = ""
 ) : Serializable

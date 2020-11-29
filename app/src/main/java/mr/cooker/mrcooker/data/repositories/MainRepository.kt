@@ -13,6 +13,7 @@
 package mr.cooker.mrcooker.data.repositories
 
 import android.net.Uri
+import com.google.firebase.firestore.ListenerRegistration
 import com.mobapphome.androidappupdater.tools.ProgramInfo
 import mr.cooker.mrcooker.data.entities.*
 import mr.cooker.mrcooker.data.firebase.FirebaseDB
@@ -51,7 +52,8 @@ class MainRepository @Inject constructor(
 
     suspend fun getSearchedRecipes(search: String) = firebaseDB.getSearchedRecipes(search)
 
-    suspend fun getSearchedMyRecipes(search: String, userId: String) = firebaseDB.getSearchedUserRecipes(search, userId)
+    suspend fun getSearchedMyRecipes(search: String, userId: String) =
+        firebaseDB.getSearchedUserRecipes(search, userId)
 
     suspend fun addToFavoriteRecipes(favoriteRecipe: FavoriteRecipe) =
         firebaseDB.addToFavoriteRecipes(favoriteRecipe)
@@ -80,11 +82,11 @@ class MainRepository @Inject constructor(
     suspend fun startConversation(conversation: Conversation) =
         firebaseDB.startConversation(conversation)
 
-    suspend fun sendMessage(messages: List<Message>, conversationId: String) =
-        firebaseDB.sendMessage(messages, conversationId)
+    suspend fun updateMessages(messages: List<Message>, conversationId: String) =
+        firebaseDB.updateMessages(messages, conversationId)
 
-    suspend fun getConversation(conversationId: String): Resource<Conversation> =
-        firebaseDB.getConversation(conversationId)
+    fun refreshConversation(conversationId: String): ListenerRegistration =
+        firebaseDB.refreshConversation(conversationId)
 
     suspend fun getConversationList(): Resource<List<Conversation>> =
         firebaseDB.getConversationList()
