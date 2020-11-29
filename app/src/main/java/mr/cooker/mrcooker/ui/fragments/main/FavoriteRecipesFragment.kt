@@ -34,6 +34,7 @@ import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.other.Constants
 import mr.cooker.mrcooker.other.Constants.ownerIDCode
+import mr.cooker.mrcooker.other.FirebaseUtils
 import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.ui.activities.RecipeActivity
 import mr.cooker.mrcooker.ui.adapters.RecipeAdapter
@@ -151,12 +152,14 @@ class FavoriteRecipesFragment : Fragment(R.layout.fragment_favorite_recipes) {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode == ownerIDCode) {
+        if (requestCode == ownerIDCode) {
             val ownerID = data?.getStringExtra(Constants.ownerID)
             if (ownerID != null) {
-                userViewModel.setUserID(ownerID)
-                navHostFragment.findNavController()
-                    .navigate(R.id.action_allRecipesFragment_to_otherProfileFragment)
+                if (ownerID == FirebaseUtils.currentUser.uid) findNavController().navigate(R.id.profileFragment)
+                else {
+                    userViewModel.setUserID(ownerID)
+                    findNavController().navigate(R.id.action_favoriteRecipesFragment_to_otherProfileFragment)
+                }
             }
         }
     }

@@ -23,6 +23,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,6 +36,7 @@ import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.other.Constants
 import mr.cooker.mrcooker.other.Constants.SEARCH_RECIPES_TIME_DELAY
 import mr.cooker.mrcooker.other.Constants.ownerIDCode
+import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.ui.activities.RecipeActivity
 import mr.cooker.mrcooker.ui.adapters.RecipeAdapter
@@ -150,12 +152,14 @@ class AllRecipesFragment : Fragment(R.layout.fragment_all_recipes) {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode == ownerIDCode) {
+        if (requestCode == ownerIDCode) {
             val ownerID = data?.getStringExtra(Constants.ownerID)
             if (ownerID != null) {
-                userViewModel.setUserID(ownerID)
-                navHostFragment.findNavController()
-                    .navigate(R.id.action_allRecipesFragment_to_otherProfileFragment)
+                if (ownerID == currentUser.uid) findNavController().navigate(R.id.profileFragment)
+                else {
+                    userViewModel.setUserID(ownerID)
+                    findNavController().navigate(R.id.action_allRecipesFragment_to_otherProfileFragment)
+                }
             }
         }
     }

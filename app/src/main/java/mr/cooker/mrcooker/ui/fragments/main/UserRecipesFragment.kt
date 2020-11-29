@@ -36,13 +36,13 @@ import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.other.Constants
 import mr.cooker.mrcooker.other.Constants.ownerIDCode
 import mr.cooker.mrcooker.other.Constants.postID
+import mr.cooker.mrcooker.other.FirebaseUtils
 import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.ui.adapters.RecipeAdapter
 import mr.cooker.mrcooker.ui.activities.RecipeActivity
 import mr.cooker.mrcooker.ui.viewmodels.AddingViewModel
 import mr.cooker.mrcooker.ui.viewmodels.UserRecipesViewModel
 import mr.cooker.mrcooker.ui.viewmodels.UserViewModel
-import timber.log.Timber
 import java.lang.Exception
 import java.util.*
 
@@ -207,9 +207,11 @@ class UserRecipesFragment : Fragment(R.layout.fragment_user_recipes) {
         if(requestCode == ownerIDCode) {
             val ownerID = data?.getStringExtra(Constants.ownerID)
             if (ownerID != null) {
-                userViewModel.setUserID(ownerID)
-                navHostFragment.findNavController()
-                    .navigate(R.id.action_allRecipesFragment_to_otherProfileFragment)
+                if (ownerID == FirebaseUtils.currentUser.uid) findNavController().navigate(R.id.profileFragment)
+                else {
+                    userViewModel.setUserID(ownerID)
+                    findNavController().navigate(R.id.action_userRecipesFragment_to_otherProfileFragment)
+                }
             }
         }
     }
