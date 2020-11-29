@@ -20,6 +20,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_conversations.*
 import kotlinx.android.synthetic.main.fragment_conversations.swipeRefreshLayout
@@ -33,7 +36,6 @@ import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.ui.adapters.ConversationAdapter
 import mr.cooker.mrcooker.ui.viewmodels.ConversationsViewModel
 import mr.cooker.mrcooker.ui.viewmodels.MessagingViewModel
-import timber.log.Timber
 
 @AndroidEntryPoint
 class ConversationsFragment : Fragment(R.layout.fragment_conversations) {
@@ -44,6 +46,10 @@ class ConversationsFragment : Fragment(R.layout.fragment_conversations) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.VISIBLE
+        activity?.findViewById<BottomAppBar>(R.id.bottomAppBar)?.visibility = View.VISIBLE
+        activity?.findViewById<FloatingActionButton>(R.id.fab)?.visibility = View.VISIBLE
 
         setupRecyclerView()
         conversationsViewModel.allConversations.observe(viewLifecycleOwner, {

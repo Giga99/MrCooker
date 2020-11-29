@@ -491,19 +491,22 @@ class FirebaseDB {
 
         if (!conversationsQuery.isEmpty) {
             for (document in conversationsQuery)
-                firestoreConversations.document(conversationId).set(map, SetOptions.merge()).await()
+                firestoreConversations.document(document.id).set(map, SetOptions.merge()).await()
         }
     }
 
-    fun refreshConversation(conversationId: String): ListenerRegistration =
-        firestoreConversations.document(conversationId).addSnapshotListener { snapshot, error ->
-            if(snapshot != null && snapshot.exists()) {
-                return@addSnapshotListener
-            } else if(error != null) {
-                Resource.Failure<FirebaseFirestoreException>(error)
-                return@addSnapshotListener
+    suspend fun refreshConversation(conversationId: String): Resource<Conversation> {
+        val documentQuery = firestoreConversations.whereEqualTo("conversationId", conversationId).get().await()
+
+        if(!documentQuery.isEmpty) {
+            for(document in documentQuery.documents) {
+                val conversation = document.toObject<Conversation>()
+                return Resource.Success(conversation!!)
             }
         }
+
+        return Resource.Failure(Throwable("Conversation doesn't exist!"))
+    }
 
     suspend fun getConversationList(): Resource<List<Conversation>> {
         FieldPath.documentId()

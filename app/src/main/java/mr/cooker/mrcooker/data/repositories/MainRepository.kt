@@ -85,8 +85,7 @@ class MainRepository @Inject constructor(
     suspend fun updateMessages(messages: List<Message>, conversationId: String) =
         firebaseDB.updateMessages(messages, conversationId)
 
-    fun refreshConversation(conversationId: String): ListenerRegistration =
-        firebaseDB.refreshConversation(conversationId)
+    suspend fun refreshConversation(conversationId: String) = firebaseDB.refreshConversation(conversationId)
 
     suspend fun getConversationList(): Resource<List<Conversation>> =
         firebaseDB.getConversationList()

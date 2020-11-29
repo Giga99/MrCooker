@@ -21,10 +21,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.github.abdularis.civ.AvatarImageView
 import kotlinx.android.synthetic.main.conversation_row.view.*
-import kotlinx.android.synthetic.main.fragment_profile.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.Conversation
-import mr.cooker.mrcooker.data.entities.User
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import java.util.concurrent.TimeUnit
 
@@ -74,9 +72,9 @@ class ConversationAdapter : RecyclerView.Adapter<ConversationAdapter.Conversatio
                     }
                 }
 
-                //val lastMessage = messages.last()
-                tvConvLastMessage.text = "Message" //lastMessage.text
-                val timePassed = System.currentTimeMillis() - 1606647660000 //lastMessage.timestamp
+                val lastMessage = messages.last()
+                tvConvLastMessage.text = lastMessage.text
+                val timePassed = System.currentTimeMillis() - lastMessage.timestamp!!.time
                 tvConvTimeOfLastMessage.text = calculateTime(timePassed)
 
                 setOnClickListener {

@@ -21,6 +21,7 @@ import mr.cooker.mrcooker.data.entities.Message
 import mr.cooker.mrcooker.data.entities.User
 import mr.cooker.mrcooker.data.repositories.MainRepository
 import mr.cooker.mrcooker.other.EventFirebase
+import mr.cooker.mrcooker.other.Resource
 import java.lang.Exception
 
 class MessagingViewModel @ViewModelInject constructor(
@@ -31,7 +32,13 @@ class MessagingViewModel @ViewModelInject constructor(
 
     private var conversation: Conversation? = null
 
-    fun refreshConversation(conversationId: String) = mainRepository.refreshConversation(conversationId)
+    suspend fun refreshConversation(conversationId: String): Resource<Conversation> {
+        var conversation: Resource<Conversation>? = null
+        viewModelScope.launch {
+            conversation = mainRepository.refreshConversation(conversationId)
+        }.join()
+        return conversation!!
+    }
 
     fun startConversation(user1: User, user2: User) = viewModelScope.launch {
         try {

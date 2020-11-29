@@ -13,6 +13,7 @@
 package mr.cooker.mrcooker.ui.fragments.main
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -23,18 +24,19 @@ import com.github.dhaval2404.form_validation.validation.FormValidator
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_messaging.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.Conversation
 import mr.cooker.mrcooker.data.entities.Message
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
+import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.ui.adapters.MessageAdapter
 import mr.cooker.mrcooker.ui.viewmodels.MessagingViewModel
-import timber.log.Timber
 import java.lang.Exception
 import java.util.*
 
@@ -45,6 +47,18 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
     private lateinit var messageAdapter: MessageAdapter
 
     private lateinit var conversation: Conversation
+
+    private val timer = object : CountDownTimer(10000000, 1000) {
+        override fun onTick(p0: Long) {
+            refreshConversation()
+            seeMessages()
+        }
+
+        override fun onFinish() {
+            refreshConversation()
+            seeMessages()
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -82,21 +96,29 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
             }
         }
 
-        try {
-            Firebase.firestore.collection("conversations").document(conversation.conversationId)
-                .addSnapshotListener { value, error ->
-                    if (error != null) throw error
-                    else if (value != null) {
-                        val newConversation = value.toObject<Conversation>()
-                        if (newConversation != null) {
-                            conversation = newConversation
-                            messageAdapter.submitList(conversation.messages)
-                            messageAdapter.notifyDataSetChanged()
-                        }
-                    }
+        timer.start()
+    }
+
+    private fun refreshConversation() = CoroutineScope(Dispatchers.IO).launch {
+        val data = messagingViewModel.refreshConversation(conversation.conversationId)
+        withContext(Dispatchers.Main) {
+            when (data) {
+                is Resource.Loading -> { /* NO-OP */
                 }
-        } catch (e: Exception) {
-            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+                is Resource.Success -> {
+                    conversation = data.data
+                    messageAdapter.submitList(conversation.messages)
+                    messageAdapter.notifyDataSetChanged()
+                }
+                is Resource.Failure -> {
+
+                    Toast.makeText(
+                        requireContext(),
+                        "An error has occurred:${data.throwable.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         }
     }
 
@@ -117,11 +139,10 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
 
     private fun setupRecyclerView() = rvMessages.apply {
         conversation = messagingViewModel.getConversation()!!
-        Timber.e("$conversation")
         messageAdapter = MessageAdapter(conversation.firstUser!!, conversation.secondUser!!)
         adapter = messageAdapter
         layoutManager = LinearLayoutManager(requireContext()).apply {
-            reverseLayout = true
+            //reverseLayout = true
             stackFromEnd = true
         }
 
@@ -136,4 +157,19 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
         FormValidator.getInstance()
             .addField(etMessage, NonEmptyRule("Please, enter your message!"))
             .validate()
+
+    override fun onResume() {
+        super.onResume()
+        timer.start()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        timer.cancel()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        timer.cancel()
+    }
 }
