@@ -25,6 +25,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.mobapphome.androidappupdater.tools.AAUpdaterController
@@ -42,8 +43,10 @@ import mr.cooker.mrcooker.other.Constants.ANIMATION_DURATION
 import mr.cooker.mrcooker.other.Constants.PLAY_STORE_URI
 import mr.cooker.mrcooker.ui.dialogs.SmartRatingDialog
 import mr.cooker.mrcooker.ui.viewmodels.AppInfoViewModel
+import mr.cooker.mrcooker.ui.viewmodels.ConversationsViewModel
 import mr.cooker.mrcooker.ui.viewmodels.SignOutViewModel
 import mr.cooker.mrcooker.ui.viewmodels.SmartRatingViewModel
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -62,19 +65,6 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         bottomNavigationView.setupWithNavController(navHostFragment.findNavController())
-
-        when (navHostFragment.findNavController().currentDestination?.id) {
-            R.id.messagingFragment -> {
-                bottomAppBar.visibility = View.GONE
-                bottomNavigationView.visibility = View.GONE
-                fab.visibility = View.GONE
-            }
-
-            else -> {
-                bottomNavigationView.visibility = View.VISIBLE
-                fab.visibility = View.VISIBLE
-            }
-        }
 
         fab.setOnClickListener {
             when (navHostFragment.findNavController().currentDestination?.id) {
@@ -144,7 +134,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun appUpdate() = CoroutineScope(Dispatchers.IO).launch {
         try {
-            if(!this@MainActivity.isFinishing)
+            if (!this@MainActivity.isFinishing)
                 AAUpdaterController.init(this@MainActivity, null, appInfoViewModel, false)
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {

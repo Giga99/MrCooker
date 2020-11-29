@@ -77,6 +77,9 @@ class ConversationAdapter : RecyclerView.Adapter<ConversationAdapter.Conversatio
                 val timePassed = System.currentTimeMillis() - lastMessage.timestamp!!.time
                 tvConvTimeOfLastMessage.text = calculateTime(timePassed)
 
+                if (!lastMessage.seen && lastMessage.senderId != currentUser.uid) ivSeen.visibility =
+                    View.VISIBLE
+
                 setOnClickListener {
                     onItemClickListener?.let { it(this) }
                 }
