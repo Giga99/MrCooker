@@ -76,7 +76,7 @@ class ConversationAdapter : RecyclerView.Adapter<ConversationAdapter.Conversatio
 
                 //val lastMessage = messages.last()
                 tvConvLastMessage.text = "Message" //lastMessage.text
-                val timePassed = System.currentTimeMillis() - 1425744000000 //lastMessage.timestamp
+                val timePassed = System.currentTimeMillis() - 1606647660000 //lastMessage.timestamp
                 tvConvTimeOfLastMessage.text = calculateTime(timePassed)
 
                 setOnClickListener {
@@ -100,25 +100,25 @@ class ConversationAdapter : RecyclerView.Adapter<ConversationAdapter.Conversatio
                 TimeUnit.MILLISECONDS.toSeconds(
                     timePassed
                 )
-            } ago"
+            } seconds ago"
             TimeUnit.MILLISECONDS.toMinutes(timePassed) < 60 -> "${
                 TimeUnit.MILLISECONDS.toMinutes(
                     timePassed
                 )
-            } ago"
+            } minutes ago"
             TimeUnit.MILLISECONDS.toHours(timePassed) < 24 -> "${
                 TimeUnit.MILLISECONDS.toHours(
                     timePassed
                 )
-            } ago"
+            } hours ago"
             TimeUnit.MILLISECONDS.toDays(timePassed) < 7 -> "${
                 TimeUnit.MILLISECONDS.toDays(
                     timePassed
                 )
-            } ago"
+            } days ago"
             else -> {
                 val weeks = TimeUnit.MILLISECONDS.toDays(timePassed) / 7
-                "$weeks ago"
+                "$weeks weeks ago"
             }
         }
 }

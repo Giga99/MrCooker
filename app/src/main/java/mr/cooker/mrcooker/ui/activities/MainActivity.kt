@@ -65,6 +65,7 @@ class MainActivity : AppCompatActivity() {
 
         when (navHostFragment.findNavController().currentDestination?.id) {
             R.id.messagingFragment -> {
+                bottomAppBar.visibility = View.GONE
                 bottomNavigationView.visibility = View.GONE
                 fab.visibility = View.GONE
             }

@@ -14,11 +14,12 @@ package mr.cooker.mrcooker.data.entities
 
 import com.google.firebase.firestore.ServerTimestamp
 import java.io.Serializable
+import java.util.*
 
 data class Message(
     var senderId: String = "",
     @ServerTimestamp
-    var timestamp: Long = 0L,
+    var timestamp: Date? = null,
     var text: String = "",
     var seen: Boolean = false
 ) : Serializable

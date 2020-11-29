@@ -118,3 +118,11 @@ Capp/src/main/java/mr/cooker/mrcooker/ui/viewmodels/UserViewModel.kt,1\2\12c382
 Mapp/src/main/java/mr/cooker/mrcooker/ui/fragments/main/UserRecipesFragment.kt,1\e\1ec136cf4ca9a10cc7360e76937b4dff8f833b1e
 ~
 Napp/src/main/java/mr/cooker/mrcooker/ui/fragments/main/OtherProfileFragment.kt,9\1\917631b3ea8a9d997797d90d69f5422d823b3fa9
+r
+Bapp/src/main/java/mr/cooker/mrcooker/ui/adapters/MessageAdapter.kt,2\c\2c89ca2b71e4018b5233125d046ea07859744088
+{
+Kapp/src/main/java/mr/cooker/mrcooker/ui/fragments/main/MessagingFragment.kt,d\6\d6d2bc8f8377c3e5b0f4e3c57cd2cd6f35cc0a95
+x
+Happ/src/main/java/mr/cooker/mrcooker/ui/viewmodels/MessagingViewModel.kt,c\3\c37fe40094a1d4ccaa2a1f6c042508fdaa476952
+w
+Gapp/src/main/java/mr/cooker/mrcooker/ui/adapters/ConversationAdapter.kt,b\9\b9fc1f47ad7b384a1c8d8d029fc077b47432fd12

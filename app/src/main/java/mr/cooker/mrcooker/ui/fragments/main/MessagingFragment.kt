@@ -20,6 +20,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.dhaval2404.form_validation.rule.NonEmptyRule
 import com.github.dhaval2404.form_validation.validation.FormValidator
+import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -33,6 +36,7 @@ import mr.cooker.mrcooker.ui.adapters.MessageAdapter
 import mr.cooker.mrcooker.ui.viewmodels.MessagingViewModel
 import timber.log.Timber
 import java.lang.Exception
+import java.util.*
 
 @AndroidEntryPoint
 class MessagingFragment : Fragment(R.layout.fragment_messaging) {
@@ -44,6 +48,10 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        activity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)?.visibility = View.GONE
+        activity?.findViewById<BottomAppBar>(R.id.bottomAppBar)?.visibility = View.GONE
+        activity?.findViewById<FloatingActionButton>(R.id.fab)?.visibility = View.GONE
 
         messagingLayout.visibility = View.GONE
         trailingLoaderMessaging.visibility = View.VISIBLE
@@ -57,7 +65,7 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
             if (isValidForm()) {
                 try {
                     val text = etMessage.text.toString()
-                    val message = Message(currentUser.uid, System.currentTimeMillis(), text, false)
+                    val message = Message(currentUser.uid, Date(System.currentTimeMillis()), text, false)
                     conversation.messages.add(message)
                     messageAdapter.notifyDataSetChanged()
                     messagingViewModel.updateMessages(
@@ -65,6 +73,7 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
                         conversation.conversationId
                     )
                     if (messagingViewModel.status.throwable) messagingViewModel.status.throwException()
+                    etMessage.setText("")
                 } catch (e: Exception) {
                     Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
                     conversation.messages.removeAt(conversation.messages.size - 1)
