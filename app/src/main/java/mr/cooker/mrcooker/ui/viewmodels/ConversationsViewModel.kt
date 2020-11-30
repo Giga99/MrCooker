@@ -1,7 +1,7 @@
 /*
- * Created by Igor Stevanovic on 11/17/20 12:17 AM
+ * Created by Igor Stevanovic on 11/26/20 11:59 PM
  * Copyright (c) 2020 MrCooker. All rights reserved.
- * Last modified 11/17/20 12:15 AM
+ * Last modified 11/26/20 11:59 PM
  * Licensed under the GPL-3.0 License;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,34 +15,23 @@ package mr.cooker.mrcooker.ui.viewmodels
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import mr.cooker.mrcooker.data.entities.Recipe
+import mr.cooker.mrcooker.data.entities.Conversation
 import mr.cooker.mrcooker.data.repositories.MainRepository
 import mr.cooker.mrcooker.other.Resource
+import java.lang.Exception
 
-class MyRecipesViewModel @ViewModelInject constructor(
+class ConversationsViewModel @ViewModelInject constructor(
     private val mainRepository: MainRepository
 ) : ViewModel() {
-    val myRecipes = liveData<Resource<MutableList<Recipe>>>(Dispatchers.IO) {
+
+    val allConversations = liveData<Resource<List<Conversation>>> {
         emit(Resource.Loading())
         try {
-            val recipes = mainRepository.getMyRecipes()
-            emit(recipes)
+            emit(mainRepository.getConversationList())
         } catch (e: Exception) {
             emit(Resource.Failure(e.cause!!))
         }
     }
 
-    suspend fun getSearchedMyRecipes(search: String): Resource<MutableList<Recipe>> {
-        var recipes: Resource<MutableList<Recipe>>? = null
-        viewModelScope.launch {
-            recipes = mainRepository.getSearchedMyRecipes(search)
-        }.join()
-
-        return recipes!!
-    }
-
-    suspend fun getRealtimeMyRecipes() = mainRepository.getRealtimeMyRecipes()
+    suspend fun getRealtimeConversations() = mainRepository.getConversationList()
 }

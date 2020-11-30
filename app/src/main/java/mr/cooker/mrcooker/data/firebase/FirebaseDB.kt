@@ -17,22 +17,19 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.mobapphome.androidappupdater.tools.ProgramInfo
 import kotlinx.coroutines.tasks.await
-import mr.cooker.mrcooker.data.entities.FavoriteRecipe
-import mr.cooker.mrcooker.data.entities.SmartRatingTracker
-import mr.cooker.mrcooker.data.entities.Recipe
-import mr.cooker.mrcooker.data.entities.SmartRating
+import mr.cooker.mrcooker.data.entities.*
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.other.exceptions.AppInfoNotAvailableException
 import mr.cooker.mrcooker.other.exceptions.EmailNotVerifiedException
+import mr.cooker.mrcooker.other.exceptions.UserNotExistException
 import java.lang.Exception
 import java.util.*
 
@@ -44,6 +41,8 @@ class FirebaseDB {
         val firestoreUsers = Firebase.firestore.collection("users")
         val firestoreSmartRating = Firebase.firestore.collection("smartRating")
         val firestoreAppInfo = Firebase.firestore.collection("application")
+        val firestoreConversations = Firebase.firestore.collection("conversations")
+        val firestoreUsersInfo = Firebase.firestore.collection("usersInfo")
     }
 
     suspend fun login(email: String, password: String) {
@@ -51,12 +50,14 @@ class FirebaseDB {
         if (!auth.currentUser!!.isEmailVerified) throw EmailNotVerifiedException()
         currentUser = auth.currentUser!!
         setFirstLoginOfTheDay()
+        saveUser()
     }
 
     suspend fun checkPrevLogging(): Boolean {
         return if (auth.currentUser != null && auth.currentUser!!.isEmailVerified) {
             currentUser = auth.currentUser!!
             setFirstLoginOfTheDay()
+            saveUser()
             true
         } else false
     }
@@ -163,6 +164,42 @@ class FirebaseDB {
             UserProfileChangeRequest.Builder().setDisplayName(username).build()
         )
         auth.currentUser!!.sendEmailVerification().await()
+        saveUser()
+    }
+
+    private suspend fun saveUser() {
+        val usersQuery = firestoreUsersInfo.whereEqualTo("userId", currentUser.uid).get().await()
+        if (usersQuery.isEmpty) {
+            val user = User(
+                currentUser.displayName!!,
+                currentUser.email!!,
+                currentUser.photoUrl.toString(),
+                currentUser.uid
+            )
+            firestoreUsersInfo.add(user).await()
+        } else {
+            val map = mapOf<String, Any>(
+                "username" to currentUser.displayName!!,
+                "email" to currentUser.email!!,
+                "profileImage" to currentUser.photoUrl.toString(),
+                "userId" to currentUser.uid
+            )
+
+            for(document in usersQuery.documents)
+                firestoreUsersInfo.document(document.id).set(map, SetOptions.merge()).await()
+        }
+    }
+
+    suspend fun getUserInfo(userId: String): User {
+        val usersQuery = firestoreUsersInfo.whereEqualTo("userId", userId).get().await()
+        if (!usersQuery.isEmpty) {
+            for (document in usersQuery.documents) {
+                val user = document.toObject<User>()
+                return user!!
+            }
+        }
+
+        throw UserNotExistException()
     }
 
     suspend fun resetPassword(email: String) {
@@ -299,10 +336,10 @@ class FirebaseDB {
         return Resource.Success(recipes)
     }
 
-    suspend fun getMyRecipes(): Resource<MutableList<Recipe>> {
+    suspend fun getUserRecipes(userId: String): Resource<MutableList<Recipe>> {
         val recipes = mutableListOf<Recipe>()
         val documentsList =
-            firestoreRecipes.whereEqualTo("ownerID", currentUser.uid)
+            firestoreRecipes.whereEqualTo("ownerID", userId)
                 .orderBy("timePosted", Query.Direction.DESCENDING).get().await()
 
         if (!documentsList.isEmpty) {
@@ -338,9 +375,12 @@ class FirebaseDB {
         return Resource.Success(recipes)
     }
 
-    suspend fun getSearchedMyRecipes(search: String): Resource<MutableList<Recipe>> {
+    suspend fun getSearchedUserRecipes(
+        search: String,
+        userId: String
+    ): Resource<MutableList<Recipe>> {
         val recipes = mutableListOf<Recipe>()
-        val documentList = firestoreRecipes.whereEqualTo("ownerID", currentUser.uid).get().await()
+        val documentList = firestoreRecipes.whereEqualTo("ownerID", userId).get().await()
 
         if (!documentList.isEmpty) {
             for (document in documentList.documents) {
@@ -436,5 +476,118 @@ class FirebaseDB {
         }
 
         throw AppInfoNotAvailableException()
+    }
+
+    suspend fun startConversation(user: User) {
+        val currentUser = getUserInfo(currentUser.uid)
+        val conversation = Conversation(currentUser, user)
+        firestoreConversations.add(conversation).await()
+        val conversationsQuery = firestoreConversations
+            .whereEqualTo("firstUser.userId", conversation.firstUser!!.userId)
+            .whereEqualTo("secondUser.userId", conversation.secondUser!!.userId)
+            .get().await()
+
+        val map = mutableMapOf<String, Any>()
+
+        if (conversationsQuery.documents.isNotEmpty()) {
+            for (document in conversationsQuery) {
+                map["conversationId"] = document.id
+                firestoreConversations.document(document.id).set(map, SetOptions.merge()).await()
+            }
+        }
+    }
+
+    suspend fun updateMessages(messages: List<Message>, conversationId: String) {
+        val conversationsQuery = firestoreConversations
+            .whereEqualTo("conversationId", conversationId)
+            .get().await()
+
+        val map = mutableMapOf<String, Any>("messages" to messages)
+
+        if (!conversationsQuery.isEmpty) {
+            for (document in conversationsQuery)
+                firestoreConversations.document(document.id).set(map, SetOptions.merge()).await()
+        }
+    }
+
+    suspend fun refreshConversation(conversationId: String): Resource<Conversation> {
+        val documentQuery =
+            firestoreConversations.whereEqualTo("conversationId", conversationId).get().await()
+
+        if (!documentQuery.isEmpty) {
+            for (document in documentQuery.documents) {
+                val conversation = document.toObject<Conversation>()
+                return Resource.Success(conversation!!)
+            }
+        }
+
+        return Resource.Failure(Throwable("Conversation doesn't exist!"))
+    }
+
+    suspend fun getConversationList(): Resource<List<Conversation>> {
+        val conversationQuery1 =
+            firestoreConversations.whereEqualTo("firstUser.userId", currentUser.uid).get().await()
+        val conversationQuery2 =
+            firestoreConversations.whereEqualTo("secondUser.userId", currentUser.uid).get().await()
+
+        val conversations = mutableListOf<Conversation>()
+
+        if (!conversationQuery1.isEmpty) {
+            for (document in conversationQuery1.documents) {
+                val conversation = document.toObject<Conversation>()
+                conversations.add(conversation!!)
+            }
+        }
+
+        if (!conversationQuery2.isEmpty) {
+            for (document in conversationQuery2.documents) {
+                val conversation = document.toObject<Conversation>()
+                conversations.add(conversation!!)
+            }
+        }
+
+        return Resource.Success(conversations)
+    }
+
+    suspend fun conversationNotExist(userId: String): Boolean {
+        val documentQuery1 = firestoreConversations
+            .whereEqualTo("firstUser.userId", currentUser.uid)
+            .whereEqualTo("secondUser.userId", userId)
+            .get().await()
+
+        val documentQuery2 = firestoreConversations
+            .whereEqualTo("firstUser.userId", userId)
+            .whereEqualTo("secondUser.userId", currentUser.uid)
+            .get().await()
+
+        return documentQuery1.isEmpty && documentQuery2.isEmpty
+    }
+
+    suspend fun getConversation(userId: String): Resource<Conversation> {
+        val documentQuery1 = firestoreConversations
+            .whereEqualTo("firstUser.userId", currentUser.uid)
+            .whereEqualTo("secondUser.userId", userId)
+            .get().await()
+
+        val documentQuery2 = firestoreConversations
+            .whereEqualTo("firstUser.userId", userId)
+            .whereEqualTo("secondUser.userId", currentUser.uid)
+            .get().await()
+
+        if (!documentQuery1.isEmpty) {
+            for (document in documentQuery1.documents) {
+                val conversation = document.toObject<Conversation>()
+                return Resource.Success(conversation!!)
+            }
+        }
+
+        if (!documentQuery2.isEmpty) {
+            for (document in documentQuery2.documents) {
+                val conversation = document.toObject<Conversation>()
+                return Resource.Success(conversation!!)
+            }
+        }
+
+        return Resource.Failure(Throwable("Conversation doesn't exist!"))
     }
 }

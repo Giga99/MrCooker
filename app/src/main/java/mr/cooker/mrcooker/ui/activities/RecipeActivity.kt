@@ -36,6 +36,8 @@ import kotlinx.coroutines.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.FavoriteRecipe
 import mr.cooker.mrcooker.data.entities.Recipe
+import mr.cooker.mrcooker.other.Constants
+import mr.cooker.mrcooker.other.Constants.ownerIDCode
 import mr.cooker.mrcooker.other.Constants.postID
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
@@ -43,6 +45,7 @@ import mr.cooker.mrcooker.ui.adapters.RecipeImagesAdapter
 import mr.cooker.mrcooker.ui.viewmodels.AddingViewModel
 import mr.cooker.mrcooker.ui.viewmodels.AllRecipesViewModel
 import mr.cooker.mrcooker.ui.viewmodels.FavoriteRecipesViewModel
+import mr.cooker.mrcooker.ui.viewmodels.UserViewModel
 import java.lang.Exception
 
 @ExperimentalCoroutinesApi
@@ -52,6 +55,7 @@ class RecipeActivity : AppCompatActivity() {
     private val allRecipesViewModel: AllRecipesViewModel by viewModels()
     private val addingViewModel: AddingViewModel by viewModels()
     private val favoriteRecipesViewModel: FavoriteRecipesViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
     private lateinit var recipe: Recipe
     private var favorite = false
 
@@ -75,18 +79,18 @@ class RecipeActivity : AppCompatActivity() {
         trailingLoaderRecipe.visibility = View.VISIBLE
         trailingLoaderRecipe.animate()
 
-        val postId = intent.extras?.getString(postID)
+        val recipeId = intent.extras?.getString(postID)
             ?: throw IllegalArgumentException("`postID` must be non-null")
 
-        getRecipe(postId)
-        isItFavoriteRecipe(postId)
+        getRecipe(recipeId)
+        isItFavoriteRecipe(recipeId)
 
         ivAddToFavorites.setOnClickListener {
             recipeLayout.visibility = View.GONE
             trailingLoaderRecipe.visibility = View.VISIBLE
             trailingLoaderRecipe.animate()
 
-            if (favorite) removeFromFavorites(postId)
+            if (favorite) removeFromFavorites(recipeId)
             else addToFavorites()
         }
 
@@ -131,6 +135,13 @@ class RecipeActivity : AppCompatActivity() {
 
                 lengthBefore = it.length
             }
+        }
+
+        tvOwnerName.setOnClickListener {
+            val intent = Intent(this.applicationContext, MainActivity::class.java)
+            intent.putExtra(Constants.ownerID, recipe.ownerID)
+            setResult(ownerIDCode, intent)
+            finish()
         }
     }
 
@@ -195,12 +206,16 @@ class RecipeActivity : AppCompatActivity() {
 
             is Resource.Success -> {
                 recipe = data.data
+                userViewModel.setUserID(recipe.ownerID!!)
+                val userInfo = userViewModel.getUserInfo()
+                while(userInfo == null);
                 withContext(Dispatchers.Main) {
                     with(recipe) {
                         tvName.text = name
                         tvTime.text = "${timeToCook}min"
                         tvIngredients.text = ingredients
                         tvInstructions.text = instructions
+                        tvOwnerName.text = "by\n${userInfo.username}"
                         recipeImagesAdapter = RecipeImagesAdapter()
                         vpImages.adapter = recipeImagesAdapter
                         recipeImagesAdapter.submitList(imgUrls)

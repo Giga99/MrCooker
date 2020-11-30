@@ -31,6 +31,6 @@ class AppInfoViewModel @ViewModelInject constructor(
             programInfo = mainRepository.getAppInfo().copy(isRunMode = true)
         }.join()
 
-        programInfo!!
+        programInfo ?: ProgramInfo()
     }
 }

@@ -44,6 +44,7 @@ import mr.cooker.mrcooker.ui.dialogs.SmartRatingDialog
 import mr.cooker.mrcooker.ui.viewmodels.AppInfoViewModel
 import mr.cooker.mrcooker.ui.viewmodels.SignOutViewModel
 import mr.cooker.mrcooker.ui.viewmodels.SmartRatingViewModel
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -69,9 +70,13 @@ class MainActivity : AppCompatActivity() {
                     navHostFragment.findNavController()
                         .navigate(R.id.action_allRecipesFragment_to_addRecipeFragment)
 
-                R.id.myRecipesFragment ->
+                R.id.conversationsFragment ->
                     navHostFragment.findNavController()
-                        .navigate(R.id.action_myRecipesFragment_to_addRecipeFragment)
+                        .navigate(R.id.action_conversationsFragment_to_addRecipeFragment)
+
+                R.id.userRecipesFragment ->
+                    navHostFragment.findNavController()
+                        .navigate(R.id.action_userRecipesFragment_to_addRecipeFragment)
 
                 R.id.profileFragment ->
                     navHostFragment.findNavController()
@@ -80,6 +85,13 @@ class MainActivity : AppCompatActivity() {
                 R.id.settingsFragment ->
                     navHostFragment.findNavController()
                         .navigate(R.id.action_settingsFragment_to_addRecipeFragment)
+                R.id.favoriteRecipesFragment ->
+                    navHostFragment.findNavController()
+                        .navigate(R.id.action_favoriteRecipesFragment_to_addRecipeFragment)
+
+                R.id.otherProfileFragment ->
+                    navHostFragment.findNavController()
+                        .navigate(R.id.action_otherProfileFragment_to_addRecipeFragment)
             }
         }
 
@@ -89,9 +101,13 @@ class MainActivity : AppCompatActivity() {
                     navHostFragment.findNavController()
                         .navigate(R.id.action_allRecipesFragment_to_favoriteRecipesFragment)
 
-                R.id.myRecipesFragment ->
+                R.id.conversationsFragment ->
                     navHostFragment.findNavController()
-                        .navigate(R.id.action_myRecipesFragment_to_favoriteRecipesFragment)
+                        .navigate(R.id.action_conversationsFragment_to_favoriteRecipesFragment)
+
+                R.id.userRecipesFragment ->
+                    navHostFragment.findNavController()
+                        .navigate(R.id.action_userRecipesFragment_to_favoriteRecipesFragment)
 
                 R.id.profileFragment ->
                     navHostFragment.findNavController()
@@ -100,6 +116,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.settingsFragment ->
                     navHostFragment.findNavController()
                         .navigate(R.id.action_settingsFragment_to_favoriteRecipesFragment)
+
+                R.id.otherProfileFragment ->
+                    navHostFragment.findNavController()
+                        .navigate(R.id.action_otherProfileFragment_to_favoriteRecipesFragment)
             }
         }
 
@@ -170,9 +190,7 @@ class MainActivity : AppCompatActivity() {
             })
         } catch (e: Exception) {
             Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
-
         }
-
     }
 
     private fun setSmartRating(rating: SmartRating) = CoroutineScope(Dispatchers.IO).launch {
@@ -204,6 +222,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            android.R.id.home -> {
+                Timber.e("back")
+                navHostFragment.findNavController().popBackStack()
+                true
+            }
+
             R.id.signOut -> {
                 MaterialDialog.Builder(this)
                     .setTitle(getString(R.string.exit_dialog_title))

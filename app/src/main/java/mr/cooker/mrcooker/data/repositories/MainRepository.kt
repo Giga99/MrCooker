@@ -14,10 +14,7 @@ package mr.cooker.mrcooker.data.repositories
 
 import android.net.Uri
 import com.mobapphome.androidappupdater.tools.ProgramInfo
-import mr.cooker.mrcooker.data.entities.FavoriteRecipe
-import mr.cooker.mrcooker.data.entities.Recipe
-import mr.cooker.mrcooker.data.entities.SmartRating
-import mr.cooker.mrcooker.data.entities.SmartRatingTracker
+import mr.cooker.mrcooker.data.entities.*
 import mr.cooker.mrcooker.data.firebase.FirebaseDB
 import mr.cooker.mrcooker.other.Resource
 import javax.inject.Inject
@@ -46,15 +43,16 @@ class MainRepository @Inject constructor(
 
     suspend fun getRealtimeRecipes() = firebaseDB.getAllRecipes()
 
-    suspend fun getRealtimeMyRecipes() = firebaseDB.getMyRecipes()
+    suspend fun getRealtimeUserRecipes(userId: String) = firebaseDB.getUserRecipes(userId)
 
-    suspend fun getMyRecipes() = firebaseDB.getMyRecipes()
+    suspend fun getUserRecipes(userId: String) = firebaseDB.getUserRecipes(userId)
 
     suspend fun getRecipeByID(id: String) = firebaseDB.getRecipeByID(id)
 
     suspend fun getSearchedRecipes(search: String) = firebaseDB.getSearchedRecipes(search)
 
-    suspend fun getSearchedMyRecipes(search: String) = firebaseDB.getSearchedMyRecipes(search)
+    suspend fun getSearchedMyRecipes(search: String, userId: String) =
+        firebaseDB.getSearchedUserRecipes(search, userId)
 
     suspend fun addToFavoriteRecipes(favoriteRecipe: FavoriteRecipe) =
         firebaseDB.addToFavoriteRecipes(favoriteRecipe)
@@ -79,4 +77,20 @@ class MainRepository @Inject constructor(
     suspend fun countDaysPassed(count: Boolean) = firebaseDB.countDaysPassed(count)
 
     suspend fun getAppInfo(): ProgramInfo = firebaseDB.getAppInfo()
+
+    suspend fun startConversation(user: User) = firebaseDB.startConversation(user)
+
+    suspend fun updateMessages(messages: List<Message>, conversationId: String) =
+        firebaseDB.updateMessages(messages, conversationId)
+
+    suspend fun refreshConversation(conversationId: String) = firebaseDB.refreshConversation(conversationId)
+
+    suspend fun getConversationList(): Resource<List<Conversation>> =
+        firebaseDB.getConversationList()
+
+    suspend fun getUserInfo(userId: String): User = firebaseDB.getUserInfo(userId)
+
+    suspend fun conversationNotExist(userId: String) = firebaseDB.conversationNotExist(userId)
+
+    suspend fun getConversation(userId: String) = firebaseDB.getConversation(userId)
 }

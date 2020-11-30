@@ -17,9 +17,9 @@
         android:title="@string/all_recipes"
         android:icon="@drawable/ic_home"/>
 
-    <item android:id="@+id/myRecipesFragment"
-        android:title="@string/my_recipes"
-        android:icon="@drawable/ic_my_recipes"/>
+    <item android:id="@+id/conversationsFragment"
+        android:title="@string/messages"
+        android:icon="@drawable/ic_conversations"/>
 
     <item android:id="@+id/placeholder"
         android:title=""/>

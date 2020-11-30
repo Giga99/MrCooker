@@ -21,39 +21,45 @@ import android.widget.Toast
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_my_recipes.*
-import kotlinx.android.synthetic.main.fragment_my_recipes.swipeRefreshLayout
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_user_recipes.*
 import kotlinx.coroutines.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.other.Constants
+import mr.cooker.mrcooker.other.Constants.ownerIDCode
 import mr.cooker.mrcooker.other.Constants.postID
+import mr.cooker.mrcooker.other.FirebaseUtils
 import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.ui.adapters.RecipeAdapter
 import mr.cooker.mrcooker.ui.activities.RecipeActivity
 import mr.cooker.mrcooker.ui.viewmodels.AddingViewModel
-import mr.cooker.mrcooker.ui.viewmodels.MyRecipesViewModel
+import mr.cooker.mrcooker.ui.viewmodels.UserRecipesViewModel
+import mr.cooker.mrcooker.ui.viewmodels.UserViewModel
 import java.lang.Exception
 import java.util.*
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
+class UserRecipesFragment : Fragment(R.layout.fragment_user_recipes) {
 
-    private val myRecipesViewModel: MyRecipesViewModel by viewModels()
+    private val userRecipesViewModel: UserRecipesViewModel by activityViewModels()
     private val addingViewModel: AddingViewModel by viewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
     private lateinit var recipeAdapter: RecipeAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-        myRecipesViewModel.myRecipes.observe(viewLifecycleOwner, {
+        userRecipesViewModel.userRecipes.observe(viewLifecycleOwner, {
             observe(it)
         })
 
@@ -73,27 +79,29 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
             showRecipe(recipe, iv)
         }
 
-        // Deleting on swipe left or right and undo if change mind
-        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
-            ItemTouchHelper.UP or ItemTouchHelper.DOWN,
-            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-        ) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-                return true
+        // Deleting on swipe left or right and undo if change mind, only if currentUser is owner of recipes
+        if(userRecipesViewModel.getMyRecipesBoolean()) {
+            val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
+                ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+                ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+            ) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    return true
+                }
+
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    swipeRefreshLayout?.isRefreshing = true
+                    deleteRecipe(viewHolder)
+                }
             }
 
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                swipeRefreshLayout?.isRefreshing = true
-                deleteRecipe(viewHolder)
+            ItemTouchHelper(itemTouchHelperCallback).apply {
+                attachToRecyclerView(rvRecipes)
             }
-        }
-
-        ItemTouchHelper(itemTouchHelperCallback).apply {
-            attachToRecyclerView(rvRecipes)
         }
 
         // Swipe to refresh
@@ -113,7 +121,7 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
         editable.let {
             if (editable.toString().isNotEmpty()) {
                 val recipes =
-                    myRecipesViewModel.getSearchedMyRecipes(
+                    userRecipesViewModel.getSearchedUserRecipes(
                         editable.toString().toLowerCase(Locale.ROOT)
                     )
                 observe(recipes)
@@ -122,7 +130,7 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
     }
 
     private fun realtimeUpdate() = CoroutineScope(Dispatchers.IO).launch {
-        val data = myRecipesViewModel.getRealtimeMyRecipes()
+        val data = userRecipesViewModel.getRealtimeUserRecipes()
         withContext(Dispatchers.Main) {
             observe(data)
         }
@@ -190,7 +198,22 @@ class MyRecipesFragment : Fragment(R.layout.fragment_my_recipes) {
             imageView.transitionName
         )
 
-        startActivity(intent, options.toBundle())
+        startActivityForResult(intent, ownerIDCode, options.toBundle())
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode == ownerIDCode) {
+            val ownerID = data?.getStringExtra(Constants.ownerID)
+            if (ownerID != null) {
+                if (ownerID == FirebaseUtils.currentUser.uid) findNavController().navigate(R.id.profileFragment)
+                else {
+                    userViewModel.setUserID(ownerID)
+                    findNavController().navigate(R.id.action_userRecipesFragment_to_otherProfileFragment)
+                }
+            }
+        }
     }
 
     override fun onResume() {

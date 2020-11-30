@@ -43,15 +43,14 @@ class RecipeAdapter : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
 
     fun submitList(list: List<Recipe>) = differ.submitList(list)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
-        return RecipeViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder =
+        RecipeViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.recipe_row,
                 parent,
                 false
             )
         )
-    }
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         val recipe = differ.currentList[position]
@@ -68,9 +67,7 @@ class RecipeAdapter : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
         }
     }
 
-    override fun getItemCount(): Int {
-        return differ.currentList.size
-    }
+    override fun getItemCount(): Int = differ.currentList.size
 
     private var onItemClickListener: ((Recipe, ImageView) -> Unit)? = null
 

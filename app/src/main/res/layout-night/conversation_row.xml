@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Created by Igor Stevanovic on 11/26/20 10:58 PM
+  ~ Copyright (c) 2020 MrCooker. All rights reserved.
+  ~ Last modified 11/26/20 10:58 PM
+  ~ Licensed under the GPL-3.0 License;
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~ https://www.gnu.org/licenses/gpl-3.0.en.html
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.github.abdularis.civ.AvatarImageView
+        android:id="@+id/ivConvProfileImage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        app:avatarBackgroundColor="@color/colorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:text="A"
+        app:textSize="22sp" />
+
+    <TextView
+        android:id="@+id/tvConvUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:text="Username"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="17sp"
+        app:layout_constraintStart_toEndOf="@+id/ivConvProfileImage"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvConvLastMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="3dp"
+        android:text="Last message"
+        android:textColor="#787878"
+        android:textSize="17sp"
+        app:layout_constraintStart_toEndOf="@+id/ivConvProfileImage"
+        app:layout_constraintTop_toBottomOf="@+id/tvConvUsername" />
+
+    <TextView
+        android:id="@+id/tvConvTimeOfLastMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="3dp"
+        android:text="Time"
+        android:textColor="#787878"
+        android:textSize="17sp"
+        app:layout_constraintStart_toEndOf="@+id/tvConvLastMessage"
+        app:layout_constraintTop_toBottomOf="@+id/tvConvUsername"/>
+
+    <ImageView
+        android:id="@+id/ivSeen"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/ic_seen"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
