@@ -24,12 +24,20 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        with(requireActivity()) {
+            tvVersion.text = packageManager.getPackageInfo(packageName, 0).versionName
+        }
+
         btnEditProfile.setOnClickListener {
             findNavController().navigate(R.id.action_settingsFragment_to_editProfileFragment)
         }
 
         btnChangePassword.setOnClickListener {
             findNavController().navigate(R.id.action_settingsFragment_to_changePasswordFragment)
+        }
+
+        btnChangeEmail.setOnClickListener {
+            findNavController().navigate(R.id.action_settingsFragment_to_changeEmailFragment)
         }
     }
 }

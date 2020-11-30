@@ -220,6 +220,13 @@ class FirebaseDB {
         currentUser.updatePassword(newPassword).await()
     }
 
+    suspend fun changeEmail(oldEmail: String, password: String, newEmail: String) {
+        val credential: AuthCredential = EmailAuthProvider.getCredential(oldEmail, password)
+        currentUser.reauthenticate(credential).await()
+        currentUser.updateEmail(newEmail).await()
+        auth.currentUser!!.sendEmailVerification().await()
+    }
+
     suspend fun deleteAccount() {
         val recipeQuery = firestoreRecipes
             .whereEqualTo("ownerID", currentUser.uid)

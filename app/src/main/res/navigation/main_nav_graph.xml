@@ -118,6 +118,13 @@
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_settingsFragment_to_changeEmailFragment"
+            app:destination="@id/changeEmailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/changePasswordFragment"
@@ -263,4 +270,8 @@
             android:name="conversationID"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/changeEmailFragment"
+        android:name="mr.cooker.mrcooker.ui.fragments.main.settings.ChangeEmailFragment"
+        android:label="ChangeEmailFragment" />
 </navigation>

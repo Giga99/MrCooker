@@ -39,5 +39,8 @@ class AuthRepository @Inject constructor(
     suspend fun changePassword(email: String, oldPassword: String, newPassword: String) =
         firebaseDB.changePassword(email, oldPassword, newPassword)
 
+    suspend fun changeEmail(oldEmail: String, password: String, newEmail: String) =
+        firebaseDB.changeEmail(oldEmail, password, newEmail)
+
     suspend fun deleteAccount() = firebaseDB.deleteAccount()
 }
