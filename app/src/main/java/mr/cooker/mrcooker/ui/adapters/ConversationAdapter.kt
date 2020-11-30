@@ -72,13 +72,18 @@ class ConversationAdapter : RecyclerView.Adapter<ConversationAdapter.Conversatio
                     }
                 }
 
-                val lastMessage = messages.last()
-                tvConvLastMessage.text = lastMessage.text
-                val timePassed = System.currentTimeMillis() - lastMessage.timestamp!!.time
-                tvConvTimeOfLastMessage.text = calculateTime(timePassed)
+                if (messages.isEmpty()) {
+                    tvConvLastMessage.text = "No Messages"
+                    tvConvTimeOfLastMessage.visibility = View.GONE
+                } else {
+                    val lastMessage = messages.last()
+                    tvConvLastMessage.text = lastMessage.text
+                    val timePassed = System.currentTimeMillis() - lastMessage.timestamp!!.time
+                    tvConvTimeOfLastMessage.text = calculateTime(timePassed)
 
-                if (!lastMessage.seen && lastMessage.senderId != currentUser.uid) ivSeen.visibility =
-                    View.VISIBLE
+                    if (!lastMessage.seen && lastMessage.senderId != currentUser.uid) ivSeen.visibility =
+                        View.VISIBLE
+                }
 
                 setOnClickListener {
                     onItemClickListener?.let { it(this) }

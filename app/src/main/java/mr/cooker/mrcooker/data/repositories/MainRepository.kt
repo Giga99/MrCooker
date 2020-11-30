@@ -78,8 +78,7 @@ class MainRepository @Inject constructor(
 
     suspend fun getAppInfo(): ProgramInfo = firebaseDB.getAppInfo()
 
-    suspend fun startConversation(conversation: Conversation) =
-        firebaseDB.startConversation(conversation)
+    suspend fun startConversation(user: User) = firebaseDB.startConversation(user)
 
     suspend fun updateMessages(messages: List<Message>, conversationId: String) =
         firebaseDB.updateMessages(messages, conversationId)
@@ -90,4 +89,8 @@ class MainRepository @Inject constructor(
         firebaseDB.getConversationList()
 
     suspend fun getUserInfo(userId: String): User = firebaseDB.getUserInfo(userId)
+
+    suspend fun conversationNotExist(userId: String) = firebaseDB.conversationNotExist(userId)
+
+    suspend fun getConversation(userId: String) = firebaseDB.getConversation(userId)
 }

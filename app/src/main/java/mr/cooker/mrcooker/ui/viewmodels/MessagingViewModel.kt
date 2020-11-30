@@ -35,14 +35,36 @@ class MessagingViewModel @ViewModelInject constructor(
     suspend fun refreshConversation(conversationId: String): Resource<Conversation> {
         var conversation: Resource<Conversation>? = null
         viewModelScope.launch {
-            conversation = mainRepository.refreshConversation(conversationId)
+            try {
+                conversation = mainRepository.refreshConversation(conversationId)
+                status.throwable = false
+            } catch (e: Exception) {
+                status.throwable = true
+                status.exception = e
+            }
         }.join()
         return conversation!!
     }
 
-    fun startConversation(user1: User, user2: User) = viewModelScope.launch {
+    suspend fun conversationNotExist(userId: String) = mainRepository.conversationNotExist(userId)
+
+    suspend fun getConversation(userId: String): Resource<Conversation> {
+        var conversation: Resource<Conversation>? = null
+        viewModelScope.launch {
+            try {
+                conversation = mainRepository.getConversation(userId)
+                status.throwable = false
+            } catch (e: Exception) {
+                status.throwable = true
+                status.exception = e
+            }
+        }.join()
+        return conversation!!
+    }
+
+    fun startConversation(user: User) = viewModelScope.launch {
         try {
-            mainRepository.startConversation(Conversation(user1, user2))
+            mainRepository.startConversation(user)
             status.throwable = false
         } catch (e: Exception) {
             status.throwable = true

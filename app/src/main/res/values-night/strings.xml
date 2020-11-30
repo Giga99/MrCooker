@@ -76,5 +76,6 @@
     <string name="user_profile">User Profile</string>
     <string name="show_my_recipes">Show My Recipes</string>
     <string name="show_user_recipes">Show User Recipes</string>
+    <string name="contact">Contact</string>
 
 </resources>

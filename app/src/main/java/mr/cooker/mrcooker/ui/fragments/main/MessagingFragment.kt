@@ -39,7 +39,6 @@ import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
 import mr.cooker.mrcooker.other.Resource
 import mr.cooker.mrcooker.ui.adapters.MessageAdapter
 import mr.cooker.mrcooker.ui.viewmodels.MessagingViewModel
-import timber.log.Timber
 import java.lang.Exception
 import java.util.*
 
@@ -116,6 +115,7 @@ class MessagingFragment : Fragment(R.layout.fragment_messaging) {
                 }
                 is Resource.Success -> {
                     conversation = data.data
+                    messagingViewModel.setConversation(conversation)
                     messageAdapter.submitList(conversation.messages)
                     messageAdapter.notifyDataSetChanged()
                 }
