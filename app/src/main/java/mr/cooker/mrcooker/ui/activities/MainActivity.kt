@@ -132,8 +132,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun appUpdate() = CoroutineScope(Dispatchers.IO).launch {
         try {
-            if (!this@MainActivity.isFinishing)
-                AAUpdaterController.init(this@MainActivity, null, appInfoViewModel, false)
+            AAUpdaterController.init(this@MainActivity, null, appInfoViewModel, false)
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
                 Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()

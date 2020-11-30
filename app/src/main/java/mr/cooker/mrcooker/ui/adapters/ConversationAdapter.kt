@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.conversation_row.view.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.Conversation
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class ConversationAdapter : RecyclerView.Adapter<ConversationAdapter.ConversationViewHolder>() {
@@ -54,7 +55,8 @@ class ConversationAdapter : RecyclerView.Adapter<ConversationAdapter.Conversatio
             with(conversation) {
                 if (firstUser!!.userId == currentUser.uid) {
                     tvConvUsername.text = secondUser!!.username
-                    if (secondUser!!.profileImage == null) {
+                    Timber.e("profileImage=${secondUser!!.profileImage}")
+                    if (secondUser!!.profileImage == null || secondUser!!.profileImage == "null") {
                         ivConvProfileImage.text = secondUser!!.username.substring(0, 1)
                         ivConvProfileImage.state = AvatarImageView.SHOW_INITIAL
                     } else {
@@ -63,7 +65,7 @@ class ConversationAdapter : RecyclerView.Adapter<ConversationAdapter.Conversatio
                     }
                 } else {
                     tvConvUsername.text = firstUser!!.username
-                    if (firstUser!!.profileImage == null) {
+                    if (firstUser!!.profileImage == null || firstUser!!.profileImage == "null") {
                         ivConvProfileImage.text = firstUser!!.username.substring(0, 1)
                         ivConvProfileImage.state = AvatarImageView.SHOW_INITIAL
                     } else {
