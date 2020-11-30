@@ -190,9 +190,7 @@ class MainActivity : AppCompatActivity() {
             })
         } catch (e: Exception) {
             Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_SHORT).show()
-
         }
-
     }
 
     private fun setSmartRating(rating: SmartRating) = CoroutineScope(Dispatchers.IO).launch {
