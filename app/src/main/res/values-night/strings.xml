@@ -80,5 +80,6 @@
     <string name="contact">Contact</string>
     <string name="change_email">Change Email</string>
     <string name="enter_new_email">Enter new email</string>
+    <string name="about_app">About App</string>
 
 </resources>
