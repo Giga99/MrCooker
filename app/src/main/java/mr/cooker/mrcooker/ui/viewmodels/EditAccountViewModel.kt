@@ -73,6 +73,17 @@ class EditAccountViewModel @ViewModelInject constructor(
             }
         }
 
+    fun changeEmail(oldEmail: String, password: String, newEmail: String) =
+        viewModelScope.launch {
+            try {
+                authRepository.changeEmail(oldEmail, password, newEmail)
+                status.throwable = false
+            } catch (e: Exception) {
+                status.throwable = true
+                status.exception = e
+            }
+        }
+
     fun deleteAccount() = viewModelScope.launch {
         try {
             authRepository.deleteAccount()

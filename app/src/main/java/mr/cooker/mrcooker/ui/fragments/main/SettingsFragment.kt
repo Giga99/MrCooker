@@ -14,8 +14,13 @@ package mr.cooker.mrcooker.ui.fragments.main
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_settings.*
 import mr.cooker.mrcooker.R
 
@@ -24,12 +29,29 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        with(requireActivity()) {
+            (this as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
+            findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility = View.VISIBLE
+            findViewById<BottomAppBar>(R.id.bottomAppBar).visibility = View.VISIBLE
+            findViewById<FloatingActionButton>(R.id.fab).visibility = View.VISIBLE
+            findViewById<ImageView>(R.id.ivFavorites).visibility = View.VISIBLE
+        }
+
+        btnAbout.setOnClickListener {
+            findNavController().navigate(R.id.action_settingsFragment_to_aboutFragment)
+        }
+
         btnEditProfile.setOnClickListener {
             findNavController().navigate(R.id.action_settingsFragment_to_editProfileFragment)
         }
 
         btnChangePassword.setOnClickListener {
             findNavController().navigate(R.id.action_settingsFragment_to_changePasswordFragment)
+        }
+
+        btnChangeEmail.setOnClickListener {
+            findNavController().navigate(R.id.action_settingsFragment_to_changeEmailFragment)
         }
     }
 }

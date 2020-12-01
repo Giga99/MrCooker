@@ -69,6 +69,7 @@
     <string name="android_app_upd_restricter_info_install">This is an old version and does not operate. An application has moved to a new address. \nPlease install a newer version.</string>
     <string name="android_app_upd_restricter_info_update">This is an old version and does not operate. Please update the application.</string>
     <string name="android_app_upd_restricter_info_open_new_version">This is an old version and does not operate. Please open the new version.</string>
+
     <string name="add_maximum_5_images">Add maximum 5 images:</string>
     <string name="edit_recipe">Edit Recipe</string>
     <string name="edit">EDIT</string>
@@ -77,5 +78,8 @@
     <string name="show_my_recipes">Show My Recipes</string>
     <string name="show_user_recipes">Show User Recipes</string>
     <string name="contact">Contact</string>
+    <string name="change_email">Change Email</string>
+    <string name="enter_new_email">Enter new email</string>
+    <string name="about_app">About App</string>
 
 </resources>
