@@ -5,10 +5,12 @@ This is an android app for creating your recipes.
 Features:
    - Authentication with email
    - Listing all recipes in app
-   - Saving recipes on Firebase with images.
+   - Saving recipes on Firebase with images
    - Mark recipe as favorite
    - Search through various recipes
-   - Deleting recipes
+   - Deleting and editing recipes
+   - Messaging other people
+   - Viewing other people profiles
 
 Using:
    - Kotlin
