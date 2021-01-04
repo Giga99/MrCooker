@@ -126,3 +126,5 @@ x
 Happ/src/main/java/mr/cooker/mrcooker/ui/viewmodels/MessagingViewModel.kt,c\3\c37fe40094a1d4ccaa2a1f6c042508fdaa476952
 w
 Gapp/src/main/java/mr/cooker/mrcooker/ui/adapters/ConversationAdapter.kt,b\9\b9fc1f47ad7b384a1c8d8d029fc077b47432fd12
+X
+(gradle/wrapper/gradle-wrapper.properties,f\b\fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
