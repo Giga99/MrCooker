@@ -298,7 +298,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="50dp"
                 app:adSize="BANNER"
-                app:adUnitId="ca-app-pub-3940256099942544/6300978111" />
+                app:adUnitId="ca-app-pub-9195192915023247/8287741872" />
 
         </RelativeLayout>
 
