@@ -46,6 +46,10 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.activities.RecipeActivity"/>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-9195192915023247~5372792163"/>
     </application>
 
 </manifest>
