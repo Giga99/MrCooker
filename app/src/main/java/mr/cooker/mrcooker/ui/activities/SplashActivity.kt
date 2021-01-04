@@ -21,6 +21,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.content.res.AppCompatResources
+import com.google.android.gms.ads.MobileAds
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.CoroutineScope
@@ -43,6 +44,8 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
+        MobileAds.initialize(this)
+
         // Fix for API 23 and lower
         if (getNightMode() == AppCompatDelegate.MODE_NIGHT_YES) splashImage.setImageDrawable(
             AppCompatResources.getDrawable(this, R.drawable.ic_splash_dark)
@@ -64,7 +67,7 @@ class SplashActivity : AppCompatActivity() {
                     Handler(Looper.getMainLooper()).postDelayed({
                         startActivity(Intent(this@SplashActivity, MainActivity::class.java))
                         finish()
-                    }, 2000)
+                    }, 1000)
                 }
             } else {
                 withContext(Dispatchers.Main) {
@@ -76,7 +79,7 @@ class SplashActivity : AppCompatActivity() {
                             )
                         )
                         finish()
-                    }, 2000)
+                    }, 1000)
                 }
             }
         } catch (e: Exception) {

@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.dhaval2404.form_validation.rule.NonEmptyRule
 import com.github.dhaval2404.form_validation.validation.FormValidator
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.android.gms.ads.AdRequest
 import com.google.android.material.snackbar.Snackbar
 import com.shreyaspatil.MaterialDialog.MaterialDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,7 +38,6 @@ import kotlinx.coroutines.*
 import mr.cooker.mrcooker.R
 import mr.cooker.mrcooker.data.entities.Recipe
 import mr.cooker.mrcooker.other.FirebaseUtils.currentUser
-import mr.cooker.mrcooker.ui.activities.AuthenticationActivity
 import mr.cooker.mrcooker.ui.adapters.ImageAdapter
 import mr.cooker.mrcooker.ui.viewmodels.AddingViewModel
 import java.lang.Exception
@@ -58,6 +58,9 @@ class AddRecipeFragment : Fragment(R.layout.fragment_add_recipe) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val adRequest = AdRequest.Builder().build()
+        adView.loadAd(adRequest)
 
         setupRecyclerView()
 
